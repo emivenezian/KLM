@@ -1,0 +1,31 @@
+ULD AKE-38 with weight 2.0 kg with a volume loadfactor of 0.546% and a weight loadfactor of 0.126% is loaded to position 11L
+ULD AKE-25 with weight 38.1 kg with a volume loadfactor of 11.657% and a weight loadfactor of 2.402% is loaded to position 11R
+ULD T-36 with weight 338 kg is loaded to position 12P
+ULD T-35 with weight 720 kg is loaded to position 13P
+ULD PMC-29 with weight 1574.5 kg with a volume loadfactor of 37.171% and a weight loadfactor of 30.861% is loaded to position 21P
+ULD T-34 with weight 1055 kg is loaded to position 22P
+ULD PMC-28 with weight 2525.6 kg with a volume loadfactor of 66.196% and a weight loadfactor of 49.502% is loaded to position 23P
+ULD BAX-5 with weight 760.0 kg is loaded to position 31L
+ULD BAX-33 with weight 784.0 kg is loaded to position 31R
+ULD BAX-24 with weight 271.0 kg is loaded to position 32L
+ULD BAX-23 with weight 775.0 kg is loaded to position 32R
+ULD BAX-10 with weight 677.0 kg is loaded to position 33L
+ULD BAX-0 with weight 307.0 kg is loaded to position 33R
+ULD BAX-7 with weight 811.0 kg is loaded to position 41L
+ULD BAX-3 with weight 679.0 kg is loaded to position 41R
+ULD BAX-4 with weight 358.0 kg is loaded to position 42L
+ULD BAX-1 with weight 508.0 kg is loaded to position 42R
+ULD PAG-26 with weight 3895.3 kg with a volume loadfactor of 61.315% and a weight loadfactor of 83.305% is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 1098.1 kg
+Weight in Compartment 2: 5155.1 kg
+Weight in Compartment 3: 3574.0 kg
+Weight in Compartment 4: 6251.3 kg
+===========================================================================
+%MAC ZFW is 28.5290102214553
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 27.1
+Resulting in a fuel deviation of -0.116% or -100.833 kg
+---------------------------------------------------------------------------
+5 ULDs are built by the model
+4 ULDs were actually built

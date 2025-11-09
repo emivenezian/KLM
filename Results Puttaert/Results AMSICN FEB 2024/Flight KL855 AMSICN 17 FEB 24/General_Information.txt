@@ -1,0 +1,47 @@
+The model will run the following flight:
+--------------------------------------------------------------------------------------------------------
+Flight Number: KL855 PHBQO - Aircraft Type: 772 - Departure: AMS - Arrival: ICN - Date: 17 FEB 24
+
+ZFW: 190160.9 kg - TOW: 274471.9 kg - LW: 195743.9 kg - OEW: 148756.0 kg
+
+Fuel: 84311 kg - Trip Fuel: 78728 kg
+
+Number of Cargo ULDs used: 7
+
+Number of BAX ULDs: 8 - Number of BUP ULDs: 0 - Number of T ULDs: 2
+--------------------------------------------------------------------------------------------------------
+ULD set available for loading:
+AKE-17, AKE
+AKE-18, AKE
+PMC-21, PMC
+PMC-22, PMC
+PMC-23, PMC
+PMC-28, PMC
+PMC-29, PMC
+--------------------------------------------------------------------------------------------------------
+BAX and BUP set for loading:
+BAX-0, AKE
+BAX-2, AKE
+BAX-4, AKE
+BAX-5, AKE
+BAX-6, AKE
+BAX-7, AKE
+BAX-9, AKE
+BAX-11, AKE
+T-30, PMC
+T-31, PMC
+--------------------------------------------------------------------------------------------------------
+PAX allocation:
+PAX-A: 35
+PAX-B: 32
+PAX-C: 112
+PAX-D: 55
+PAX-E: 72
+PAX-F: 0
+PAX-G: 0
+Total PAX: 306
+--------------------------------------------------------------------------------------------------------
+Check if all items fit the ULDs dimensions:
+
+61 / 61 items fit the dimensions of the ULDs
+--------------------------------------------------------------------------------------------------------

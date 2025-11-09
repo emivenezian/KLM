@@ -1,0 +1,3 @@
+model,total_flights,feasible_flights,infeasible_flights,feasibility_rate
+proposed_model,185,102,83,55.14
+puttaert_model,200,138,62,69.0

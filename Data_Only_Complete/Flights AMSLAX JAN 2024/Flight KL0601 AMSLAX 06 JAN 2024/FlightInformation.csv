@@ -1,0 +1,2 @@
+FlightLegUtcId,Airline,FlightNumber,LegDepartureDateUtc,DepartureAirport,ArrivalAirport,ActualZeroFuelWeight,EstimatedZeroFuelWeight,DryOperatingWeight,MacZFW,ModTime,AircraftType,AircraftRegistration,FlightCancelled,CostIndex,TakeOffFuel,TripFuel
+2024-01-06|KL|0601||AMS,KL,601,2024-01-06,AMS,LAX,192295,192748,148279,28.6,7/1/2024 6:27,772,PHBQG,False,200,83180,76895

@@ -1,0 +1,37 @@
+ULD T-31 with weight 1775.0 kg is loaded to position 11P
+ULD T-32 with weight 1775.0 kg is loaded to position 12P
+ULD PAG-29 with weight 1600.0 kg is loaded to position 13P
+ULD PAG-30 with weight 1800.0 kg is loaded to position 21P
+ULD T-33 with weight 2380.0 kg is loaded to position 22P
+ULD T-36 with weight 2390.0 kg is loaded to position 23P
+ULD T-35 with weight 2385.0 kg is loaded to position 24P
+ULD PMC-26 with weight 2465.0 kg is loaded to position 25P
+ULD BAX-11 with weight 781.0 kg is loaded to position 31L
+ULD T-38 with weight 618.0 kg is loaded to position 31R
+ULD BAX-0 with weight 554.0 kg is loaded to position 32L
+ULD AKE-23 with weight 570.0 kg is loaded to position 32R
+ULD BAX-13 with weight 684.0 kg is loaded to position 33L
+ULD AKE-24 with weight 515.0 kg is loaded to position 33R
+ULD BAX-10 with weight 798.0 kg is loaded to position 34L
+ULD BAX-7 with weight 751.0 kg is loaded to position 34R
+ULD T-37 with weight 338.0 kg is loaded to position 35L
+ULD AKE-25 with weight 290.0 kg is loaded to position 35R
+ULD BAX-4 with weight 480.0 kg is loaded to position 36L
+ULD BAX-15 with weight 466.0 kg is loaded to position 36R
+ULD BAX-5 with weight 815.0 kg is loaded to position 41L
+ULD BAX-8 with weight 813.0 kg is loaded to position 41R
+ULD T-34 with weight 4970.0 kg is loaded to position 41P
+ULD PMC-27 with weight 2550.0 kg is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 5150.0 kg
+Weight in Compartment 2: 11420.0 kg
+Weight in Compartment 3: 5271.0 kg
+Weight in Compartment 4: 9148.0 kg
+===========================================================================
+%MAC ZFW is 26.45592148831321
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 25.2
+Resulting in a fuel deviation of -0.126% or -106.147 kg
+---------------------------------------------------------------------------
+7 ULDs are built by the model
+7 ULDs were actually built

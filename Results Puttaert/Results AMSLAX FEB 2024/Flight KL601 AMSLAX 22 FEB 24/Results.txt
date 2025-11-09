@@ -1,0 +1,30 @@
+ULD AKE-19 with weight 171.7 kg with a volume loadfactor of 43.513% and a weight loadfactor of 10.819% is loaded to position 11R
+ULD BAX-0 with weight 374.0 kg is loaded to position 12L
+ULD BAX-6 with weight 638.0 kg is loaded to position 13R
+ULD PMC-29 with weight 243.3 kg with a volume loadfactor of 23.119% and a weight loadfactor of 4.769% is loaded to position 21P
+ULD T-32 with weight 230 kg is loaded to position 22P
+ULD PMC-28 with weight 978.5 kg with a volume loadfactor of 50.258% and a weight loadfactor of 19.179% is loaded to position 23P
+ULD T-33 with weight 2180 kg is loaded to position 24P
+ULD PMC-21 with weight 1408.0 kg with a volume loadfactor of 75.844% and a weight loadfactor of 27.597% is loaded to position 31P
+ULD T-35 with weight 143 kg is loaded to position 33L
+ULD BAX-9 with weight 663.0 kg is loaded to position 34L
+ULD BAX-12 with weight 779.0 kg is loaded to position 41L
+ULD BAX-8 with weight 831.0 kg is loaded to position 41R
+ULD BAX-5 with weight 730.0 kg is loaded to position 42L
+ULD BAX-1 with weight 795.0 kg is loaded to position 42R
+ULD PMC-31 with weight 3791.8 kg with a volume loadfactor of 77.068% and a weight loadfactor of 74.320% is loaded to position 42P
+ULD AKE-20 with weight 587.0 kg with a volume loadfactor of 77.143% and a weight loadfactor of 36.988% is loaded to position 45L
+ULD T-34 with weight 493 kg is loaded to position 45R
+---------------------------------------------------------------------------
+Weight in Compartment 1: 1183.7 kg
+Weight in Compartment 2: 3631.8 kg
+Weight in Compartment 3: 2214.0 kg
+Weight in Compartment 4: 8006.8 kg
+===========================================================================
+%MAC ZFW is 31.975575834463605
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 22.9
+Resulting in a fuel deviation of -1.163% or -683.340 kg
+---------------------------------------------------------------------------
+6 ULDs are built by the model
+6 ULDs were actually built

@@ -1,0 +1,46 @@
+.safety-metrics-container {
+  margin-bottom: 20px;
+}
+
+.safety-score {
+  text-align: center;
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.safety-score label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.safety-score .metric-value-large {
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.safety-score .metric-value-large.good {
+  color: #00C49F;
+}
+
+.safety-score .metric-value-large.warning {
+  color: #FFBB28;
+}
+
+.safety-score .metric-value-large.error {
+  color: #FF8042;
+}
+
+.metric-item.warning {
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+}
+
+.metric-item.error {
+  background-color: #f8d7da;
+  border-left: 4px solid #dc3545;
+}
+

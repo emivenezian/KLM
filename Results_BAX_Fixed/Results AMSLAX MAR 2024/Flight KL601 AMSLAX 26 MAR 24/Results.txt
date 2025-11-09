@@ -1,0 +1,33 @@
+ULD BUP-29 with weight 455.0 kg is loaded to position 11P
+ULD T-30 with weight 177 kg is loaded to position 12P
+ULD AKE-20 with weight 35.9 kg with a volume loadfactor of 18.809% and a weight loadfactor of 2.264% is loaded to position 14R
+ULD BAX-1 with weight 727.0 kg is loaded to position 15L
+ULD BAX-11 with weight 630.0 kg is loaded to position 15R
+ULD BAX-3 with weight 270.0 kg is loaded to position 21L
+ULD BAX-19 with weight 264.0 kg is loaded to position 21R
+ULD BAX-0 with weight 458.0 kg is loaded to position 22L
+ULD BAX-10 with weight 663.0 kg is loaded to position 22R
+ULD BAX-9 with weight 732.0 kg is loaded to position 23L
+ULD BAX-6 with weight 679.0 kg is loaded to position 23R
+ULD AKE-21 with weight 96.0 kg with a volume loadfactor of 27.000% and a weight loadfactor of 6.049% is loaded to position 24L
+ULD BAX-8 with weight 611.0 kg is loaded to position 24R
+ULD PMC-23 with weight 1035.9 kg with a volume loadfactor of 57.087% and a weight loadfactor of 20.303% is loaded to position 24P
+ULD T-34 with weight 2490 kg is loaded to position 31P
+ULD T-32 with weight 2465 kg is loaded to position 32P
+ULD PMC-26 with weight 1596.0 kg with a volume loadfactor of 73.711% and a weight loadfactor of 31.282% is loaded to position 33P
+ULD PMC-27 with weight 2616.5 kg with a volume loadfactor of 65.185% and a weight loadfactor of 51.284% is loaded to position 41P
+ULD T-33 with weight 2525 kg is loaded to position 42P
+ULD T-31 with weight 2535 kg is loaded to position 43P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 2024.9 kg
+Weight in Compartment 2: 4808.9 kg
+Weight in Compartment 3: 6551.0 kg
+Weight in Compartment 4: 7676.5 kg
+===========================================================================
+%MAC ZFW is 33.297805826229435
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 30.2
+Resulting in a fuel deviation of -0.375% or -230.602 kg
+---------------------------------------------------------------------------
+5 ULDs are built by the model
+7 ULDs were actually built

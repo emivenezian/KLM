@@ -1,0 +1,32 @@
+ULD AKE-22 with weight 329.8 kg with a volume loadfactor of 41.786% and a weight loadfactor of 20.781% is loaded to position 11L
+ULD AKE-23 with weight 329.8 kg with a volume loadfactor of 21.394% and a weight loadfactor of 20.781% is loaded to position 11R
+ULD BAX-20 with weight 221.0 kg is loaded to position 12L
+ULD BAX-7 with weight 330.0 kg is loaded to position 12R
+ULD BAX-0 with weight 675.0 kg is loaded to position 13L
+ULD BAX-11 with weight 759.0 kg is loaded to position 13R
+ULD BAX-4 with weight 366.0 kg is loaded to position 14L
+ULD BAX-3 with weight 822.0 kg is loaded to position 14R
+ULD BAX-8 with weight 722.0 kg is loaded to position 15L
+ULD BAX-21 with weight 786.0 kg is loaded to position 15R
+ULD BAX-18 with weight 848.0 kg is loaded to position 21L
+ULD BAX-5 with weight 822.0 kg is loaded to position 21R
+ULD PMC-26 with weight 659.6 kg with a volume loadfactor of 21.066% and a weight loadfactor of 12.928% is loaded to position 22P
+ULD T-30 with weight 1725 kg is loaded to position 23P
+ULD T-31 with weight 2240 kg is loaded to position 31P
+ULD PMC-25 with weight 2811.5 kg with a volume loadfactor of 41.722% and a weight loadfactor of 55.106% is loaded to position 32P
+ULD T-32 with weight 2490 kg is loaded to position 33P
+ULD PMC-29 with weight 4300.2 kg with a volume loadfactor of 72.996% and a weight loadfactor of 84.286% is loaded to position 41P
+ULD PMC-24 with weight 3819.9 kg with a volume loadfactor of 63.243% and a weight loadfactor of 74.871% is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 5340.6 kg
+Weight in Compartment 2: 4054.6 kg
+Weight in Compartment 3: 7541.5 kg
+Weight in Compartment 4: 8120.2 kg
+===========================================================================
+%MAC ZFW is 32.11122683599908
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 27.1
+Resulting in a fuel deviation of -0.401% or -228.909 kg
+---------------------------------------------------------------------------
+6 ULDs are built by the model
+6 ULDs were actually built

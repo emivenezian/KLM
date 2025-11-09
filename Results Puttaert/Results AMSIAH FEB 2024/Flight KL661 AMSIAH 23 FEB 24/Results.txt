@@ -1,0 +1,31 @@
+ULD T-34 with weight 915 kg is loaded to position 11P
+ULD BAX-4 with weight 199.0 kg is loaded to position 13L
+ULD BAX-9 with weight 439.0 kg is loaded to position 13R
+ULD PMC-30 with weight 2.6 kg with a volume loadfactor of 0.284% and a weight loadfactor of 0.051% is loaded to position 13P
+ULD T-35 with weight 1375 kg is loaded to position 21P
+ULD PMC-28 with weight 1118.4 kg with a volume loadfactor of 33.028% and a weight loadfactor of 21.920% is loaded to position 22P
+ULD PMC-29 with weight 1317.5 kg with a volume loadfactor of 68.903% and a weight loadfactor of 25.823% is loaded to position 23P
+ULD T-31 with weight 2055 kg is loaded to position 31P
+ULD T-33 with weight 2740 kg is loaded to position 32P
+ULD T-32 with weight 2705 kg is loaded to position 33P
+ULD BAX-8 with weight 633.0 kg is loaded to position 41L
+ULD BAX-1 with weight 519.0 kg is loaded to position 41R
+ULD AKE-18 with weight 732.3 kg with a volume loadfactor of 68.708% and a weight loadfactor of 46.147% is loaded to position 42L
+ULD BAX-6 with weight 716.0 kg is loaded to position 42R
+ULD BAX-10 with weight 633.0 kg is loaded to position 43L
+ULD BAX-16 with weight 723.0 kg is loaded to position 43R
+ULD AKE-17 with weight 970.5 kg with a volume loadfactor of 69.277% and a weight loadfactor of 61.153% is loaded to position 44L
+ULD AKE-19 with weight 742.5 kg with a volume loadfactor of 59.245% and a weight loadfactor of 46.784% is loaded to position 44R
+---------------------------------------------------------------------------
+Weight in Compartment 1: 1555.6 kg
+Weight in Compartment 2: 3810.9 kg
+Weight in Compartment 3: 7500.0 kg
+Weight in Compartment 4: 5669.3 kg
+===========================================================================
+%MAC ZFW is 31.184874576734053
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 20.9
+Resulting in a fuel deviation of -1.149% or -625.029 kg
+---------------------------------------------------------------------------
+6 ULDs are built by the model
+6 ULDs were actually built

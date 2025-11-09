@@ -1,0 +1,36 @@
+ULD PMC-54 with weight 486.0 kg with a volume loadfactor of 63.033% and a weight loadfactor of 9.526% is loaded to position 11P
+ULD BUP-55 with weight 606.5 kg is loaded to position 12P
+ULD PMC-52 with weight 148.6 kg with a volume loadfactor of 19.373% and a weight loadfactor of 2.912% is loaded to position 13P
+ULD PMC-44 with weight 1041.4 kg with a volume loadfactor of 63.611% and a weight loadfactor of 20.412% is loaded to position 21P
+ULD PMC-61 with weight 1884.6 kg with a volume loadfactor of 62.918% and a weight loadfactor of 36.938% is loaded to position 22P
+ULD T-60 with weight 1845 kg is loaded to position 23P
+ULD T-59 with weight 1075 kg is loaded to position 24P
+ULD T-58 with weight 876 kg is loaded to position 25P
+ULD AKE-66 with weight 254.6 kg with a volume loadfactor of 38.057% and a weight loadfactor of 16.043% is loaded to position 31L
+ULD BAX-1 with weight 791.0 kg is loaded to position 31R
+ULD BAX-0 with weight 848.0 kg is loaded to position 32L
+ULD BAX-11 with weight 801.0 kg is loaded to position 32R
+ULD AKE-64 with weight 254.6 kg with a volume loadfactor of 38.057% and a weight loadfactor of 16.043% is loaded to position 33L
+ULD BAX-6 with weight 724.0 kg is loaded to position 33R
+ULD BAX-10 with weight 627.0 kg is loaded to position 34L
+ULD BAX-2 with weight 737.0 kg is loaded to position 34R
+ULD AKE-62 with weight 143.0 kg with a volume loadfactor of 40.033% and a weight loadfactor of 9.011% is loaded to position 35R
+ULD BAX-3 with weight 635.0 kg is loaded to position 36L
+ULD BAX-8 with weight 301.0 kg is loaded to position 36R
+ULD BAX-9 with weight 880.0 kg is loaded to position 41L
+ULD BAX-13 with weight 911.0 kg is loaded to position 41R
+ULD T-57 with weight 4960 kg is loaded to position 41P
+ULD T-56 with weight 2377 kg is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 1241.1 kg
+Weight in Compartment 2: 6722.0 kg
+Weight in Compartment 3: 5037.2 kg
+Weight in Compartment 4: 9128.0 kg
+===========================================================================
+%MAC ZFW is 32.45240458644155
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 34.1
+Resulting in a fuel deviation of 0.315% or 314.296 kg
+---------------------------------------------------------------------------
+7 ULDs are built by the model
+4 ULDs were actually built

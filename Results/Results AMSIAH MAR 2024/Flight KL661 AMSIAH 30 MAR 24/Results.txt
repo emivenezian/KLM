@@ -1,0 +1,33 @@
+ULD PAG-24 with weight 61.7 kg with a volume loadfactor of 4.977% and a weight loadfactor of 1.320% is loaded to position 11P
+ULD BAX-2 with weight 586.0 kg is loaded to position 12R
+ULD AKE-18 with weight 32.0 kg with a volume loadfactor of 13.886% and a weight loadfactor of 2.016% is loaded to position 13L
+ULD BAX-6 with weight 686.0 kg is loaded to position 13R
+ULD BAX-11 with weight 675.0 kg is loaded to position 14L
+ULD BAX-10 with weight 702.0 kg is loaded to position 14R
+ULD PMC-20 with weight 1848.8 kg with a volume loadfactor of 78.118% and a weight loadfactor of 36.238% is loaded to position 21P
+ULD PAG-25 with weight 1056.3 kg with a volume loadfactor of 34.929% and a weight loadfactor of 22.589% is loaded to position 22P
+ULD PMC-21 with weight 1765.8 kg with a volume loadfactor of 68.761% and a weight loadfactor of 34.610% is loaded to position 23P
+ULD T-26 with weight 2402 kg is loaded to position 31P
+ULD BAX-0 with weight 718.0 kg is loaded to position 33L
+ULD BAX-8 with weight 738.0 kg is loaded to position 33R
+ULD BAX-9 with weight 846.0 kg is loaded to position 41L
+ULD BAX-5 with weight 756.0 kg is loaded to position 41R
+ULD PMC-23 with weight 3151.8 kg with a volume loadfactor of 69.996% and a weight loadfactor of 61.775% is loaded to position 41P
+ULD PMC-19 with weight 4273.9 kg with a volume loadfactor of 76.367% and a weight loadfactor of 83.769% is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 2742.7 kg
+Weight in Compartment 2: 4670.9 kg
+Weight in Compartment 3: 3858.0 kg
+Weight in Compartment 4: 9027.7 kg
+===========================================================================
+%MAC ZFW is 31.52978649594819
+%Number of ULDs used is 16.0
+%Total Volume Packed is 41593312.0
+%Booking Separation Penalty is 65.0
+%BAX Proximity Score is 14.0
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 22.0
+Resulting in a fuel deviation of -0.876% or -608.205 kg
+---------------------------------------------------------------------------
+7 ULDs are built by the model
+7 ULDs were actually built

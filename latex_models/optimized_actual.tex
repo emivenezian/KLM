@@ -1,0 +1,375 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{float}
+
+\geometry{margin=2.5cm}
+
+\title{Modelo Optimized Actual - Optimización de Carga Aérea KLM}
+\author{María Emilia Venezian Juricic}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\textbf{Resumen Ejecutivo del Modelo}
+
+El modelo Optimized Actual (también llamado \textit{W\&B-focused}) implementa una optimización directa de Weight \& Balance omitiendo completamente las etapas de empaquetado 1D y 3D. Este modelo utiliza las asignaciones de items a ULDs tal como fueron realizadas en los vuelos reales de KLM.
+
+\vspace{0.3cm}
+\noindent\textbf{Enfoque:} Optimización directa de posicionamiento
+\begin{itemize}
+    \item \textbf{Input:} ULDs pre-empacados con pesos reales de \texttt{LoadLocationsSpotfire.csv}
+    \item \textbf{Optimización:} Solo posicionamiento de ULDs en la aeronave
+    \item \textbf{Output:} Configuración óptima de W\&B
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textbf{Características Clave:}
+\begin{itemize}
+    \item Simplicidad extrema: solo 2 objetivos
+    \item No requiere 3D bin packing solver
+    \item Usa datos reales de empaquetado (ground truth)
+    \item Tiempo de ejecución muy rápido (~60 segundos)
+    \item Una sola variable de decisión: $f_{jt}$ (ULD-posición)
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textbf{Objetivos:}
+\begin{enumerate}
+    \item \textbf{Prioridad 2:} Maximizar \%MAC ZFW
+    \item \textbf{Prioridad 1:} Minimizar proximidad BAX
+\end{enumerate}
+
+\vspace{0.3cm}
+\noindent\textbf{Rendimiento:}
+\begin{itemize}
+    \item Tasa de éxito: 84.6\% (Segundo mejor)
+    \item Tasa de infactibilidad: 15.4\%
+    \item Ranking: 2/5 modelos
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textbf{Contexto Histórico:}
+
+Este modelo demuestra que la simplicidad puede ser efectiva. Al usar las configuraciones de empaquetado reales de KLM (que ya fueron validadas operacionalmente), el modelo elimina la principal fuente de infactibilidad (conflictos de empaquetado 3D) y logra una tasa de éxito sorprendentemente alta. Su enfoque minimalista lo convierte en una herramienta práctica para optimización en tiempo real.
+
+\vspace{0.3cm}
+\noindent\textbf{Implementación:} \texttt{Optimized\_Actual.ipynb}
+
+\noindent\textbf{Resultados:} \texttt{Results\_Optimized\_Actual/}
+\end{abstract}
+
+\newpage
+
+\section{Introducción}
+
+El modelo Optimized Actual implementa una optimización directa de Weight \& Balance (W\&B) sin las etapas intermedias de empaquetado 1D y 3D. Este modelo se enfoca exclusivamente en la optimización del balance de peso utilizando las asignaciones reales de ULDs.
+
+\section{Conjuntos}
+
+\begin{align}
+J &= \{\text{ULDs disponibles}\} \\
+J_{BAX} &= \{j \in J : j \text{ es ULD BAX}\} \\
+J_{BUP} &= \{j \in J : j \text{ es ULD BUP}\} \\
+J_{T} &= \{j \in J : j \text{ es ULD T}\} \\
+J_{COL} &= \{j \in J : j \text{ contiene items COL}\} \\
+J_{CRT} &= \{j \in J : j \text{ contiene items CRT}\} \\
+T &= \{\text{Posiciones de carga en la aeronave}\} \\
+T_{C1} &= \{t \in T : t \text{ en compartimento 1}\} \\
+T_{C2} &= \{t \in T : t \text{ en compartimento 2}\} \\
+T_{C3} &= \{t \in T : t \text{ en compartimento 3}\} \\
+T_{C4} &= \{t \in T : t \text{ en compartimento 4}\} \\
+T_{left} &= \{t \in T : t \text{ lado izquierdo}\} \\
+T_{right} &= \{t \in T : t \text{ lado derecho}\}
+\end{align}
+
+\section{Parámetros}
+
+\subsection{Parámetros de ULDs}
+\begin{align}
+w_j &\in \mathbb{R}^+ \quad \forall j \in J \quad \text{(Peso del ULD } j\text{)}
+\end{align}
+
+\subsection{Parámetros de la Aeronave}
+\begin{align}
+DOI &\in \mathbb{R} \quad \text{(Dry Operating Index)} \\
+OEW &\in \mathbb{R}^+ \quad \text{(Operating Empty Weight)} \\
+TOF &\in \mathbb{R}^+ \quad \text{(Take-Off Fuel)} \\
+TripF &\in \mathbb{R}^+ \quad \text{(Trip Fuel)} \\
+C &\in \mathbb{R} \quad \text{(Constante de conversión)} \\
+K &\in \mathbb{R} \quad \text{(Constante de referencia)} \\
+ZFW &\in \mathbb{R}^+ \quad \text{(Zero Fuel Weight)} \\
+reference\_arm &\in \mathbb{R} \quad \text{(Brazo de referencia)} \\
+lemac &\in \mathbb{R} \quad \text{(Leading Edge MAC)} \\
+mac\_formula &\in \mathbb{R}^+ \quad \text{(Fórmula MAC)}
+\end{align}
+
+\subsection{Parámetros de Compartimentos}
+\begin{align}
+\Delta_{C1} &\in \mathbb{R} \quad \text{(Delta índice compartimento 1)} \\
+\Delta_{C2} &\in \mathbb{R} \quad \text{(Delta índice compartimento 2)} \\
+\Delta_{C3} &\in \mathbb{R} \quad \text{(Delta índice compartimento 3)} \\
+\Delta_{C4} &\in \mathbb{R} \quad \text{(Delta índice compartimento 4)} \\
+W_{max}^{C1} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimento 1)} \\
+W_{max}^{C2} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimento 2)} \\
+W_{max}^{C3} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimento 3)} \\
+W_{max}^{C4} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimento 4)} \\
+W_{max}^{C1C2} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimentos 1+2)} \\
+W_{max}^{C3C4} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimentos 3+4)}
+\end{align}
+
+\subsection{Parámetros de Control}
+\begin{align}
+a_{lat}^{TOW} &= 0.5 \quad \text{(Parámetro balance lateral TOW)} \\
+b_{lat}^{TOW} &= 0.5 \quad \text{(Parámetro balance lateral TOW)} \\
+a_{lat}^{LW} &= 0.5 \quad \text{(Parámetro balance lateral LW)} \\
+b_{lat}^{LW} &= 0.5 \quad \text{(Parámetro balance lateral LW)}
+\end{align}
+
+\section{Variables de Decisión}
+
+\begin{align}
+f_{jt} &\in \{0,1\} \quad \forall j \in J, \forall t \in T \quad \text{(Asignación del ULD } j \text{ a la posición } t\text{)} \\
+ZFW\_index &\in \mathbb{R} \quad \text{(Índice Zero Fuel Weight)} \\
+MAC &\in \mathbb{R} \quad \text{(Mean Aerodynamic Chord)}
+\end{align}
+
+\section{Función Objetivo Multi-objetivo}
+
+\subsection{Objetivo 1: Optimización MAC (Prioridad 2)}
+\begin{align}
+\min \quad & MAC \\
+\text{s.t.} \quad & MAC = \frac{\left( \frac{C \cdot (ZFW\_index - K)}{ZFW} + reference\_arm - lemac \right)}{mac\_formula / 100} \\
+& ZFW\_index = DOI + INDEX\_PAX + \sum_{k=1}^{4} \left( \sum_{j \in J} \sum_{t \in T_{Ck}} w_j \cdot f_{jt} \cdot \Delta_{Ck} \right)
+\end{align}
+
+\subsection{Objetivo 2: Proximidad BAX (Prioridad 1)}
+\begin{equation}
+\min \quad \sum_{j \in J_{BAX}} \sum_{t \in T} proximity\_score(t) \cdot f_{jt}
+\end{equation}
+
+\section{Restricciones}
+
+\subsection{Restricciones de Asignación de ULDs}
+
+\subsubsection{O1: Restricción de Asignación de ULD}
+\begin{equation}
+\sum_{t \in T} f_{jt} = 1 \quad \forall j \in J \tag{O1}
+\end{equation}
+
+\subsubsection{O2: Restricción de Posición Única}
+\begin{equation}
+\sum_{j \in J} f_{jt} \leq 1 \quad \forall t \in T \tag{O2}
+\end{equation}
+
+\subsection{Restricciones de Posiciones}
+
+\subsubsection{O3: Restricción de Posiciones Prohibidas}
+\begin{equation}
+\sum_{t \in T_{forbidden}(j)} f_{jt} = 0 \quad \forall j \in J \tag{O3}
+\end{equation}
+
+\subsubsection{O4: Restricción de Posiciones Superpuestas}
+\begin{equation}
+f_{j_1,t_1} + f_{j_2,t_2} \leq 1 \quad \forall j_1, j_2 \in J: j_1 \neq j_2, \forall t_1 \in T, \forall t_2 \in T_{overlap}(t_1) \tag{O4}
+\end{equation}
+
+\subsection{Restricciones de Peso}
+
+\subsubsection{O5: Restricción de Peso por Posición}
+\begin{equation}
+\sum_{j \in J} w_j \cdot f_{jt} \leq W_{max}(t) \quad \forall t \in T \tag{O5}
+\end{equation}
+
+\subsubsection{O6a-f: Restricciones de Peso por Compartimento}
+\begin{align}
+\sum_{j \in J} \sum_{t \in T_{C1}} w_j \cdot f_{jt} &\leq W_{max}^{C1} \tag{O6a} \\
+\sum_{j \in J} \sum_{t \in T_{C2}} w_j \cdot f_{jt} &\leq W_{max}^{C2} \tag{O6b} \\
+\sum_{j \in J} \sum_{t \in T_{C3}} w_j \cdot f_{jt} &\leq W_{max}^{C3} \tag{O6c} \\
+\sum_{j \in J} \sum_{t \in T_{C4}} w_j \cdot f_{jt} &\leq W_{max}^{C4} \tag{O6d} \\
+\sum_{j \in J} \sum_{t \in T_{C1} \cup T_{C2}} w_j \cdot f_{jt} &\leq W_{max}^{C1C2} \tag{O6e} \\
+\sum_{j \in J} \sum_{t \in T_{C3} \cup T_{C4}} w_j \cdot f_{jt} &\leq W_{max}^{C3C4} \tag{O6f}
+\end{align}
+
+\subsubsection{O7: Restricción de Peso Total}
+\begin{equation}
+\sum_{j \in J} \sum_{t \in T} w_j \cdot f_{jt} \leq MPL \tag{O7}
+\end{equation}
+
+\subsection{Restricciones de Balance}
+
+\subsubsection{O8: Restricciones de Balance Lateral TOW}
+\begin{align}
+\sum_{j \in J} \sum_{t \in T_{left}} w_j \cdot f_{jt} - \sum_{j \in J} \sum_{t \in T_{right}} w_j \cdot f_{jt} &\leq a_{lat}^{TOW} \cdot (W_{total} + OEW + TOF) \cdot b_{lat}^{TOW} \\
+\sum_{j \in J} \sum_{t \in T_{right}} w_j \cdot f_{jt} - \sum_{j \in J} \sum_{t \in T_{left}} w_j \cdot f_{jt} &\leq a_{lat}^{TOW} \cdot (W_{total} + OEW + TOF) \cdot b_{lat}^{TOW}
+\end{align}
+
+\subsubsection{O9: Restricciones de Balance Lateral LW}
+\begin{align}
+\sum_{j \in J} \sum_{t \in T_{left}} w_j \cdot f_{jt} - \sum_{j \in J} \sum_{t \in T_{right}} w_j \cdot f_{jt} &\leq a_{lat}^{LW} \cdot (W_{total} + OEW + TOF - TripF) \cdot b_{lat}^{LW} \\
+\sum_{j \in J} \sum_{t \in T_{right}} w_j \cdot f_{jt} - \sum_{j \in J} \sum_{t \in T_{left}} w_j \cdot f_{jt} &\leq a_{lat}^{LW} \cdot (W_{total} + OEW + TOF - TripF) \cdot b_{lat}^{LW}
+\end{align}
+
+\subsection{Restricciones de Envelope CG}
+
+\subsubsection{O10: Restricciones de Envelope CG TOW}
+\begin{align}
+INDEX\_TOW\_fwd &\leq DOI + fuel\_index + INDEX\_PAX + \sum_{k=1}^{4} \left( \sum_{j \in J} \sum_{t \in T_{Ck}} w_j \cdot f_{jt} \cdot \Delta_{Ck} \right) \tag{O10a} \\
+DOI + fuel\_index + INDEX\_PAX + \sum_{k=1}^{4} \left( \sum_{j \in J} \sum_{t \in T_{Ck}} w_j \cdot f_{jt} \cdot \Delta_{Ck} \right) &\leq INDEX\_TOW\_aft \tag{O10b}
+\end{align}
+
+\subsubsection{O11: Restricciones de Envelope CG ZFW}
+\begin{align}
+INDEX\_ZFW\_fwd &\leq DOI + INDEX\_PAX + \sum_{k=1}^{4} \left( \sum_{j \in J} \sum_{t \in T_{Ck}} w_j \cdot f_{jt} \cdot \Delta_{Ck} \right) \tag{O11a} \\
+DOI + INDEX\_PAX + \sum_{k=1}^{4} \left( \sum_{j \in J} \sum_{t \in T_{Ck}} w_j \cdot f_{jt} \cdot \Delta_{Ck} \right) &\leq INDEX\_ZFW\_aft \tag{O11b}
+\end{align}
+
+\subsection{Restricciones de Manejo Especial COL/CRT}
+
+\subsubsection{O12: Restricciones para Aeronaves 772 y 77W}
+\begin{align}
+\sum_{j \in J_{COL}} f_{jt} + \sum_{j \in J_{CRT}} f_{jt} &\leq 1 \quad \forall t \in T_{C1} \cup T_{C2} \\
+\sum_{j \in J_{COL}} f_{jt} + \sum_{j \in J_{CRT}} f_{jt} &\leq 1 \quad \forall t \in T_{C3} \cup T_{C4}
+\end{align}
+
+\subsubsection{O12c: Restricciones para Aeronaves 789 y 781}
+\begin{equation}
+\sum_{j \in J_{COL}} f_{jt} + \sum_{j \in J_{CRT}} f_{jt} = 0 \quad \forall t \in T_{C3} \cup T_{C4} \tag{O12c}
+\end{equation}
+
+\section{Configuración del Solver}
+
+\subsection{Parámetros de Optimización}
+\begin{itemize}
+    \item \textbf{Time Limit W\&B}: 60 segundos
+    \item \textbf{Time Limit BAX}: 15 segundos
+    \item \textbf{Model Sense}: Minimización
+    \item \textbf{Solver}: Gurobi con multi-objetivo
+\end{itemize}
+
+\subsection{Entornos Multi-Objetivo}
+\begin{itemize}
+    \item \textbf{WB\_env}: Entorno para optimización W\&B
+    \item \textbf{bax\_env}: Entorno para optimización BAX
+\end{itemize}
+
+\section{Resultados del Modelo}
+
+\subsection{Estadísticas de Rendimiento}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Métrica & Valor & Descripción \\
+\midrule
+Total Vuelos Ejecutados & 286 & Vuelos procesados \\
+Vuelos Válidos & 242 & Soluciones encontradas \\
+Vuelos Infactibles & 44 & Sin solución \\
+Tasa de Éxito & 84.6\% & Porcentaje de éxito \\
+\bottomrule
+\end{tabular}
+\caption{Rendimiento del Modelo Optimized Actual}
+\end{table}
+
+\subsection{Análisis de Rendimiento}
+El modelo Optimized Actual presenta una tasa de éxito del 84.6\%, lo que indica:
+\begin{itemize}
+    \item Enfoque simplificado efectivo
+    \item Menor complejidad computacional
+    \item Mejor manejo de casos reales
+    \item Optimización directa exitosa
+\end{itemize}
+
+\section{Ventajas y Desventajas}
+
+\subsection{Ventajas}
+\begin{itemize}
+    \item Alta tasa de éxito (84.6\%)
+    \item Simplicidad computacional
+    \item Enfoque directo y eficiente
+    \item Uso de asignaciones reales
+    \item Menor tiempo de ejecución
+    \item Mejor escalabilidad
+    \item Optimización multi-objetivo
+\end{itemize}
+
+\subsection{Desventajas}
+\begin{itemize}
+    \item No optimiza empaquetado de items
+    \item Dependencia de asignaciones preexistentes
+    \item Limitaciones en optimización espacial
+    \item No maneja feedback loop
+    \item Restricciones de flexibilidad
+\end{itemize}
+
+\section{Análisis Comparativo}
+
+\subsection{Comparación con Otros Modelos}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Modelo & Tasa de Éxito & Infactibilidad & Ranking \\
+\midrule
+Venezian & 89.8\% & 10.2\% & 1 \\
+\textbf{Optimized Actual} & \textbf{84.6\%} & \textbf{15.4\%} & \textbf{2} \\
+Baseline & 77.0\% & 23.0\% & 3 \\
+Puttaert & 72.1\% & 27.9\% & 4 \\
+BAX Fixed & 66.8\% & 33.2\% & 5 \\
+\bottomrule
+\end{tabular}
+\caption{Comparación de Rendimiento entre Modelos}
+\end{table}
+
+\subsection{Análisis de Eficiencia}
+\begin{itemize}
+    \item \textbf{Segundo mejor modelo} en términos de éxito
+    \item \textbf{Menor complejidad} computacional
+    \item \textbf{Mayor escalabilidad} para grandes volúmenes
+    \item \textbf{Enfoque práctico} para operaciones reales
+\end{itemize}
+
+\section{Aplicaciones Prácticas}
+
+\subsection{Casos de Uso Ideales}
+\begin{itemize}
+    \item Optimización de vuelos con asignaciones predefinidas
+    \item Análisis de balance de peso en tiempo real
+    \item Validación de configuraciones de carga
+    \item Optimización de rutas establecidas
+\end{itemize}
+
+\subsection{Limitaciones Operacionales}
+\begin{itemize}
+    \item No maneja empaquetado de items nuevos
+    \item Dependiente de asignaciones existentes
+    \item Limitado para casos de carga dinámica
+    \item No optimiza utilización de espacio
+\end{itemize}
+
+\section{Conclusiones}
+
+El modelo Optimized Actual representa un enfoque pragmático y eficiente para la optimización de balance de peso en operaciones aéreas reales. Su alta tasa de éxito (84.6\%) y simplicidad computacional lo convierten en una herramienta valiosa para aplicaciones prácticas.
+
+El modelo demuestra que la simplificación estratégica puede ser más efectiva que enfoques más complejos, especialmente cuando se trabaja con asignaciones reales y restricciones operacionales específicas.
+
+Para maximizar su efectividad, el modelo Optimized Actual es ideal para:
+\begin{itemize}
+    \item Operaciones de vuelo establecidas
+    \item Optimización de balance de peso
+    \item Validación de configuraciones
+    \item Análisis de eficiencia operacional
+\end{itemize}
+
+Sin embargo, para casos que requieren optimización completa del empaquetado de items, se recomienda el uso de modelos más complejos como el modelo Venezian o Baseline.
+
+\end{document}

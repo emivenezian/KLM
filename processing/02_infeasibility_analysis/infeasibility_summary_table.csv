@@ -1,0 +1,6 @@
+Modelo,Total_Ejecutados,Validos,Infactibles,Porcentaje_Exito,Porcentaje_Infactible
+Venezian,205,184,21,89.8,10.2
+KLM_Optimized,286,242,44,84.6,15.4
+Baseline,248,191,57,77.0,23.0
+Puttaert,280,202,78,72.1,27.9
+BAX_Fixed,241,161,80,66.8,33.2

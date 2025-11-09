@@ -1,0 +1,31 @@
+# FastAPI and web server
+fastapi>=0.104.0
+uvicorn>=0.24.0
+python-multipart>=0.0.6
+pydantic>=2.0.0
+
+# Core scientific and optimization libraries (from main requirements.txt)
+pandas>=1.3.0
+numpy>=1.20.0
+gurobipy>=9.5.0
+matplotlib>=3.4.0
+tqdm>=4.62.0
+
+# Data visualization
+seaborn>=0.11.0
+plotly>=5.0.0
+openpyxl>=3.0.0
+
+# Google Sheets integration
+gspread>=5.12.0
+google-auth>=2.23.0
+google-auth-oauthlib>=1.1.0
+google-auth-httplib2>=0.1.1
+
+# CORS for frontend (built into FastAPI)
+
+# Utilities
+python-dotenv>=1.0.0
+nbformat>=5.9.0
+nbconvert>=7.0.0
+

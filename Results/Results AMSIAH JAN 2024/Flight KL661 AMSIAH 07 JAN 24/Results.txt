@@ -1,0 +1,33 @@
+ULD PMC-23 with weight 299.5 kg with a volume loadfactor of 3.863% and a weight loadfactor of 5.870% is loaded to position 11P
+ULD BAX-0 with weight 514.0 kg is loaded to position 13L
+ULD BAX-18 with weight 735.0 kg is loaded to position 13R
+ULD BAX-28 with weight 394.0 kg is loaded to position 14L
+ULD PMC-21 with weight 1624.3 kg with a volume loadfactor of 60.584% and a weight loadfactor of 31.837% is loaded to position 21P
+ULD T-30 with weight 1345 kg is loaded to position 22P
+ULD T-29 with weight 2010 kg is loaded to position 23P
+ULD PMC-25 with weight 1645.3 kg with a volume loadfactor of 58.542% and a weight loadfactor of 32.249% is loaded to position 31P
+ULD PMC-24 with weight 2068.8 kg with a volume loadfactor of 74.063% and a weight loadfactor of 40.549% is loaded to position 32P
+ULD PMC-22 with weight 2835.2 kg with a volume loadfactor of 64.079% and a weight loadfactor of 55.570% is loaded to position 33P
+ULD BAX-8 with weight 821.0 kg is loaded to position 41L
+ULD BAX-3 with weight 782.0 kg is loaded to position 41R
+ULD BAX-7 with weight 787.0 kg is loaded to position 42L
+ULD BAX-9 with weight 745.0 kg is loaded to position 42R
+ULD BAX-16 with weight 839.0 kg is loaded to position 43L
+ULD BAX-5 with weight 733.0 kg is loaded to position 43R
+---------------------------------------------------------------------------
+Weight in Compartment 1: 1942.5 kg
+Weight in Compartment 2: 4979.3 kg
+Weight in Compartment 3: 6549.3 kg
+Weight in Compartment 4: 4707.0 kg
+===========================================================================
+%MAC ZFW is 32.00343779596868
+%Number of ULDs used is 16.0
+%Total Volume Packed is 32641292.0
+%Booking Separation Penalty is 51.0
+%BAX Proximity Score is 9.0
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 25.7
+Resulting in a fuel deviation of -0.545% or -300.713 kg
+---------------------------------------------------------------------------
+5 ULDs are built by the model
+6 ULDs were actually built

@@ -1,0 +1,37 @@
+ULD PAG-33 with weight 561.9 kg with a volume loadfactor of 20.649% and a weight loadfactor of 12.017% is loaded to position 11P
+ULD PMC-34 with weight 212.8 kg with a volume loadfactor of 3.175% and a weight loadfactor of 4.171% is loaded to position 12P
+ULD PAG-44 with weight 69.8 kg with a volume loadfactor of 16.734% and a weight loadfactor of 1.492% is loaded to position 13P
+ULD T-50 with weight 1916.0 kg is loaded to position 21P
+ULD PMC-37 with weight 1673.6 kg with a volume loadfactor of 67.334% and a weight loadfactor of 32.803% is loaded to position 22P
+ULD PMC-49 with weight 1401.2 kg with a volume loadfactor of 78.406% and a weight loadfactor of 27.464% is loaded to position 23P
+ULD PAG-45 with weight 1886.7 kg with a volume loadfactor of 68.262% and a weight loadfactor of 40.349% is loaded to position 24P
+ULD T-52 with weight 2216.0 kg is loaded to position 25P
+ULD AKE-29 with weight 778.0 kg with a volume loadfactor of 74.220% and a weight loadfactor of 49.022% is loaded to position 31L
+ULD AKE-27 with weight 139.9 kg with a volume loadfactor of 72.857% and a weight loadfactor of 8.817% is loaded to position 31R
+ULD BAX-13 with weight 819.0 kg is loaded to position 32L
+ULD AKE-26 with weight 611.3 kg with a volume loadfactor of 79.853% and a weight loadfactor of 38.519% is loaded to position 32R
+ULD BAX-9 with weight 769.0 kg is loaded to position 33L
+ULD BAX-12 with weight 765.0 kg is loaded to position 33R
+ULD BAX-7 with weight 488.0 kg is loaded to position 34L
+ULD BAX-0 with weight 195.0 kg is loaded to position 34R
+ULD BAX-11 with weight 205.0 kg is loaded to position 35L
+ULD BAX-6 with weight 737.0 kg is loaded to position 35R
+ULD BAX-3 with weight 637.0 kg is loaded to position 36L
+ULD BAX-2 with weight 719.0 kg is loaded to position 36R
+ULD AKE-28 with weight 767.0 kg with a volume loadfactor of 74.318% and a weight loadfactor of 48.329% is loaded to position 41L
+ULD AKE-31 with weight 499.9 kg with a volume loadfactor of 79.970% and a weight loadfactor of 31.501% is loaded to position 41R
+ULD T-53 with weight 4312.0 kg is loaded to position 41P
+ULD T-51 with weight 3739.0 kg is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 844.5 kg
+Weight in Compartment 2: 9093.5 kg
+Weight in Compartment 3: 6863.2 kg
+Weight in Compartment 4: 9317.9 kg
+===========================================================================
+%MAC ZFW is 29.82802977920683
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 24.9
+Resulting in a fuel deviation of -0.401% or -424.201 kg
+---------------------------------------------------------------------------
+11 ULDs are built by the model
+11 ULDs were actually built

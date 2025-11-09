@@ -1,0 +1,37 @@
+ULD PAG-45 with weight 1445.0 kg is loaded to position 11P
+ULD T-61 with weight 1050.0 kg is loaded to position 12P
+ULD PMC-60 with weight 885.0 kg is loaded to position 13P
+ULD PMC-51 with weight 1670.0 kg is loaded to position 21P
+ULD PMC-47 with weight 1985.0 kg is loaded to position 22P
+ULD PMC-48 with weight 1585.0 kg is loaded to position 23P
+ULD PMC-59 with weight 2700.0 kg is loaded to position 24P
+ULD PMC-49 with weight 2540.0 kg is loaded to position 25P
+ULD BAX-12 with weight 786.0 kg is loaded to position 31L
+ULD AKE-25 with weight 680.0 kg is loaded to position 31R
+ULD BAX-9 with weight 824.0 kg is loaded to position 32L
+ULD BAX-8 with weight 725.0 kg is loaded to position 32R
+ULD BAX-7 with weight 792.0 kg is loaded to position 33L
+ULD BAX-3 with weight 714.0 kg is loaded to position 33R
+ULD BAX-11 with weight 748.0 kg is loaded to position 34L
+ULD BAX-5 with weight 726.0 kg is loaded to position 34R
+ULD AKE-43 with weight 375.0 kg is loaded to position 35L
+ULD AKE-36 with weight 550.0 kg is loaded to position 35R
+ULD BAX-0 with weight 660.0 kg is loaded to position 36L
+ULD BAX-23 with weight 249.0 kg is loaded to position 36R
+ULD AKE-42 with weight 850.0 kg is loaded to position 41L
+ULD AKE-44 with weight 1020.0 kg is loaded to position 41R
+ULD PMC-58 with weight 3090.0 kg is loaded to position 41P
+ULD PMC-50 with weight 3545.0 kg is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 3380.0 kg
+Weight in Compartment 2: 10480.0 kg
+Weight in Compartment 3: 5995.0 kg
+Weight in Compartment 4: 8505.0 kg
+===========================================================================
+%MAC ZFW is 24.297778395518552
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 26.4
+Resulting in a fuel deviation of 0.210% or 226.691 kg
+---------------------------------------------------------------------------
+14 ULDs are built by the model
+14 ULDs were actually built

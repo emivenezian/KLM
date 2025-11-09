@@ -1,0 +1,16 @@
+route,total_flights,complete_flights,incomplete_flights,completeness_rate,most_common_missing_file
+AMSDEL,91,91,0,100.0,None
+AMSSIN,90,90,0,100.0,None
+AMSLAX,89,89,0,100.0,None
+AMSIAH,67,67,0,100.0,None
+AMSICN,64,64,0,100.0,None
+AMSSFO,63,63,0,100.0,None
+AMSBLR,61,61,0,100.0,None
+AMSPHX,0,0,0,0.0,None
+AMSPPT,0,0,0,0.0,None
+AMSELP,0,0,0,0.0,None
+SINDPS,0,0,0,0.0,None
+AMSDPS,0,0,0,0.0,None
+AMSLRD,0,0,0,0.0,None
+AMSTUL,0,0,0,0.0,None
+AMSMSY,0,0,0,0.0,None

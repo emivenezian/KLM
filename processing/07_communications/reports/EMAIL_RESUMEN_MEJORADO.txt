@@ -1,0 +1,191 @@
+Asunto: Avances Tesis - Análisis Benchmark Models + 11 Bugs Detectados 🔍
+
+Hola Felipe 👋👋
+
+How's USA going? Espero que todo esté yendo increíble por allá.
+
+Te mando actualizaciones de esta semana (que fue intensa!):
+
+═══════════════════════════════════════════════════════════════════════════════
+📋 CONTEXTO
+═══════════════════════════════════════════════════════════════════════════════
+
+Como me pediste en nuestra última reunión, esta semana me metí a fondo con los 
+modelos benchmark: entender qué hace cada uno, revisar su implementación, y 
+encontrar posibles discrepancias como las que tenía Puttaert, para corregirlas 
+y poder comparar nuestro modelo con los demás bajo las mismas condiciones.
+
+Spoiler: encontré más de lo que esperaba 😅
+
+═══════════════════════════════════════════════════════════════════════════════
+🔬 LO QUE HICE (paso a paso)
+═══════════════════════════════════════════════════════════════════════════════
+
+1️⃣ DOCUMENTACIÓN LaTeX (3 modelos faltantes)
+   ✓ Baseline (tb llamado Sequential)
+   ✓ Optimized_Actual (tb llamado W&B-focused)
+   ✓ Bax_Fixed
+   
+   Nota: KLM Actual no tiene modelo porque se usan los datos de LoadLocations 
+         para calcular las métricas.
+   
+   Lo hice primero con Cursor y después revisé manualmente que hiciera sentido.
+
+2️⃣ TRAZABILIDAD Código ↔ Matemática
+   ✓ Comenté cada restricción en los códigos de todos los modelos
+   ✓ Agregué números/tags para mapear cada restricción del LaTeX al código
+   ✓ Ahora es súper fácil revisar cualquier cosa (ej: "DV12" en código = 
+     ecuación con \tag{DV12} en LaTeX)
+
+3️⃣ ANÁLISIS Constraint-by-Constraint
+   ✓ Documenté qué hace cada modelo exactamente
+   ✓ Comparé uno por uno con nuestro modelo (referencia correcta)
+   ✓ Busqué discrepancias matemáticas y de implementación
+
+4️⃣ HALLAZGO CLAVE: Bax_Fixed = Puttaert + BF1
+   Para nuestra sorpresa, Bax_Fixed y Puttaert hacen exactamente lo mismo, solo 
+   que Bax_Fixed tiene UNA restricción extra:
+   
+   BF1: Fija las posiciones de los ULD tipo BAX a las posiciones que en realidad 
+        fueron asignadas (datos de LoadLocations)
+   
+   Código: f[j_BAX, t_actual] = 1
+   
+   No sé si Bax_Fixed también es un modelo variante de Puttaert o si ambos están 
+   basados en algo anterior. Los otros (Baseline, Optimized_Actual) son diferentes 
+   pero nada que no hayamos visto en Puttaert o el nuestro.
+
+═══════════════════════════════════════════════════════════════════════════════
+🐛 BUGS DETECTADOS: 11 EN TOTAL
+═══════════════════════════════════════════════════════════════════════════════
+
+Esto te lo explico con más detalle en el documento adjunto, pero en resumen 
+encontré 11 bugs (entiéndase por bug cualquier "error" en la lógica o 
+implementación), varios se repiten en todos los modelos.
+
+Los MÁS CRÍTICOS son 4:
+
+🔥 Bug #1: Restricciones de peso por compartimento (TODOS)
+   • Lo que hace mal: for t in loadlocations_C1: peso_en_t <= max_C1
+   • Por qué está mal: Si C1 tiene 3 posiciones, permite 3 × max_C1
+   • Impacto: Permite sobrecargar compartimentos → región factible incorrecta
+
+🔥 Bug #2: Asignación de ítems incluye BAX/BUP/T (Puttaert, Baseline, BAX_Fixed)
+   • Restricción base permite asignar items a BAX (formulación inconsistente)
+
+🔥 Bug #10: COL/CRT por posición en vez de compartimento (TODOS)
+   • Permite COL en una posición y CRT en otra del mismo compartimento
+   • Viola reglas de temperatura de carga farmacéutica
+
+🔥 Bug #3: Lógica COL/CRT excesivamente compleja (Puttaert, BAX_Fixed)
+   • Crea O(n_COL × n_CRT × n_ULD × n_pos) variables innecesarias
+
+Los otros 7 bugs son de eficiencia/calidad (separación penalty, variable w, 
+Big-M hardcoded, índices multi-objetivo, etc.)
+
+DISTRIBUCIÓN:
+   • Puttaert: 8 bugs (4 críticos, 4 alta prioridad)
+   • Baseline: 4 bugs (3 críticos, 1 alta)
+   • Optimized_Actual: 3 bugs (2 críticos, 1 alta) ← El más limpio
+   • BAX_Fixed: 7 bugs (4 críticos, 3 alta) ← Hereda de Puttaert
+   • DelgadoVenezian: 0 bugs ✅
+
+Si te acuerdas de alguno que no esté en esta lista, obvio me dices.
+
+═══════════════════════════════════════════════════════════════════════════════
+📂 ARCHIVOS QUE TE MANDO
+═══════════════════════════════════════════════════════════════════════════════
+
+1. EMAIL_WORD_VERSION.docx 
+   → Mi versión manual con fotos y texto mezclado (como siempre hago)
+
+2. EMAIL_FINAL_PROFESOR.txt (⭐ RECOMIENDO LEER ESTE)
+   → Versión detallada y súper ordenada con ayuda de Cursor
+   → Incluye ejemplos pedagógicos de cada bug
+   → Explicación detallada del Bug #1 (el más crítico)
+   → Matriz completa de errores
+   → 9 preguntas específicas
+
+Creo que el segundo está MUCHO mejor porque tiene todo estructurado, con 
+ejemplos claros de cada tema y cambio. Mucho más ordenado que la mezcla de 
+texto y fotos de mis Word ajaja. Pero es para que veas que primero hice el 
+trabajo y luego lo redacté mucho mejor de lo que yo podría, en pocos minutos 
+además, gracias a Cursor.
+
+Además en GitHub (carpeta KLM_Modified) están todos los archivos técnicos:
+   • MASTER_BUG_MATRIX.md - Matriz resumen
+   • BUGS_IN_[MODEL].md - Análisis detallado por benchmark
+   • CORRECT_MODEL_REFERENCE.md - Referencia de nuestro modelo
+   • LaTeX files actualizados con tags
+   • Notebooks con comentarios
+
+═══════════════════════════════════════════════════════════════════════════════
+❓ PREGUNTAS PRINCIPALES PARA TI
+═══════════════════════════════════════════════════════════════════════════════
+
+A. SOBRE CORRECCIONES:
+
+1. ¿Corrijo TODOS los bugs (no solo críticos) para máxima comparabilidad?
+   → Mi recomendación: SÍ - para comparación justa "apples to apples"
+
+2. ¿Corrijo directo en los notebooks o creo versiones "_corrected"?
+   → Mi recomendación: Directo (con log detallado de cada cambio)
+
+3. ¿Hay algún bug que prefieras NO corregir para preservar lógica original?
+
+B. SOBRE MODELOS EN COMPARACIÓN:
+
+4. ¿BAX_Fixed y Puttaert juntos, o solo BAX_Fixed ya que son casi idénticos?
+   → Mi recomendación: Solo BAX_Fixed (Puttaert fuera de comparación final)
+
+5. ¿Incluyo Puttaert con bugs documentados como "versión original" vs nuestra 
+   versión corregida? (para mostrar el valor agregado)
+
+C. SOBRE PRÓXIMOS PASOS:
+
+Después de corregir, podemos ir a:
+
+   OPCIÓN A: Heurísticas (mejorar 3D-BPP, feedback loop)
+   OPCIÓN B: Infeasibilities (investigar causas, mejorar manejo)
+   OPCIÓN C: Ejecutar Corregidos (test en 10 vuelos, ver impacto de fixes)
+   
+6. ¿Cuál prefieres primero?
+   → Mi recomendación: OPCIÓN C (correr subset para ver impacto de bugs)
+
+D. SOBRE LA TESIS:
+
+7. ¿Sección sobre bugs detectados/corregidos para transparencia metodológica?
+
+8. ¿Los fixes ameritan reconocimiento en contribuciones?
+
+═══════════════════════════════════════════════════════════════════════════════
+🎯 MI PLAN PROPUESTO
+═══════════════════════════════════════════════════════════════════════════════
+
+Paso 1: Corregir bugs críticos (#1, #2, #3, #10) en los 3 benchmarks
+        → Asegura correctitud matemática (~2-3 horas)
+
+Paso 2: Corregir bugs alta prioridad (#4, #5, #7, #8, #11)
+        → Asegura comparabilidad justa (~1-2 horas)
+
+Paso 3: Test en subset (10 vuelos)
+        → Verificar que correcciones funcionan
+        → Ver impacto de los bugs en resultados
+
+Paso 4: Decisión basada en resultados
+        → Si bugs afectan mucho → documentar bien en tesis
+        → Si no afectan → mencionar brevemente y seguir
+
+Paso 5: Análisis completo 102 vuelos con benchmarks corregidos
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Happy to hear your thoughts! Cualquier duda o si quieres que profundice en algún 
+bug específico, me avisas.
+
+Saludos,
+Emilia
+
+P.D.: Todo está en GitHub (carpeta KLM_Modified). Los archivos .md se leen 
+      súper bien directamente desde ahí.
+

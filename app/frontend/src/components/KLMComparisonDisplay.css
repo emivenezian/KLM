@@ -1,0 +1,243 @@
+.klm-comparison-container {
+  margin: 20px 0;
+}
+
+.klm-comparison-container .card {
+  padding: 24px;
+}
+
+.klm-comparison-container .info-text {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.comparison-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin: 28px 0;
+}
+
+.summary-item {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  border: 2px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.summary-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.summary-item label {
+  display: block;
+  font-size: 11px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.summary-item .value {
+  font-size: 28px;
+  font-weight: bold;
+  color: #003F72;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.summary-item .value.positive {
+  color: #28a745;
+}
+
+.summary-item .value.negative {
+  color: #dc3545;
+}
+
+.summary-item .sub-value {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.summary-item .sub-value.positive {
+  color: #28a745;
+}
+
+.summary-item .sub-value.negative {
+  color: #dc3545;
+}
+
+/* Legacy classes for backward compatibility */
+.savings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.savings-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.savings-label {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.savings-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #003F72;
+  margin-bottom: 4px;
+}
+
+.savings-percent {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.savings-subtext {
+  font-size: 11px;
+  color: #999;
+  margin-top: 4px;
+}
+
+.comparison-section {
+  margin: 32px 0;
+}
+
+.comparison-section h3 {
+  margin-bottom: 16px;
+  color: #003F72;
+  font-size: 18px;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.comparison-table th {
+  background-color: #f5f7fa;
+  font-weight: 600;
+  color: #003F72;
+}
+
+.comparison-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.comparison-table td:last-child {
+  font-weight: 500;
+  color: #003F72;
+}
+
+.annual-impact-section {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 2px solid #e0e0e0;
+}
+
+.annual-impact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin: 24px 0;
+}
+
+.impact-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  border: 2px solid #dee2e6;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.impact-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.impact-card.highlight {
+  background: linear-gradient(135deg, #003F72 0%, #005B82 100%);
+  color: white;
+  border-color: #003F72;
+}
+
+.impact-card.highlight .impact-label,
+.impact-card.highlight .impact-subtext {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.impact-label {
+  font-size: 13px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.impact-value {
+  font-size: 32px;
+  font-weight: bold;
+  color: #003F72;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.impact-value.negative {
+  color: #dc3545;
+}
+
+.impact-card.highlight .impact-value {
+  color: white;
+}
+
+.impact-card.highlight .impact-value.negative {
+  color: #ffcccc;
+}
+
+.impact-subtext {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+
+.impact-note {
+  margin-top: 24px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-left: 4px solid #003F72;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+}
+

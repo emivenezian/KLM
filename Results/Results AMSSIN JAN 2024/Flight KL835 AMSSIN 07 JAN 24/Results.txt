@@ -1,0 +1,34 @@
+ULD PMC-29 with weight 546.5 kg with a volume loadfactor of 31.148% and a weight loadfactor of 10.711% is loaded to position 11P
+ULD PMC-88 with weight 31.6 kg with a volume loadfactor of 1.757% and a weight loadfactor of 0.619% is loaded to position 12P
+ULD AKE-26 with weight 138.3 kg with a volume loadfactor of 51.086% and a weight loadfactor of 8.717% is loaded to position 14L
+ULD BAX-19 with weight 190.0 kg is loaded to position 14R
+ULD T-93 with weight 720 kg is loaded to position 21P
+ULD T-92 with weight 675 kg is loaded to position 22P
+ULD T-90 with weight 671 kg is loaded to position 23P
+ULD BAX-3 with weight 728.0 kg is loaded to position 31L
+ULD BAX-89 with weight 605.0 kg is loaded to position 31R
+ULD BAX-1 with weight 632.0 kg is loaded to position 32L
+ULD BAX-0 with weight 725.0 kg is loaded to position 32R
+ULD BAX-21 with weight 318.0 kg is loaded to position 33L
+ULD BAX-7 with weight 722.0 kg is loaded to position 33R
+ULD BAX-5 with weight 796.0 kg is loaded to position 41L
+ULD BAX-23 with weight 805.0 kg is loaded to position 41R
+ULD PMC-27 with weight 2557.7 kg with a volume loadfactor of 74.146% and a weight loadfactor of 50.131% is loaded to position 41P
+ULD T-91 with weight 754 kg is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 906.4 kg
+Weight in Compartment 2: 2066.0 kg
+Weight in Compartment 3: 3730.0 kg
+Weight in Compartment 4: 4912.7 kg
+===========================================================================
+%MAC ZFW is 30.53039160122846
+%Number of ULDs used is 17.0
+%Total Volume Packed is 14811709.0
+%Booking Separation Penalty is 16.0
+%BAX Proximity Score is 25.0
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 30.4
+Resulting in a fuel deviation of -0.007% or -5.596 kg
+---------------------------------------------------------------------------
+4 ULDs are built by the model
+4 ULDs were actually built

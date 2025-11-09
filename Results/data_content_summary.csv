@@ -1,0 +1,2 @@
+total_complete_flights,total_items,total_weight_kg,total_volume_cubic_meters,total_col_items,total_crt_items,total_passengers,total_ulds,average_items_per_flight,average_weight_per_flight_kg,average_volume_per_flight,average_passengers_per_flight,average_ulds_per_flight,aircraft_type_distribution,route_distribution,analysis_date
+525,34765,0,0,0,0,2960,20736,66.22,0.0,0.0,5.64,39.5,"{789: 71, 772: 143, 781: 174, '77W': 137}","{'AMSBLR': 61, 'AMSDEL': 91, 'AMSSIN': 90, 'AMSIAH': 67, 'AMSSFO': 63, 'AMSICN': 64, 'AMSLAX': 89}",2025-09-24 14:03:30

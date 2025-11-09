@@ -1,0 +1,27 @@
+# Core scientific and optimization libraries
+pandas>=1.3.0
+numpy>=1.20.0
+gurobipy>=9.5.0
+matplotlib>=3.4.0
+tqdm>=4.62.0
+
+# Jupyter and notebook support
+jupyter>=1.0.0
+notebook>=6.4.0
+ipykernel>=6.0.0
+
+# Data visualization and analysis
+seaborn>=0.11.0
+plotly>=5.0.0
+openpyxl>=3.0.0
+statsmodels>=0.12.0
+
+# For 3D plotting and advanced matplotlib features
+mpl_toolkits
+
+# For compatibility with scripts using argparse, pathlib, etc. (standard library, no need to specify)
+# argparse
+# pathlib
+# typing
+
+# If you use any additional libraries, add them below 

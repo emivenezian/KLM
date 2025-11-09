@@ -1,0 +1,37 @@
+ULD PMC-35 with weight 96.2 kg with a volume loadfactor of 11.232% and a weight loadfactor of 1.886% is loaded to position 11P
+ULD PMC-37 with weight 396.8 kg with a volume loadfactor of 56.274% and a weight loadfactor of 7.778% is loaded to position 13P
+ULD PMC-33 with weight 451.9 kg with a volume loadfactor of 54.892% and a weight loadfactor of 8.858% is loaded to position 21P
+ULD PMC-24 with weight 761.6 kg with a volume loadfactor of 68.838% and a weight loadfactor of 14.928% is loaded to position 22P
+ULD T-39 with weight 1100 kg is loaded to position 23P
+ULD PMC-34 with weight 903.7 kg with a volume loadfactor of 62.316% and a weight loadfactor of 17.712% is loaded to position 24P
+ULD T-40 with weight 696 kg is loaded to position 25P
+ULD PMC-26 with weight 2516.6 kg with a volume loadfactor of 78.275% and a weight loadfactor of 49.325% is loaded to position 31P
+ULD BAX-10 with weight 634.0 kg is loaded to position 33L
+ULD AKE-23 with weight 581.2 kg with a volume loadfactor of 72.837% and a weight loadfactor of 36.624% is loaded to position 33R
+ULD BAX-0 with weight 701.0 kg is loaded to position 34L
+ULD BAX-13 with weight 728.0 kg is loaded to position 34R
+ULD BAX-11 with weight 766.0 kg is loaded to position 35L
+ULD BAX-4 with weight 691.0 kg is loaded to position 35R
+ULD BAX-9 with weight 733.0 kg is loaded to position 36L
+ULD BAX-7 with weight 667.0 kg is loaded to position 36R
+ULD BAX-8 with weight 782.0 kg is loaded to position 41L
+ULD BAX-38 with weight 770.0 kg is loaded to position 41R
+ULD T-41 with weight 3965 kg is loaded to position 41P
+ULD T-42 with weight 2545 kg is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 493.1 kg
+Weight in Compartment 2: 3913.3 kg
+Weight in Compartment 3: 8017.8 kg
+Weight in Compartment 4: 8062.0 kg
+===========================================================================
+%MAC ZFW is 41.94057878943182
+%Number of ULDs used is 20.0
+%Total Volume Packed is 43517742.0
+%Booking Separation Penalty is 33.0
+%BAX Proximity Score is 22.0
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 30.0
+Resulting in a fuel deviation of -0.700% or -596.897 kg
+---------------------------------------------------------------------------
+7 ULDs are built by the model
+8 ULDs were actually built

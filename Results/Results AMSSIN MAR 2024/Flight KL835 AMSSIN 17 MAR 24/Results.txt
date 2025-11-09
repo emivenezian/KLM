@@ -1,0 +1,37 @@
+ULD PAG-28 with weight 2.1 kg with a volume loadfactor of 0.380% and a weight loadfactor of 0.045% is loaded to position 13P
+ULD PMC-41 with weight 488.0 kg with a volume loadfactor of 5.114% and a weight loadfactor of 9.565% is loaded to position 21P
+ULD AKE-26 with weight 560.5 kg with a volume loadfactor of 43.702% and a weight loadfactor of 35.318% is loaded to position 23L
+ULD BAX-10 with weight 396.0 kg is loaded to position 23R
+ULD T-51 with weight 1110 kg is loaded to position 23P
+ULD PMC-45 with weight 1316.0 kg with a volume loadfactor of 77.083% and a weight loadfactor of 25.794% is loaded to position 24P
+ULD PMC-44 with weight 85.0 kg with a volume loadfactor of 4.147% and a weight loadfactor of 1.666% is loaded to position 25P
+ULD PMC-43 with weight 4427.0 kg with a volume loadfactor of 70.660% and a weight loadfactor of 86.770% is loaded to position 31P
+ULD AKE-24 with weight 705.0 kg with a volume loadfactor of 57.341% and a weight loadfactor of 44.423% is loaded to position 33L
+ULD BAX-48 with weight 768.0 kg is loaded to position 33R
+ULD BAX-8 with weight 706.0 kg is loaded to position 34L
+ULD BAX-2 with weight 655.0 kg is loaded to position 34R
+ULD BAX-6 with weight 741.0 kg is loaded to position 35L
+ULD BAX-0 with weight 631.0 kg is loaded to position 35R
+ULD BAX-21 with weight 761.0 kg is loaded to position 36L
+ULD BAX-5 with weight 821.0 kg is loaded to position 36R
+ULD AKE-23 with weight 1505.0 kg with a volume loadfactor of 77.121% and a weight loadfactor of 94.833% is loaded to position 41L
+ULD BAX-4 with weight 848.0 kg is loaded to position 41R
+ULD BUP-49 with weight 5026.8 kg is loaded to position 41P
+ULD BUP-50 with weight 5026.8 kg is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 2.1 kg
+Weight in Compartment 2: 3955.5 kg
+Weight in Compartment 3: 10215.0 kg
+Weight in Compartment 4: 12406.6 kg
+===========================================================================
+%MAC ZFW is 39.75394289894785
+%Number of ULDs used is 20.0
+%Total Volume Packed is 24657485.0
+%Booking Separation Penalty is 29.0
+%BAX Proximity Score is 24.0
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 24.4
+Resulting in a fuel deviation of -1.154% or -1180.087 kg
+---------------------------------------------------------------------------
+8 ULDs are built by the model
+10 ULDs were actually built

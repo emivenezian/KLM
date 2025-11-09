@@ -1,0 +1,33 @@
+ULD BAX-3 with weight 743.0 kg is loaded to position 12L
+ULD BAX-7 with weight 721.0 kg is loaded to position 12R
+ULD AKE-27 with weight 53.0 kg with a volume loadfactor of 46.929% and a weight loadfactor of 3.340% is loaded to position 13L
+ULD BAX-14 with weight 688.0 kg is loaded to position 14L
+ULD BAX-10 with weight 553.0 kg is loaded to position 14R
+ULD BAX-15 with weight 754.0 kg is loaded to position 21L
+ULD BAX-0 with weight 702.0 kg is loaded to position 21R
+ULD T-32 with weight 1065.0 kg is loaded to position 22P
+ULD PAG-29 with weight 118.0 kg with a volume loadfactor of 11.466% and a weight loadfactor of 2.524% is loaded to position 23P
+ULD PAG-28 with weight 1654.6 kg with a volume loadfactor of 79.624% and a weight loadfactor of 35.386% is loaded to position 31P
+ULD AKE-24 with weight 1197.9 kg with a volume loadfactor of 79.953% and a weight loadfactor of 75.484% is loaded to position 33L
+ULD AKE-26 with weight 869.4 kg with a volume loadfactor of 74.410% and a weight loadfactor of 54.784% is loaded to position 33R
+ULD BAX-16 with weight 694.0 kg is loaded to position 41L
+ULD BAX-8 with weight 831.0 kg is loaded to position 41R
+ULD T-30 with weight 4085.0 kg is loaded to position 41P
+ULD T-31 with weight 4505.0 kg is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 2758.0 kg
+Weight in Compartment 2: 2639.0 kg
+Weight in Compartment 3: 3722.0 kg
+Weight in Compartment 4: 10115.0 kg
+===========================================================================
+%MAC ZFW is 34.37026620959507
+%Number of ULDs used is 16.0
+%Total Volume Packed is 16020422.0
+%Booking Separation Penalty is 26.0
+%BAX Proximity Score is 12.0
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 35.5
+Resulting in a fuel deviation of 0.056% or 42.653 kg
+---------------------------------------------------------------------------
+5 ULDs are built by the model
+5 ULDs were actually built

@@ -1,0 +1,33 @@
+ULD BUP-36 with weight 628.0 kg is loaded to position 11P
+ULD PMC-33 with weight 64.6 kg with a volume loadfactor of 1.624% and a weight loadfactor of 1.267% is loaded to position 12P
+ULD BUP-35 with weight 628.0 kg is loaded to position 13P
+ULD PMC-31 with weight 1036.8 kg with a volume loadfactor of 55.823% and a weight loadfactor of 20.322% is loaded to position 21P
+ULD T-39 with weight 2270 kg is loaded to position 22P
+ULD AKE-22 with weight 269.0 kg with a volume loadfactor of 61.594% and a weight loadfactor of 16.948% is loaded to position 24L
+ULD BAX-3 with weight 594.0 kg is loaded to position 24R
+ULD BAX-13 with weight 343.0 kg is loaded to position 25L
+ULD AKE-21 with weight 300.8 kg with a volume loadfactor of 47.642% and a weight loadfactor of 18.952% is loaded to position 25R
+ULD BAX-8 with weight 736.0 kg is loaded to position 26L
+ULD BAX-10 with weight 754.0 kg is loaded to position 26R
+ULD BUP-34 with weight 628.0 kg is loaded to position 31P
+ULD T-37 with weight 1805 kg is loaded to position 32P
+ULD AKE-23 with weight 616.5 kg with a volume loadfactor of 79.714% and a weight loadfactor of 38.848% is loaded to position 34R
+ULD BAX-0 with weight 722.0 kg is loaded to position 41L
+ULD BAX-9 with weight 736.0 kg is loaded to position 41R
+ULD BAX-7 with weight 497.0 kg is loaded to position 42L
+ULD BAX-12 with weight 810.0 kg is loaded to position 42R
+ULD T-38 with weight 1820 kg is loaded to position 42P
+ULD PAG-26 with weight 2911.3 kg with a volume loadfactor of 79.925% and a weight loadfactor of 62.261% is loaded to position 43P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 1320.6 kg
+Weight in Compartment 2: 4813.5 kg
+Weight in Compartment 3: 3049.5 kg
+Weight in Compartment 4: 7496.3 kg
+===========================================================================
+%MAC ZFW is 32.71729237581505
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 32.3
+Resulting in a fuel deviation of -0.063% or -39.434 kg
+---------------------------------------------------------------------------
+6 ULDs are built by the model
+7 ULDs were actually built

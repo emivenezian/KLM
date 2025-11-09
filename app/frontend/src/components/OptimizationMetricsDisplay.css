@@ -1,0 +1,45 @@
+.optimization-metrics-container {
+  margin-bottom: 2rem;
+}
+
+.optimization-metrics-container .metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.optimization-metrics-container .metric-item {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.optimization-metrics-container .metric-item label {
+  font-size: 0.875rem;
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.optimization-metrics-container .metric-value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.optimization-metrics-container .metric-value.good {
+  color: #28a745;
+}
+
+.optimization-metrics-container .metric-value.warning {
+  color: #ffc107;
+}
+
+.optimization-metrics-container .metric-value.error {
+  color: #dc3545;
+}
+

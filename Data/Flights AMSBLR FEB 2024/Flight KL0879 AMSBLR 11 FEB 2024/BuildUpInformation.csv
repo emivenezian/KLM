@@ -1,0 +1,8 @@
+ULD,TotalNumberOfShipments,AirWaybillNumber,AirWaybillSequenceNumber,AirWaybillStorageSequenceNumber,ProductCode,NumberOfPiecesOnAWB,TotalWeightOnAWB,TotalVolumeOnAWB,OriginStationCode,DestinationStationCode,DepartureFlightPrefix,DepartureFlightNumber,DepartureFlight,DepartureFlightDate,DepartureFlightDT,ScheduledDepartureFlightDT,FlightOrTruck,BuildupEventDateTime,BuildupLocation,BuildupLocationGroup,BuildupLocationBuilding,OutgoingULDKey,NrBuildupPieces,IsNotBuildUp,IsBuildUpInVG3,IsBuildUpInVG1
+AKE95911KL,0,7401217716,1,1.0,S51,1,20.5,"0,11",JFK,BLR,KL,879,KL0879,2024-02-11,11/2/2024 11:13,11/2/2024 10:55,Aircraft,11/2/2024 7:41,PL14,VG2/3,VG2/3,AKE95911KL,1.0,False,True,False
+PMC28725KL,1,7447378391,1,,R21,21,11515.0,30,BSL,BLR,KL,879,KL0879,2024-02-11,11/2/2024 11:13,11/2/2024 10:55,Aircraft,,,,,PMC28725KL,,True,False,False
+PMC32487KL,1,7447378391,1,,R21,21,11515.0,30,BSL,BLR,KL,879,KL0879,2024-02-11,11/2/2024 11:13,11/2/2024 10:55,Aircraft,,,,,PMC32487KL,,True,False,False
+PMC66017AF,1,7447378391,1,,R21,21,11515.0,30,BSL,BLR,KL,879,KL0879,2024-02-11,11/2/2024 11:13,11/2/2024 10:55,Aircraft,,,,,PMC66017AF,,True,False,False
+PMC72936AF,1,7463386680,1,,R21,42,5482.0,20,FRA,BLR,KL,879,KL0879,2024-02-11,11/2/2024 11:13,11/2/2024 10:55,Aircraft,,,,,PMC72936AF,,True,False,False
+PMC31885KL,1,7463386680,1,,R21,42,5482.0,20,FRA,BLR,KL,879,KL0879,2024-02-11,11/2/2024 11:13,11/2/2024 10:55,Aircraft,,,,,PMC31885KL,,True,False,False
+PMC28720KL,1,7463910276,1,,R21,4,2694.0,"6,49",LNZ,BLR,KL,879,KL0879,2024-02-11,11/2/2024 11:13,11/2/2024 10:55,Aircraft,,,,,PMC28720KL,,True,False,False

@@ -1,0 +1,29 @@
+ULD PMC-20 with weight 715.6 kg with a volume loadfactor of 35.246% and a weight loadfactor of 14.026% is loaded to position 11P
+ULD PAG-25 with weight 385.5 kg with a volume loadfactor of 29.872% and a weight loadfactor of 8.244% is loaded to position 12P
+ULD PAG-26 with weight 631.4 kg with a volume loadfactor of 28.847% and a weight loadfactor of 13.503% is loaded to position 13P
+ULD BAX-2 with weight 586.0 kg is loaded to position 21L
+ULD BAX-0 with weight 718.0 kg is loaded to position 21R
+ULD BAX-10 with weight 702.0 kg is loaded to position 22R
+ULD BAX-11 with weight 675.0 kg is loaded to position 23L
+ULD BAX-6 with weight 686.0 kg is loaded to position 23R
+ULD PMC-24 with weight 1549.8 kg with a volume loadfactor of 76.035% and a weight loadfactor of 30.376% is loaded to position 23P
+ULD T-27 with weight 2402 kg is loaded to position 31P
+ULD AKE-18 with weight 1148.4 kg with a volume loadfactor of 77.782% and a weight loadfactor of 72.362% is loaded to position 33L
+ULD BAX-8 with weight 738.0 kg is loaded to position 33R
+ULD BAX-5 with weight 756.0 kg is loaded to position 41L
+ULD BAX-9 with weight 846.0 kg is loaded to position 41R
+ULD PMC-21 with weight 3927.9 kg with a volume loadfactor of 71.441% and a weight loadfactor of 76.987% is loaded to position 41P
+ULD PMC-22 with weight 3831.7 kg with a volume loadfactor of 79.049% and a weight loadfactor of 75.103% is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 1732.5 kg
+Weight in Compartment 2: 4916.8 kg
+Weight in Compartment 3: 4288.4 kg
+Weight in Compartment 4: 9361.6 kg
+===========================================================================
+%MAC ZFW is 33.19928467396812
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 22.0
+Resulting in a fuel deviation of -1.140% or -790.958 kg
+---------------------------------------------------------------------------
+7 ULDs are built by the model
+7 ULDs were actually built

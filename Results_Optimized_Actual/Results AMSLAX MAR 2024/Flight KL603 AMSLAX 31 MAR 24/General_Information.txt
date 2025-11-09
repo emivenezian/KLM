@@ -1,0 +1,56 @@
+The model will run the following flight:
+--------------------------------------------------------------------------------------------------------
+Flight Number: KL603 PHBVK - Aircraft Type: 77W - Departure: AMS - Arrival: LAX - Date: 31 MAR 24
+
+ZFW: 224086.1 kg - TOW: 316355.1 kg - LW: 231084.1 kg - OEW: 172520.0 kg
+
+Fuel: 92269 kg - Trip Fuel: 85271 kg
+
+Number of Cargo ULDs used: 8
+
+Number of BAX ULDs: 9 - Number of BUP ULDs: 0 - Number of T ULDs: 4
+--------------------------------------------------------------------------------------------------------
+ULD set available for loading:
+AKE-23, AKE
+PMC-24, PMC
+PMC-26, PMC
+PMC-33, PMC
+PMC-34, PMC
+PMC-35, PMC
+PMC-36, PMC
+PMC-37, PMC
+--------------------------------------------------------------------------------------------------------
+BAX and BUP set for loading:
+BAX-0, AKE
+BAX-4, AKE
+BAX-7, AKE
+BAX-8, AKE
+BAX-9, AKE
+BAX-10, AKE
+BAX-11, AKE
+BAX-13, AKE
+BAX-38, AKE
+T-39, PMC
+T-40, PMC
+T-41, PMC
+T-42, PMC
+--------------------------------------------------------------------------------------------------------
+PAX allocation:
+PAX-A: 34
+PAX-B: 23
+PAX-C: 51
+PAX-D: 78
+PAX-E: 59
+PAX-F: 62
+PAX-G: 63
+Total PAX: 370
+--------------------------------------------------------------------------------------------------------
+Check if all items fit the ULDs dimensions:
+--------------------------------------------------------------------------------------------------------
+The following items do not fit the dimensions of the ULDs:
+Serialnumber: 64087715-2
+Dimensions: (350, 11, 11)
+--------------------------------------------------------------------------------------------------------
+
+111 / 112 items fit the dimensions of the ULDs
+--------------------------------------------------------------------------------------------------------

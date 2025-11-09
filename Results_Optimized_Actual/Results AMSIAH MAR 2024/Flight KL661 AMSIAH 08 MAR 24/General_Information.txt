@@ -1,0 +1,51 @@
+The model will run the following flight:
+--------------------------------------------------------------------------------------------------------
+Flight Number: KL661 PHBVU - Aircraft Type: 77W - Departure: AMS - Arrival: IAH - Date: 08 MAR 24
+
+ZFW: 206259.5 kg - TOW: 293140.5 kg - LW: 214415.5 kg - OEW: 169920.0 kg
+
+Fuel: 86881 kg - Trip Fuel: 78725 kg
+
+Number of Cargo ULDs used: 8
+
+Number of BAX ULDs: 7 - Number of BUP ULDs: 0 - Number of T ULDs: 1
+--------------------------------------------------------------------------------------------------------
+ULD set available for loading:
+PAG-12, PAG
+PMC-13, PMC
+PMC-14, PMC
+PMC-15, PMC
+PAG-16, PAG
+PAG-18, PAG
+PMC-19, PMC
+PMC-20, PMC
+--------------------------------------------------------------------------------------------------------
+BAX and BUP set for loading:
+BAX-0, AKE
+BAX-1, AKE
+BAX-2, AKE
+BAX-3, AKE
+BAX-5, AKE
+BAX-6, AKE
+BAX-30, AKE
+T-31, PMC
+--------------------------------------------------------------------------------------------------------
+PAX allocation:
+PAX-A: 33
+PAX-B: 31
+PAX-C: 38
+PAX-D: 49
+PAX-E: 44
+PAX-F: 25
+PAX-G: 8
+Total PAX: 228
+--------------------------------------------------------------------------------------------------------
+Check if all items fit the ULDs dimensions:
+--------------------------------------------------------------------------------------------------------
+The following items do not fit the dimensions of the ULDs:
+Serialnumber: 1337954
+Dimensions: (330, 190, 23)
+--------------------------------------------------------------------------------------------------------
+
+176 / 177 items fit the dimensions of the ULDs
+--------------------------------------------------------------------------------------------------------

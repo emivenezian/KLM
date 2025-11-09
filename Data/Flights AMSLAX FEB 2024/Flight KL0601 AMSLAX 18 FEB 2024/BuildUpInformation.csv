@@ -1,0 +1,4 @@
+ULD,TotalNumberOfShipments,AirWaybillNumber,AirWaybillSequenceNumber,AirWaybillStorageSequenceNumber,ProductCode,NumberOfPiecesOnAWB,TotalWeightOnAWB,TotalVolumeOnAWB,OriginStationCode,DestinationStationCode,DepartureFlightPrefix,DepartureFlightNumber,DepartureFlight,DepartureFlightDate,DepartureFlightDT,ScheduledDepartureFlightDT,FlightOrTruck,BuildupEventDateTime,BuildupLocation,BuildupLocationGroup,BuildupLocationBuilding,OutgoingULDKey,NrBuildupPieces,IsNotBuildUp,IsBuildUpInVG3,IsBuildUpInVG1
+PMC62064AF,0,7401229782,1,,S23,161,3611.0,10,AMS,LAX,KL,601,KL0601,2024-02-18,18-2-2024 10:08:00,18-2-2024 09:50:00,Aircraft,,,,,PMC62064AF,,True,False,False
+PMC00790DL,1,7464004404,1,,S23,12,4800.0,20,QFA,LAX,KL,601,KL0601,2024-02-18,18-2-2024 10:08:00,18-2-2024 09:50:00,Aircraft,,,,,PMC00790DL,,True,False,False
+PMC02914DL,1,7464004404,1,,S23,12,4800.0,20,QFA,LAX,KL,601,KL0601,2024-02-18,18-2-2024 10:08:00,18-2-2024 09:50:00,Aircraft,,,,,PMC02914DL,,True,False,False

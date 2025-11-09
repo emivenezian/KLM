@@ -1,0 +1,55 @@
+The model will run the following flight:
+--------------------------------------------------------------------------------------------------------
+Flight Number: KL835 PHBVB - Aircraft Type: 77W - Departure: AMS - Arrival: SIN - Date: 18 FEB 24
+
+ZFW: 216675.5 kg - TOW: 327030.5 kg - LW: 226388.5 kg - OEW: 173036.0 kg
+
+Fuel: 110355 kg - Trip Fuel: 100642 kg
+
+Number of Cargo ULDs used: 9
+
+Number of BAX ULDs: 10 - Number of BUP ULDs: 1 - Number of T ULDs: 5
+--------------------------------------------------------------------------------------------------------
+ULD set available for loading:
+AKE-25, AKE
+AKE-28, AKE
+PMC-33, PMC
+PMC-34, PMC
+PMC-35, PMC
+PAG-36, PAG
+PMC-39, PMC
+PMC-41, PMC
+PMC-42, PMC
+--------------------------------------------------------------------------------------------------------
+BAX and BUP set for loading:
+BAX-0, AKE
+BAX-1, AKE
+BAX-2, AKE
+BAX-4, AKE
+BAX-6, AKE
+BAX-7, AKE
+BAX-9, AKE
+BAX-11, AKE
+BAX-12, AKE
+BAX-44, AKE
+BUP-45, PMC
+T-46, PMC
+T-47, PMC
+T-48, PMC
+T-49, AKE
+T-50, AKE
+--------------------------------------------------------------------------------------------------------
+PAX allocation:
+PAX-A: 33
+PAX-B: 18
+PAX-C: 35
+PAX-D: 63
+PAX-E: 36
+PAX-F: 31
+PAX-G: 26
+Total PAX: 242
+--------------------------------------------------------------------------------------------------------
+Check if all items fit the ULDs dimensions:
+
+151 / 151 items fit the dimensions of the ULDs
+--------------------------------------------------------------------------------------------------------

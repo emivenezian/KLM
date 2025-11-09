@@ -1,0 +1,47 @@
+The model will run the following flight:
+--------------------------------------------------------------------------------------------------------
+Flight Number: KL661 PHBQI - Aircraft Type: 772 - Departure: AMS - Arrival: IAH - Date: 21 MAR 24
+
+ZFW: 190633.6 kg - TOW: 271707.6 kg - LW: 200006.6 kg - OEW: 148177.0 kg
+
+Fuel: 81074 kg - Trip Fuel: 71701 kg
+
+Number of Cargo ULDs used: 5
+
+Number of BAX ULDs: 9 - Number of BUP ULDs: 0 - Number of T ULDs: 3
+--------------------------------------------------------------------------------------------------------
+ULD set available for loading:
+AKE-20, AKE
+PMC-21, PMC
+PAG-22, PAG
+PAG-23, PAG
+PMC-25, PMC
+--------------------------------------------------------------------------------------------------------
+BAX and BUP set for loading:
+BAX-0, AKE
+BAX-3, AKE
+BAX-4, AKE
+BAX-5, AKE
+BAX-6, AKE
+BAX-7, AKE
+BAX-8, AKE
+BAX-10, AKE
+BAX-11, AKE
+T-26, AKE
+T-27, PMC
+T-28, PMC
+--------------------------------------------------------------------------------------------------------
+PAX allocation:
+PAX-A: 33
+PAX-B: 32
+PAX-C: 107
+PAX-D: 54
+PAX-E: 72
+PAX-F: 0
+PAX-G: 0
+Total PAX: 298
+--------------------------------------------------------------------------------------------------------
+Check if all items fit the ULDs dimensions:
+
+114 / 114 items fit the dimensions of the ULDs
+--------------------------------------------------------------------------------------------------------

@@ -1,0 +1,14 @@
+INFO:     Will watch for changes in these directories: ['/Users/emivenezian/Desktop/universidad/ingeniera/años/cuarto/Segundo Semestre/AviationOptimization/KLM_Projects/KLM_Modified/app/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [1743] using StatReload
+INFO:     Started server process [1814]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:49307 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49329 - "GET /api/v1/optimization/flights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49329 - "GET /api/v1/optimization/flights HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49332 - "OPTIONS /api/v1/optimization/run HTTP/1.1" 200 OK
+DEBUG: Pre-computed results check for flight 'Flights AMSICN FEB 2024/Flight KL0855 AMSICN 28 FEB 2024' (model: delgado_venezian): True
+DEBUG: Extracting from pre-computed results, ULDs: 16
+DEBUG: Successfully extracted 16 ULDs from pre-computed results
+INFO:     127.0.0.1:49332 - "POST /api/v1/optimization/run HTTP/1.1" 200 OK

@@ -1,0 +1,33 @@
+ULD T-24 with weight 490 kg is loaded to position 11P
+ULD T-26 with weight 685 kg is loaded to position 12P
+ULD PMC-21 with weight 360.0 kg with a volume loadfactor of 4.879% and a weight loadfactor of 7.056% is loaded to position 13P
+ULD T-27 with weight 675 kg is loaded to position 21P
+ULD PAG-20 with weight 1234.4 kg with a volume loadfactor of 62.916% and a weight loadfactor of 26.399% is loaded to position 22P
+ULD PAG-18 with weight 2016.8 kg with a volume loadfactor of 74.612% and a weight loadfactor of 43.130% is loaded to position 23P
+ULD PMC-19 with weight 2905.0 kg with a volume loadfactor of 70.486% and a weight loadfactor of 56.938% is loaded to position 31P
+ULD BAX-7 with weight 337.0 kg is loaded to position 33L
+ULD AKE-17 with weight 990.7 kg with a volume loadfactor of 56.706% and a weight loadfactor of 62.428% is loaded to position 33R
+ULD BAX-5 with weight 794.0 kg is loaded to position 34L
+ULD BAX-23 with weight 720.0 kg is loaded to position 34R
+ULD BAX-10 with weight 700.0 kg is loaded to position 41L
+ULD BAX-2 with weight 681.0 kg is loaded to position 41R
+ULD BAX-8 with weight 816.0 kg is loaded to position 42L
+ULD BAX-0 with weight 682.0 kg is loaded to position 42R
+ULD T-25 with weight 3575 kg is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 1535.0 kg
+Weight in Compartment 2: 3926.2 kg
+Weight in Compartment 3: 5746.7 kg
+Weight in Compartment 4: 6454.0 kg
+===========================================================================
+%MAC ZFW is 31.604795110646236
+%Number of ULDs used is 16.0
+%Total Volume Packed is 26686482.0
+%Booking Separation Penalty is 50.0
+%BAX Proximity Score is 11.0
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 29.3
+Resulting in a fuel deviation of -0.173% or -92.293 kg
+---------------------------------------------------------------------------
+5 ULDs are built by the model
+6 ULDs were actually built

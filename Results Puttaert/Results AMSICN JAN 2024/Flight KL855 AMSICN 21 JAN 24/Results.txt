@@ -1,0 +1,31 @@
+ULD PAG-21 with weight 319.1 kg with a volume loadfactor of 17.095% and a weight loadfactor of 6.824% is loaded to position 11P
+ULD AKE-19 with weight 264.8 kg with a volume loadfactor of 22.286% and a weight loadfactor of 16.686% is loaded to position 12R
+ULD AKE-18 with weight 114.0 kg with a volume loadfactor of 26.796% and a weight loadfactor of 7.183% is loaded to position 14L
+ULD T-23 with weight 810 kg is loaded to position 21P
+ULD T-24 with weight 830 kg is loaded to position 22P
+ULD T-25 with weight 840 kg is loaded to position 23P
+ULD BAX-8 with weight 705.0 kg is loaded to position 31L
+ULD BAX-7 with weight 731.0 kg is loaded to position 31R
+ULD BAX-0 with weight 729.0 kg is loaded to position 32L
+ULD BAX-6 with weight 713.0 kg is loaded to position 32R
+ULD BAX-15 with weight 516.0 kg is loaded to position 33L
+ULD BAX-9 with weight 640.0 kg is loaded to position 33R
+ULD BAX-2 with weight 779.0 kg is loaded to position 41L
+ULD BAX-4 with weight 798.0 kg is loaded to position 41R
+ULD T-26 with weight 1510 kg is loaded to position 41P
+ULD PAG-20 with weight 2269.3 kg with a volume loadfactor of 66.308% and a weight loadfactor of 48.531% is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 697.9 kg
+Weight in Compartment 2: 2480.0 kg
+Weight in Compartment 3: 4034.0 kg
+Weight in Compartment 4: 5356.3 kg
+===========================================================================
+%MAC ZFW is 32.71987588046582
+%Number of ULDs used is 16.0
+%Booking Separation Penalty is 13.0
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 27.3
+Resulting in a fuel deviation of -0.414% or -324.337 kg
+---------------------------------------------------------------------------
+4 ULDs are built by the model
+5 ULDs were actually built

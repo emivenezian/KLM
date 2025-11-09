@@ -1,0 +1,36 @@
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-item label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-item .value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.summary-item.highlight {
+  background-color: #e8f4f8;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+.summary-item.highlight .value {
+  color: #0066cc;
+}
+

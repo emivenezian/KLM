@@ -1,0 +1,395 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{float}
+
+\geometry{margin=2.5cm}
+
+\title{Modelo Baseline - Optimización de Carga Aérea KLM}
+\author{María Emilia Venezian Juricic}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\textbf{Resumen Ejecutivo del Modelo}
+
+El modelo Baseline (también llamado \textit{Sequential}) implementa una estrategia de optimización en tres etapas para la asignación óptima de carga en vuelos intercontinentales de KLM. Este modelo sirve como benchmark de comparación para modelos más avanzados.
+
+\vspace{0.3cm}
+\noindent\textbf{Enfoque:} Optimización secuencial en cascada
+\begin{itemize}
+    \item \textbf{Etapa 1:} 1D Bin Packing Problem (1D-BPP) - Asignación de items a ULDs
+    \item \textbf{Etapa 2:} 3D Bin Packing Problem (3D-BPP) - Validación espacial de empaquetado
+    \item \textbf{Etapa 3:} Weight \& Balance (W\&B) - Asignación de ULDs a posiciones
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textbf{Características Clave:}
+\begin{itemize}
+    \item Sistema de feedback loop iterativo entre etapas
+    \item 4 objetivos en Etapa 1: preferencia de volumen, minimizar ULDs, subutilización, separación
+    \item 2 objetivos en Etapa 3: maximizar \%MAC, proximidad BAX
+    \item Manejo explícito de items diferidos (deferred items)
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textbf{Rendimiento:}
+\begin{itemize}
+    \item Tasa de éxito: 77.0\%
+    \item Tasa de infactibilidad: 23.0\%
+    \item Ranking: 3/5 modelos
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textbf{Contexto Histórico:}
+
+Este modelo representa el enfoque clásico de separación de fases, donde el empaquetado y el balance de peso se optimizan secuencialmente. Aunque conceptualmente más simple que los modelos integrados, su naturaleza secuencial puede causar pérdida de optimalidad global y mayores tasas de infactibilidad debido a conflictos entre las etapas de optimización.
+
+\vspace{0.3cm}
+\noindent\textbf{Implementación:} \texttt{Baseline.ipynb}
+
+\noindent\textbf{Resultados:} \texttt{Results\_Baseline/}
+\end{abstract}
+
+\newpage
+
+\section{Introducción}
+
+El modelo Baseline implementa una estrategia de optimización en cascada que combina el problema de empaquetado 1D (1D-BPP) con el balance de peso (Weight \& Balance) para la asignación óptima de carga en vuelos intercontinentales de KLM.
+
+\section{Conjuntos}
+
+\begin{align}
+I &= \{\text{Items de carga}\} \\
+J &= \{\text{ULDs disponibles}\} \\
+J_{reg} &= \{j \in J : j \text{ es ULD regular (no BAX/BUP/T)}\} \\
+J_{BAX} &= \{j \in J : j \text{ es ULD BAX}\} \\
+J_{BUP} &= \{j \in J : j \text{ es ULD BUP}\} \\
+J_{T} &= \{j \in J : j \text{ es ULD T}\} \\
+T &= \{\text{Posiciones de carga en la aeronave}\} \\
+T_{C1} &= \{t \in T : t \text{ en compartimento 1}\} \\
+T_{C2} &= \{t \in T : t \text{ en compartimento 2}\} \\
+T_{C3} &= \{t \in T : t \text{ en compartimento 3}\} \\
+T_{C4} &= \{t \in T : t \text{ en compartimento 4}\} \\
+T_{left} &= \{t \in T : t \text{ lado izquierdo}\} \\
+T_{right} &= \{t \in T : t \text{ lado derecho}\} \\
+P &= \{\text{Grupos de prefijos de items}\}
+\end{align}
+
+\section{Parámetros}
+
+\subsection{Parámetros de Items}
+\begin{align}
+w_i &\in \mathbb{R}^+ \quad \forall i \in I \quad \text{(Peso del item } i\text{)} \\
+v_i &\in \mathbb{R}^+ \quad \forall i \in I \quad \text{(Volumen del item } i\text{)} \\
+COL_i &\in \{0,1\} \quad \forall i \in I \quad \text{(Item } i \text{ es COL)} \\
+CRT_i &\in \{0,1\} \quad \forall i \in I \quad \text{(Item } i \text{ es CRT)}
+\end{align}
+
+\subsection{Parámetros de ULDs}
+\begin{align}
+W_j &\in \mathbb{R}^+ \quad \forall j \in J \quad \text{(Capacidad máxima de peso del ULD } j\text{)} \\
+V_j &\in \mathbb{R}^+ \quad \forall j \in J \quad \text{(Volumen del ULD } j\text{)} \\
+w_j &\in \mathbb{R}^+ \quad \forall j \in J \quad \text{(Peso del ULD } j\text{)}
+\end{align}
+
+\subsection{Parámetros de la Aeronave}
+\begin{align}
+DOI &\in \mathbb{R} \quad \text{(Dry Operating Index)} \\
+OEW &\in \mathbb{R}^+ \quad \text{(Operating Empty Weight)} \\
+TOF &\in \mathbb{R}^+ \quad \text{(Take-Off Fuel)} \\
+TripF &\in \mathbb{R}^+ \quad \text{(Trip Fuel)} \\
+C &\in \mathbb{R} \quad \text{(Constante de conversión)} \\
+K &\in \mathbb{R} \quad \text{(Constante de referencia)} \\
+ZFW &\in \mathbb{R}^+ \quad \text{(Zero Fuel Weight)} \\
+reference\_arm &\in \mathbb{R} \quad \text{(Brazo de referencia)} \\
+lemac &\in \mathbb{R} \quad \text{(Leading Edge MAC)} \\
+mac\_formula &\in \mathbb{R}^+ \quad \text{(Fórmula MAC)}
+\end{align}
+
+\subsection{Parámetros de Compartimentos}
+\begin{align}
+\Delta_{C1} &\in \mathbb{R} \quad \text{(Delta índice compartimento 1)} \\
+\Delta_{C2} &\in \mathbb{R} \quad \text{(Delta índice compartimento 2)} \\
+\Delta_{C3} &\in \mathbb{R} \quad \text{(Delta índice compartimento 3)} \\
+\Delta_{C4} &\in \mathbb{R} \quad \text{(Delta índice compartimento 4)} \\
+W_{max}^{C1} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimento 1)} \\
+W_{max}^{C2} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimento 2)} \\
+W_{max}^{C3} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimento 3)} \\
+W_{max}^{C4} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimento 4)} \\
+W_{max}^{C1C2} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimentos 1+2)} \\
+W_{max}^{C3C4} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimentos 3+4)}
+\end{align}
+
+\subsection{Parámetros de Control}
+\begin{align}
+loadfactor &= 0.8 \quad \text{(Factor de carga volumétrica)} \\
+threshold\_volume &= \text{umbral\_volumen\_AKE} \times 10^6 \quad \text{(Umbral de volumen para AKE)} \\
+min\_load\_factor &= 0.2 \quad \text{(Factor de carga mínimo)} \\
+a_{lat}^{TOW} &= 0.5 \quad \text{(Parámetro balance lateral TOW)} \\
+b_{lat}^{TOW} &= 0.5 \quad \text{(Parámetro balance lateral TOW)} \\
+a_{lat}^{LW} &= 0.5 \quad \text{(Parámetro balance lateral LW)} \\
+b_{lat}^{LW} &= 0.5 \quad \text{(Parámetro balance lateral LW)}
+\end{align}
+
+\section{Variables de Decisión}
+
+\subsection{Etapa 1D-BPP}
+\begin{align}
+u_j &\in \{0,1\} \quad \forall j \in J \quad \text{(Activación del ULD } j\text{)} \\
+p_{ij} &\in \{0,1\} \quad \forall i \in I, \forall j \in J \quad \text{(Asignación del item } i \text{ al ULD } j\text{)} \\
+score_{AKE,j} &\in \mathbb{R}^+ \quad \forall j \in J_{reg} \quad \text{(Puntuación AKE del ULD } j\text{)} \\
+score_{PMC\_PAG,j} &\in \mathbb{R}^+ \quad \forall j \in J_{reg} \quad \text{(Puntuación PMC/PAG del ULD } j\text{)} \\
+shortfall_j &\in \mathbb{R}^+ \quad \forall j \in J_{reg} \quad \text{(Subutilización del ULD } j\text{)} \\
+sep_{p,j} &\in \{0,1\} \quad \forall p \in P, \forall j \in J \quad \text{(Penalización de separación del grupo } p \text{ en ULD } j\text{)}
+\end{align}
+
+\subsection{Etapa Weight \& Balance}
+\begin{align}
+f_{jt} &\in \{0,1\} \quad \forall j \in J, \forall t \in T \quad \text{(Asignación del ULD } j \text{ a la posición } t\text{)} \\
+ZFW\_index &\in \mathbb{R} \quad \text{(Índice Zero Fuel Weight)} \\
+MAC &\in \mathbb{R} \quad \text{(Mean Aerodynamic Chord)}
+\end{align}
+
+\section{Formulación Matemática - Etapa 1D-BPP}
+
+\subsection{Función Objetivo Multi-objetivo}
+
+\subsubsection{Objetivo 1: Preferencia de Volumen (Prioridad 4)}
+\begin{align}
+\min \quad & \sum_{j \in J_{reg}} (score_{AKE,j} + score_{PMC\_PAG,j}) \\
+\text{s.t.} \quad & score_{AKE,j} = \sum_{i \in I: v_i < threshold\_volume} p_{ij} \cdot (threshold\_volume - v_i) \cdot \mathbf{1}_{AKE}(j) \quad \forall j \in J_{reg} \\
+& score_{PMC\_PAG,j} = \sum_{i \in I: v_i < threshold\_volume} p_{ij} \cdot (threshold\_volume - v_i) \cdot \mathbf{1}_{PMC\_PAG}(j) \quad \forall j \in J_{reg}
+\end{align}
+
+\subsubsection{Objetivo 2: Minimizar ULDs (Prioridad 3)}
+\begin{equation}
+\min \quad \sum_{j \in J} u_j
+\end{equation}
+
+\subsubsection{Objetivo 3: Minimizar Subutilización (Prioridad 2)}
+\begin{align}
+\min \quad & \sum_{j \in J_{reg}} shortfall_j \\
+\text{s.t.} \quad & shortfall_j \geq min\_load\_factor - \frac{\sum_{i \in I} v_i \cdot p_{ij}}{V_j} \quad \forall j \in J_{reg} \\
+& shortfall_j \geq 0 \quad \forall j \in J_{reg}
+\end{align}
+
+\subsubsection{Objetivo 4: Minimizar Separación (Prioridad 1)}
+\begin{align}
+\min \quad & \sum_{p \in P} \sum_{j \in J} sep_{p,j} \\
+\text{s.t.} \quad & \sum_{i \in I_p} p_{ij} \leq |I_p| \cdot sep_{p,j} \quad \forall p \in P, \forall j \in J
+\end{align}
+
+\subsection{Restricciones}
+
+\subsubsection{R1: Restricción de Apertura de ULDs}
+\begin{equation}
+\sum_{j \in J_{reg}} u_j \geq number\_of\_opened\_uld \tag{R1}
+\end{equation}
+
+\subsubsection{R2: Restricción de Uso de ULD}
+\begin{equation}
+\sum_{i \in I} p_{ij} \geq u_j \quad \forall j \in J_{reg} \tag{R2}
+\end{equation}
+
+\subsubsection{R3: Restricción de Capacidad de Peso}
+\begin{equation}
+\sum_{i \in I} w_i \cdot p_{ij} \leq W_j \cdot u_j \quad \forall j \in J \tag{R3}
+\end{equation}
+
+\subsubsection{R4: Restricción de Capacidad Volumétrica}
+\begin{equation}
+\sum_{i \in I} v_i \cdot p_{ij} \leq V_j \cdot u_j \cdot loadfactor \quad \forall j \in J \tag{R4}
+\end{equation}
+
+\subsubsection{R5: Restricción de Asignación Única}
+\begin{equation}
+\sum_{j \in J} p_{ij} = 1 \quad \forall i \in I \tag{R5}
+\end{equation}
+
+\subsubsection{R6: Restricción de Prohibición en BAX/BUP/T}
+\begin{equation}
+p_{ij} = 0 \quad \forall i \in I, \forall j \in J_{BAX} \cup J_{BUP} \cup J_T \tag{R6}
+\end{equation}
+
+\subsubsection{R7: Restricción de Manejo Especial (COL/CRT)}
+\begin{equation}
+p_{i_1,j} + p_{i_2,j} \leq 1 \quad \forall j \in J_{reg}, \forall i_1, i_2 \in I: i_1 \neq i_2, COL_{i_1} = 1, CRT_{i_2} = 1 \tag{R7}
+\end{equation}
+
+\section{Formulación Matemática - Etapa Weight \& Balance}
+
+\subsection{Función Objetivo Multi-objetivo}
+
+\subsubsection{Objetivo 1: Optimización MAC (Prioridad 2)}
+\begin{align}
+\min \quad & MAC \\
+\text{s.t.} \quad & MAC = \frac{\left( \frac{C \cdot (ZFW\_index - K)}{ZFW} + reference\_arm - lemac \right)}{mac\_formula / 100} \\
+& ZFW\_index = DOI + INDEX\_PAX + \sum_{k=1}^{4} \left( \sum_{j \in J} \sum_{t \in T_{Ck}} w_j \cdot f_{jt} \cdot \Delta_{Ck} \right)
+\end{align}
+
+\subsubsection{Objetivo 2: Proximidad BAX (Prioridad 1)}
+\begin{equation}
+\min \quad \sum_{j \in J_{BAX}} \sum_{t \in T} proximity\_score(t) \cdot f_{jt}
+\end{equation}
+
+\subsection{Restricciones}
+
+\subsubsection{W1: Restricción de Asignación de ULD}
+\begin{equation}
+\sum_{t \in T} f_{jt} = 1 \quad \forall j \in J \tag{W1}
+\end{equation}
+
+\subsubsection{W2: Restricción de Posición Única}
+\begin{equation}
+\sum_{j \in J} f_{jt} \leq 1 \quad \forall t \in T \tag{W2}
+\end{equation}
+
+\subsubsection{W3: Restricción de Posiciones Prohibidas}
+\begin{equation}
+\sum_{t \in T_{forbidden}(j)} f_{jt} = 0 \quad \forall j \in J \tag{W3}
+\end{equation}
+
+\subsubsection{W4: Restricción de Posiciones Superpuestas}
+\begin{equation}
+f_{j_1,t_1} + f_{j_2,t_2} \leq 1 \quad \forall j_1, j_2 \in J: j_1 \neq j_2, \forall t_1 \in T, \forall t_2 \in T_{overlap}(t_1) \tag{W4}
+\end{equation}
+
+\subsubsection{W5: Restricción de Peso por Posición}
+\begin{equation}
+\sum_{j \in J} w_j \cdot f_{jt} \leq W_{max}(t) \quad \forall t \in T \tag{W5}
+\end{equation}
+
+\subsubsection{W6a-f: Restricciones de Peso por Compartimento}
+\begin{align}
+\sum_{j \in J} \sum_{t \in T_{C1}} w_j \cdot f_{jt} &\leq W_{max}^{C1} \tag{W6a} \\
+\sum_{j \in J} \sum_{t \in T_{C2}} w_j \cdot f_{jt} &\leq W_{max}^{C2} \tag{W6b} \\
+\sum_{j \in J} \sum_{t \in T_{C3}} w_j \cdot f_{jt} &\leq W_{max}^{C3} \tag{W6c} \\
+\sum_{j \in J} \sum_{t \in T_{C4}} w_j \cdot f_{jt} &\leq W_{max}^{C4} \tag{W6d} \\
+\sum_{j \in J} \sum_{t \in T_{C1} \cup T_{C2}} w_j \cdot f_{jt} &\leq W_{max}^{C1C2} \tag{W6e} \\
+\sum_{j \in J} \sum_{t \in T_{C3} \cup T_{C4}} w_j \cdot f_{jt} &\leq W_{max}^{C3C4} \tag{W6f}
+\end{align}
+
+\subsubsection{W7: Restricción de Peso Total}
+\begin{equation}
+\sum_{j \in J} \sum_{t \in T} w_j \cdot f_{jt} \leq MPL \tag{W7}
+\end{equation}
+
+\subsubsection{W8: Restricciones de Balance Lateral TOW}
+\begin{align}
+\sum_{j \in J} \sum_{t \in T_{left}} w_j \cdot f_{jt} - \sum_{j \in J} \sum_{t \in T_{right}} w_j \cdot f_{jt} &\leq a_{lat}^{TOW} \cdot (W_{total} + OEW + TOF) \cdot b_{lat}^{TOW} \tag{W8a} \\
+\sum_{j \in J} \sum_{t \in T_{right}} w_j \cdot f_{jt} - \sum_{j \in J} \sum_{t \in T_{left}} w_j \cdot f_{jt} &\leq a_{lat}^{TOW} \cdot (W_{total} + OEW + TOF) \cdot b_{lat}^{TOW} \tag{W8b}
+\end{align}
+
+\subsubsection{W9: Restricciones de Balance Lateral LW}
+\begin{align}
+\sum_{j \in J} \sum_{t \in T_{left}} w_j \cdot f_{jt} - \sum_{j \in J} \sum_{t \in T_{right}} w_j \cdot f_{jt} &\leq a_{lat}^{LW} \cdot (W_{total} + OEW + TOF - TripF) \cdot b_{lat}^{LW} \tag{W9a} \\
+\sum_{j \in J} \sum_{t \in T_{right}} w_j \cdot f_{jt} - \sum_{j \in J} \sum_{t \in T_{left}} w_j \cdot f_{jt} &\leq a_{lat}^{LW} \cdot (W_{total} + OEW + TOF - TripF) \cdot b_{lat}^{LW} \tag{W9b}
+\end{align}
+
+\subsubsection{W10: Restricciones de Envelope CG TOW}
+\begin{align}
+INDEX\_TOW\_fwd &\leq DOI + fuel\_index + INDEX\_PAX + \sum_{k=1}^{4} \left( \sum_{j \in J} \sum_{t \in T_{Ck}} w_j \cdot f_{jt} \cdot \Delta_{Ck} \right) \tag{W10a} \\
+DOI + fuel\_index + INDEX\_PAX + \sum_{k=1}^{4} \left( \sum_{j \in J} \sum_{t \in T_{Ck}} w_j \cdot f_{jt} \cdot \Delta_{Ck} \right) &\leq INDEX\_TOW\_aft \tag{W10b}
+\end{align}
+
+\subsubsection{W11: Restricciones de Envelope CG ZFW}
+\begin{align}
+INDEX\_ZFW\_fwd &\leq DOI + INDEX\_PAX + \sum_{k=1}^{4} \left( \sum_{j \in J} \sum_{t \in T_{Ck}} w_j \cdot f_{jt} \cdot \Delta_{Ck} \right) \tag{W11a} \\
+DOI + INDEX\_PAX + \sum_{k=1}^{4} \left( \sum_{j \in J} \sum_{t \in T_{Ck}} w_j \cdot f_{jt} \cdot \Delta_{Ck} \right) &\leq INDEX\_ZFW\_aft \tag{W11b}
+\end{align}
+
+\subsubsection{W12: Restricciones de Manejo Especial COL/CRT}
+Para aeronaves 772 y 77W:
+\begin{align}
+\sum_{j \in J_{COL}} f_{jt} + \sum_{j \in J_{CRT}} f_{jt} &\leq 1 \quad \forall t \in T_{C1} \cup T_{C2} \tag{W12a} \\
+\sum_{j \in J_{COL}} f_{jt} + \sum_{j \in J_{CRT}} f_{jt} &\leq 1 \quad \forall t \in T_{C3} \cup T_{C4} \tag{W12b}
+\end{align}
+
+Para aeronaves 789 y 781:
+\begin{equation}
+\sum_{j \in J_{COL}} f_{jt} + \sum_{j \in J_{CRT}} f_{jt} = 0 \quad \forall t \in T_{C3} \cup T_{C4} \tag{W12c}
+\end{equation}
+
+\section{Feedback Loop}
+
+\subsection{Mecanismo Iterativo}
+El modelo implementa un sistema de feedback loop que:
+\begin{itemize}
+    \item Identifica items que no pueden ser asignados en 3D-BPP
+    \item Abre nuevos ULDs cuando es necesario
+    \item Reintenta la asignación en iteraciones posteriores
+    \item Maneja items diferidos de manera inteligente
+\end{itemize}
+
+\subsection{Parámetros del Feedback Loop}
+\begin{itemize}
+    \item \textbf{deferred\_items}: Items que no pudieron ser asignados
+    \item \textbf{packed\_ULDs}: ULDs pre-asignados
+    \item \textbf{open\_new\_uld}: Flag para abrir nuevos ULDs
+    \item \textbf{attempted\_combinations}: Combinaciones ya intentadas
+    \item \textbf{open\_new\_extra\_uld}: Flag para ULDs adicionales
+\end{itemize}
+
+\section{Resultados del Modelo}
+
+\subsection{Estadísticas de Rendimiento}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Métrica & Valor & Descripción \\
+\midrule
+Total Vuelos Ejecutados & 248 & Vuelos procesados \\
+Vuelos Válidos & 191 & Soluciones encontradas \\
+Vuelos Infactibles & 57 & Sin solución \\
+Tasa de Éxito & 77.0\% & Porcentaje de éxito \\
+\bottomrule
+\end{tabular}
+\caption{Rendimiento del Modelo Baseline}
+\end{table}
+
+\subsection{Análisis de Infeasibilidad}
+El modelo Baseline presenta una tasa de infactibilidad del 23.0\%, lo que indica:
+\begin{itemize}
+    \item Limitaciones en la capacidad de manejar casos complejos
+    \item Necesidad de mejoras en el algoritmo de feedback loop
+    \item Restricciones que pueden ser demasiado estrictas
+\end{itemize}
+
+\section{Ventajas y Desventajas}
+
+\subsection{Ventajas}
+\begin{itemize}
+    \item Enfoque sistemático y bien estructurado
+    \item Manejo explícito de items diferidos
+    \item Flexibilidad para abrir nuevos ULDs
+    \item Implementación robusta del feedback loop
+    \item Optimización multi-objetivo completa
+\end{itemize}
+
+\subsection{Desventajas}
+\begin{itemize}
+    \item Alta tasa de infactibilidad (23.0\%)
+    \item Complejidad computacional elevada
+    \item Dependencia del orden de optimización
+    \item Limitaciones en casos extremos
+    \item Tiempo de ejecución prolongado
+\end{itemize}
+
+\section{Conclusiones}
+
+El modelo Baseline representa una implementación sólida del problema de optimización de carga aérea, pero presenta limitaciones significativas en términos de factibilidad. Su tasa de éxito del 77.0\% lo posiciona como un modelo de referencia, pero requiere mejoras para manejar casos más complejos.
+
+La implementación del feedback loop es una característica valiosa que permite manejar situaciones donde la asignación inicial no es posible, aunque el alto porcentaje de infactibilidad sugiere que se necesitan estrategias adicionales para mejorar el rendimiento general del modelo.
+
+\end{document}

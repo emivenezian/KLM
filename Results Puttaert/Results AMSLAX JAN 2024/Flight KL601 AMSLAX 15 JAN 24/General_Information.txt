@@ -1,0 +1,44 @@
+The model will run the following flight:
+--------------------------------------------------------------------------------------------------------
+Flight Number: KL601 PHBKD - Aircraft Type: 781 - Departure: AMS - Arrival: LAX - Date: 15 JAN 24
+
+ZFW: 170397.6 kg - TOW: 235431.6 kg - LW: 175789.6 kg - OEW: 132748.0 kg
+
+Fuel: 65034 kg - Trip Fuel: 59642 kg
+
+Number of Cargo ULDs used: 2
+
+Number of BAX ULDs: 11 - Number of BUP ULDs: 0 - Number of T ULDs: 1
+--------------------------------------------------------------------------------------------------------
+ULD set available for loading:
+PAG-27, PAG
+PMC-29, PMC
+--------------------------------------------------------------------------------------------------------
+BAX and BUP set for loading:
+BAX-0, AKE
+BAX-2, AKE
+BAX-5, AKE
+BAX-7, AKE
+BAX-11, AKE
+BAX-13, AKE
+BAX-14, AKE
+BAX-15, AKE
+BAX-17, AKE
+BAX-30, AKE
+BAX-31, AKE
+T-32, PMC
+--------------------------------------------------------------------------------------------------------
+PAX allocation:
+PAX-A: 45
+PAX-B: 48
+PAX-C: 69
+PAX-D: 81
+PAX-E: 75
+PAX-F: 0
+PAX-G: 0
+Total PAX: 318
+--------------------------------------------------------------------------------------------------------
+Check if all items fit the ULDs dimensions:
+
+87 / 87 items fit the dimensions of the ULDs
+--------------------------------------------------------------------------------------------------------

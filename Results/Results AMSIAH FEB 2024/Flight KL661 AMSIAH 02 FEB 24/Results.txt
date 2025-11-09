@@ -1,0 +1,33 @@
+ULD T-28 with weight 2126 kg is loaded to position 11P
+ULD BAX-9 with weight 240.0 kg is loaded to position 13L
+ULD BAX-3 with weight 718.0 kg is loaded to position 13R
+ULD AKE-19 with weight 25.3 kg with a volume loadfactor of 6.351% and a weight loadfactor of 1.594% is loaded to position 14L
+ULD AKE-20 with weight 132.5 kg with a volume loadfactor of 47.571% and a weight loadfactor of 8.349% is loaded to position 15L
+ULD PMC-23 with weight 1288.0 kg with a volume loadfactor of 49.397% and a weight loadfactor of 25.244% is loaded to position 21P
+ULD PMC-27 with weight 2232.4 kg with a volume loadfactor of 66.298% and a weight loadfactor of 43.756% is loaded to position 22P
+ULD PAG-21 with weight 2735.3 kg with a volume loadfactor of 75.972% and a weight loadfactor of 58.497% is loaded to position 23P
+ULD PMC-25 with weight 2887.6 kg with a volume loadfactor of 79.566% and a weight loadfactor of 56.598% is loaded to position 31P
+ULD T-30 with weight 2520 kg is loaded to position 32P
+ULD PMC-26 with weight 3400.8 kg with a volume loadfactor of 79.939% and a weight loadfactor of 66.656% is loaded to position 33P
+ULD BAX-5 with weight 933.0 kg is loaded to position 41L
+ULD BAX-0 with weight 761.0 kg is loaded to position 41R
+ULD BAX-7 with weight 772.0 kg is loaded to position 42L
+ULD BAX-11 with weight 915.0 kg is loaded to position 42R
+ULD T-29 with weight 4596 kg is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 3241.8 kg
+Weight in Compartment 2: 6255.7 kg
+Weight in Compartment 3: 8808.4 kg
+Weight in Compartment 4: 7977.0 kg
+===========================================================================
+%MAC ZFW is 31.98408905371717
+%Number of ULDs used is 16.0
+%Total Volume Packed is 44570797.0
+%Booking Separation Penalty is 60.0
+%BAX Proximity Score is 6.0
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 26.7
+Resulting in a fuel deviation of -0.429% or -240.904 kg
+---------------------------------------------------------------------------
+7 ULDs are built by the model
+9 ULDs were actually built

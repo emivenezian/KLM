@@ -1,0 +1,45 @@
+The model will run the following flight:
+--------------------------------------------------------------------------------------------------------
+Flight Number: KL601 PHBQD - Aircraft Type: 772 - Departure: AMS - Arrival: LAX - Date: 13 FEB 24
+
+ZFW: 175790.6 kg - TOW: 252050.6 kg - LW: 181575.6 kg - OEW: 148132.0 kg
+
+Fuel: 76260 kg - Trip Fuel: 70475 kg
+
+Number of Cargo ULDs used: 5
+
+Number of BAX ULDs: 6 - Number of BUP ULDs: 0 - Number of T ULDs: 4
+--------------------------------------------------------------------------------------------------------
+ULD set available for loading:
+AKE-15, AKE
+PMC-20, PMC
+PMC-21, PMC
+PAG-25, PAG
+PAG-27, PAG
+--------------------------------------------------------------------------------------------------------
+BAX and BUP set for loading:
+BAX-0, AKE
+BAX-2, AKE
+BAX-3, AKE
+BAX-4, AKE
+BAX-5, AKE
+BAX-6, AKE
+T-28, PAG
+T-29, PMC
+T-30, AKE
+T-31, PAG
+--------------------------------------------------------------------------------------------------------
+PAX allocation:
+PAX-A: 34
+PAX-B: 26
+PAX-C: 39
+PAX-D: 41
+PAX-E: 51
+PAX-F: 0
+PAX-G: 0
+Total PAX: 191
+--------------------------------------------------------------------------------------------------------
+Check if all items fit the ULDs dimensions:
+
+36 / 36 items fit the dimensions of the ULDs
+--------------------------------------------------------------------------------------------------------

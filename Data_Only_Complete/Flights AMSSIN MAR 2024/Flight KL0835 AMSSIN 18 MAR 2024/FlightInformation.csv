@@ -1,0 +1,2 @@
+FlightLegUtcId,Airline,FlightNumber,LegDepartureDateUtc,DepartureAirport,ArrivalAirport,ActualZeroFuelWeight,EstimatedZeroFuelWeight,DryOperatingWeight,MacZFW,ModTime,AircraftType,AircraftRegistration,FlightCancelled,CostIndex,TakeOffFuel,TripFuel
+2024-03-18|KL|0835||AMS,KL,835,2024-03-18,AMS,SIN,232710,233197,172314,24.0,19-3-2024 06:36:00,77W,PHBVS,False,200,115264,104313

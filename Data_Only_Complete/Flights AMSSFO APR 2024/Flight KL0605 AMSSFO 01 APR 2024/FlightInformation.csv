@@ -1,0 +1,2 @@
+FlightLegUtcId,Airline,FlightNumber,LegDepartureDateUtc,DepartureAirport,ArrivalAirport,ActualZeroFuelWeight,EstimatedZeroFuelWeight,DryOperatingWeight,MacZFW,ModTime,AircraftType,AircraftRegistration,FlightCancelled,CostIndex,TakeOffFuel,TripFuel
+2024-04-01|KL|0605||AMS,KL,605,2024-04-01,AMS,SFO,170278,170720,132386,19.5,2/4/2024 6:29,781,PHBKD,False,10,61870,56045

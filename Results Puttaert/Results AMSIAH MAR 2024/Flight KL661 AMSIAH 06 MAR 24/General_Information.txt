@@ -1,0 +1,53 @@
+The model will run the following flight:
+--------------------------------------------------------------------------------------------------------
+Flight Number: KL661 PHBHP - Aircraft Type: 789 - Departure: AMS - Arrival: IAH - Date: 06 MAR 24
+
+ZFW: 159783.4 kg - TOW: 218567.4 kg - LW: 166453.4 kg - OEW: 128104.0 kg
+
+Fuel: 58784 kg - Trip Fuel: 52114 kg
+
+Number of Cargo ULDs used: 6
+
+Number of BAX ULDs: 6 - Number of BUP ULDs: 0 - Number of T ULDs: 2
+--------------------------------------------------------------------------------------------------------
+ULD set available for loading:
+AKE-18, AKE
+PMC-21, PMC
+PMC-22, PMC
+PAG-23, PAG
+PMC-24, PMC
+PMC-25, PMC
+--------------------------------------------------------------------------------------------------------
+BAX and BUP set for loading:
+BAX-0, AKE
+BAX-3, AKE
+BAX-5, AKE
+BAX-7, AKE
+BAX-10, AKE
+BAX-11, AKE
+T-26, PMC
+T-27, PMC
+--------------------------------------------------------------------------------------------------------
+PAX allocation:
+PAX-A: 27
+PAX-B: 25
+PAX-C: 26
+PAX-D: 54
+PAX-E: 49
+PAX-F: 0
+PAX-G: 0
+Total PAX: 181
+--------------------------------------------------------------------------------------------------------
+Check if all items fit the ULDs dimensions:
+--------------------------------------------------------------------------------------------------------
+The following items do not fit the dimensions of the ULDs:
+Serialnumber: 61960323
+Dimensions: (350, 80, 45)
+Serialnumber: 64156783-2
+Dimensions: (324, 38, 50)
+Serialnumber: 64417371
+Dimensions: (336, 36, 44)
+--------------------------------------------------------------------------------------------------------
+
+133 / 136 items fit the dimensions of the ULDs
+--------------------------------------------------------------------------------------------------------

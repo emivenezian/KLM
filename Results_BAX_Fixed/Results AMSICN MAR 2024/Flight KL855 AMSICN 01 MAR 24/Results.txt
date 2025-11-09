@@ -1,0 +1,30 @@
+ULD T-28 with weight 1185 kg is loaded to position 11P
+ULD PMC-23 with weight 1898.3 kg with a volume loadfactor of 61.814% and a weight loadfactor of 37.207% is loaded to position 12P
+ULD PAG-27 with weight 482.1 kg with a volume loadfactor of 37.933% and a weight loadfactor of 10.311% is loaded to position 13P
+ULD T-29 with weight 2645 kg is loaded to position 21P
+ULD PMC-21 with weight 2457.8 kg with a volume loadfactor of 65.701% and a weight loadfactor of 48.174% is loaded to position 22P
+ULD PAG-26 with weight 261.0 kg with a volume loadfactor of 25.105% and a weight loadfactor of 5.582% is loaded to position 23P
+ULD PMC-22 with weight 3825.4 kg with a volume loadfactor of 64.872% and a weight loadfactor of 74.978% is loaded to position 31P
+ULD AKE-31 with weight 564.4 kg with a volume loadfactor of 53.067% and a weight loadfactor of 35.564% is loaded to position 33L
+ULD BAX-7 with weight 826.0 kg is loaded to position 33R
+ULD BAX-4 with weight 826.0 kg is loaded to position 41L
+ULD BAX-13 with weight 419.0 kg is loaded to position 41R
+ULD BAX-14 with weight 334.0 kg is loaded to position 42L
+ULD BAX-0 with weight 392.0 kg is loaded to position 42R
+ULD BAX-9 with weight 807.0 kg is loaded to position 43L
+ULD BAX-11 with weight 844.0 kg is loaded to position 43R
+ULD BAX-3 with weight 789.0 kg is loaded to position 44L
+ULD BAX-6 with weight 918.0 kg is loaded to position 44R
+---------------------------------------------------------------------------
+Weight in Compartment 1: 3565.5 kg
+Weight in Compartment 2: 5363.8 kg
+Weight in Compartment 3: 5215.8 kg
+Weight in Compartment 4: 5329.0 kg
+===========================================================================
+%MAC ZFW is 27.68910768669327
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 23.7
+Resulting in a fuel deviation of -0.414% or -344.618 kg
+---------------------------------------------------------------------------
+6 ULDs are built by the model
+5 ULDs were actually built

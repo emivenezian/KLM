@@ -1,0 +1,32 @@
+ULD T-29 with weight 700.0 kg is loaded to position 11P
+ULD BUP-28 with weight 675.0 kg is loaded to position 12P
+ULD AKE-20 with weight 400.0 kg is loaded to position 14L
+ULD BAX-5 with weight 237.0 kg is loaded to position 14R
+ULD AKE-21 with weight 480.0 kg is loaded to position 15L
+ULD BAX-10 with weight 689.0 kg is loaded to position 21L
+ULD BAX-0 with weight 767.0 kg is loaded to position 21R
+ULD BAX-4 with weight 678.0 kg is loaded to position 22L
+ULD BAX-1 with weight 663.0 kg is loaded to position 22R
+ULD BAX-8 with weight 597.0 kg is loaded to position 23L
+ULD BAX-12 with weight 683.0 kg is loaded to position 23R
+ULD T-30 with weight 940.0 kg is loaded to position 23P
+ULD PMC-26 with weight 940.0 kg is loaded to position 24P
+ULD PMC-22 with weight 1140.0 kg is loaded to position 31P
+ULD T-31 with weight 1875.0 kg is loaded to position 32P
+ULD PMC-24 with weight 980.0 kg is loaded to position 33P
+ULD PAG-27 with weight 2420.0 kg is loaded to position 41P
+ULD T-32 with weight 1875.0 kg is loaded to position 42P
+ULD PMC-25 with weight 2900.0 kg is loaded to position 43P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 2492.0 kg
+Weight in Compartment 2: 5957.0 kg
+Weight in Compartment 3: 3995.0 kg
+Weight in Compartment 4: 7195.0 kg
+===========================================================================
+%MAC ZFW is 24.948631998027267
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 16.5
+Resulting in a fuel deviation of -1.340% or -808.846 kg
+---------------------------------------------------------------------------
+7 ULDs are built by the model
+7 ULDs were actually built

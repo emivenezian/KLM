@@ -1,0 +1,27 @@
+ULD PMC-22 with weight 811.2 kg with a volume loadfactor of 43.079% and a weight loadfactor of 15.899% is loaded to position 11P
+ULD BAX-5 with weight 736.0 kg is loaded to position 13R
+ULD BAX-8 with weight 800.0 kg is loaded to position 14R
+ULD PMC-25 with weight 600.5 kg with a volume loadfactor of 55.328% and a weight loadfactor of 11.770% is loaded to position 22P
+ULD PMC-23 with weight 762.0 kg with a volume loadfactor of 21.224% and a weight loadfactor of 14.935% is loaded to position 31P
+ULD PMC-24 with weight 3077.2 kg with a volume loadfactor of 74.791% and a weight loadfactor of 60.314% is loaded to position 32P
+ULD T-26 with weight 1950 kg is loaded to position 33P
+ULD BAX-2 with weight 769.0 kg is loaded to position 41L
+ULD AKE-17 with weight 488.9 kg with a volume loadfactor of 48.025% and a weight loadfactor of 30.805% is loaded to position 42L
+ULD AKE-16 with weight 291.1 kg with a volume loadfactor of 50.749% and a weight loadfactor of 18.343% is loaded to position 42R
+ULD BAX-7 with weight 849.0 kg is loaded to position 43L
+ULD BAX-0 with weight 745.0 kg is loaded to position 43R
+ULD AKE-15 with weight 389.8 kg with a volume loadfactor of 43.403% and a weight loadfactor of 24.565% is loaded to position 44L
+ULD AKE-14 with weight 536.3 kg with a volume loadfactor of 67.207% and a weight loadfactor of 33.791% is loaded to position 44R
+---------------------------------------------------------------------------
+Weight in Compartment 1: 2347.2 kg
+Weight in Compartment 2: 600.5 kg
+Weight in Compartment 3: 5789.2 kg
+Weight in Compartment 4: 4069.1 kg
+===========================================================================
+%MAC ZFW is 31.454396198680634
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 25.2
+Resulting in a fuel deviation of -0.579% or -307.816 kg
+---------------------------------------------------------------------------
+8 ULDs are built by the model
+9 ULDs were actually built

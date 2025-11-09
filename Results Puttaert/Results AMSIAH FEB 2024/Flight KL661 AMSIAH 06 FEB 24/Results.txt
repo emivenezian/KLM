@@ -1,0 +1,30 @@
+ULD PMC-27 with weight 464.1 kg with a volume loadfactor of 25.166% and a weight loadfactor of 9.097% is loaded to position 11P
+ULD T-31 with weight 302 kg is loaded to position 12P
+ULD T-29 with weight 1231 kg is loaded to position 13P
+ULD PAG-25 with weight 339.8 kg with a volume loadfactor of 32.225% and a weight loadfactor of 7.267% is loaded to position 21P
+ULD T-30 with weight 1785 kg is loaded to position 22P
+ULD T-32 with weight 2103 kg is loaded to position 23P
+ULD PMC-26 with weight 3466.2 kg with a volume loadfactor of 71.672% and a weight loadfactor of 67.938% is loaded to position 31P
+ULD PMC-28 with weight 2022.3 kg with a volume loadfactor of 63.803% and a weight loadfactor of 39.637% is loaded to position 32P
+ULD PMC-24 with weight 3821.2 kg with a volume loadfactor of 63.235% and a weight loadfactor of 74.896% is loaded to position 33P
+ULD BAX-16 with weight 433.0 kg is loaded to position 41L
+ULD BAX-9 with weight 931.0 kg is loaded to position 41R
+ULD BAX-2 with weight 540.0 kg is loaded to position 42L
+ULD BAX-7 with weight 332.0 kg is loaded to position 42R
+ULD BAX-5 with weight 916.0 kg is loaded to position 43L
+ULD BAX-4 with weight 326.0 kg is loaded to position 43R
+ULD BAX-0 with weight 835.0 kg is loaded to position 44L
+ULD AKE-17 with weight 529.5 kg with a volume loadfactor of 49.286% and a weight loadfactor of 33.365% is loaded to position 44R
+---------------------------------------------------------------------------
+Weight in Compartment 1: 1997.1 kg
+Weight in Compartment 2: 4227.8 kg
+Weight in Compartment 3: 9309.7 kg
+Weight in Compartment 4: 4842.5 kg
+===========================================================================
+%MAC ZFW is 30.420128941795635
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 26.9
+Resulting in a fuel deviation of -0.292% or -150.740 kg
+---------------------------------------------------------------------------
+6 ULDs are built by the model
+6 ULDs were actually built

@@ -1,0 +1,45 @@
+The model will run the following flight:
+--------------------------------------------------------------------------------------------------------
+Flight Number: KL661 PHBHL - Aircraft Type: 789 - Departure: AMS - Arrival: IAH - Date: 02 MAR 24
+
+ZFW: 163986.7 kg - TOW: 222800.7 kg - LW: 170366.7 kg - OEW: 128296.0 kg
+
+Fuel: 58814 kg - Trip Fuel: 52434 kg
+
+Number of Cargo ULDs used: 6
+
+Number of BAX ULDs: 7 - Number of BUP ULDs: 0 - Number of T ULDs: 2
+--------------------------------------------------------------------------------------------------------
+ULD set available for loading:
+AKE-17, AKE
+AKE-18, AKE
+AKE-19, AKE
+PMC-20, PMC
+PMC-21, PMC
+PAG-25, PAG
+--------------------------------------------------------------------------------------------------------
+BAX and BUP set for loading:
+BAX-0, AKE
+BAX-3, AKE
+BAX-4, AKE
+BAX-6, AKE
+BAX-8, AKE
+BAX-10, AKE
+BAX-11, AKE
+T-26, PMC
+T-27, PMC
+--------------------------------------------------------------------------------------------------------
+PAX allocation:
+PAX-A: 30
+PAX-B: 33
+PAX-C: 38
+PAX-D: 69
+PAX-E: 56
+PAX-F: 0
+PAX-G: 0
+Total PAX: 226
+--------------------------------------------------------------------------------------------------------
+Check if all items fit the ULDs dimensions:
+
+83 / 83 items fit the dimensions of the ULDs
+--------------------------------------------------------------------------------------------------------

@@ -1,0 +1,26 @@
+Complete Flights Data Summary
+========================================
+
+Total complete flights: 525
+Source: KLM_Original/Data
+Destination: Data_Only_Complete/
+Files per flight: 5 CSV files
+
+Required files per flight:
+- BuildUpInformation.csv
+- FlightInformation.csv
+- LoadLocations.csv
+- PaxInformation.csv
+- PieceInformation.csv
+
+Organized structure (by route and month):
+Data_Only_Complete/
+├── Flights AMSXXX MMM YYYY/
+│   ├── Flight KLXXXX AMSXXX DD MMM YYYY/
+│   │   ├── BuildUpInformation.csv
+│   │   ├── FlightInformation.csv
+│   │   ├── LoadLocations.csv
+│   │   ├── PaxInformation.csv
+│   │   └── PieceInformation.csv
+│   └── ...
+└── ...

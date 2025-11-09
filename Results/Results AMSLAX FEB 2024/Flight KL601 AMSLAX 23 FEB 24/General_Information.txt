@@ -1,0 +1,44 @@
+The model will run the following flight:
+--------------------------------------------------------------------------------------------------------
+Flight Number: KL601 PHBHG - Aircraft Type: 789 - Departure: AMS - Arrival: LAX - Date: 23 FEB 24
+
+ZFW: 160009.2 kg - TOW: 230009.2 kg - LW: 174376.2 kg - OEW: 128498.0 kg
+
+Fuel: 70000 kg - Trip Fuel: 55633 kg
+
+Number of Cargo ULDs used: 3
+
+Number of BAX ULDs: 7 - Number of BUP ULDs: 0 - Number of T ULDs: 4
+--------------------------------------------------------------------------------------------------------
+ULD set available for loading:
+AKE-19, AKE
+PAG-20, PAG
+PMC-21, PMC
+--------------------------------------------------------------------------------------------------------
+BAX and BUP set for loading:
+BAX-0, AKE
+BAX-3, AKE
+BAX-5, AKE
+BAX-7, AKE
+BAX-8, AKE
+BAX-15, AKE
+BAX-17, AKE
+T-22, PMC
+T-23, PMC
+T-24, PMC
+T-25, PMC
+--------------------------------------------------------------------------------------------------------
+PAX allocation:
+PAX-A: 30
+PAX-B: 37
+PAX-C: 46
+PAX-D: 64
+PAX-E: 52
+PAX-F: 0
+PAX-G: 0
+Total PAX: 229
+--------------------------------------------------------------------------------------------------------
+Check if all items fit the ULDs dimensions:
+
+49 / 49 items fit the dimensions of the ULDs
+--------------------------------------------------------------------------------------------------------

@@ -1,0 +1,525 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{float}
+
+\geometry{margin=2.5cm}
+
+\title{Modelo Puttaert - Optimización de Carga Aérea KLM}
+\author{María Emilia Venezian Juricic}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\textbf{Resumen Ejecutivo del Modelo}
+
+El modelo Puttaert implementa una optimización integral que combina el problema de empaquetado 1D (1D-BPP) con Weight \& Balance (W\&B) en un solo modelo integrado. Este fue uno de los modelos pioneros en el proyecto KLM y sirvió como base para el desarrollo del modelo DelgadoVenezian.
+
+\vspace{0.3cm}
+\noindent\textbf{Enfoque:} Optimización integrada con variables de linealización
+\begin{itemize}
+    \item \textbf{Empaquetado:} Asignación de items a ULDs (1D-BPP)
+    \item \textbf{Posicionamiento:} Asignación de ULDs a posiciones (W\&B)
+    \item \textbf{Integración:} Ambas decisiones en un solo modelo MIP
+    \item \textbf{Linealización:} Variables auxiliares $w_{ijt}$ y $z_{ijt}$ para productos bilineales
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textbf{Características Clave:}
+\begin{itemize}
+    \item 6 objetivos jerárquicos (multi-objetivo)
+    \item Variables de linealización complejas (7 restricciones L1-L7)
+    \item Sistema de feedback loop con 3D packing
+    \item Manejo de items diferidos (deferred items)
+    \item Big M dinámico: $M = \max_i w_i$
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textbf{Objetivos (Jerarquía Completa):}
+\begin{enumerate}
+    \item \textbf{Prioridad 6:} Maximizar \%MAC ZFW
+    \item \textbf{Prioridad 5:} Preferencia de volumen (AKE vs PMC/PAG)
+    \item \textbf{Prioridad 4:} Minimizar número de ULDs
+    \item \textbf{Prioridad 3:} Minimizar subutilización de ULDs
+    \item \textbf{Prioridad 2:} Minimizar separación de items (mismo booking)
+    \item \textbf{Prioridad 1:} Minimizar proximidad BAX
+\end{enumerate}
+
+\vspace{0.3cm}
+\noindent\textbf{Variables de Decisión:}
+\begin{itemize}
+    \item $f_{jt}$: ULD-posición (binaria)
+    \item $u_j$: ULD activado (binaria)
+    \item $p_{ij}$: Item-ULD (binaria)
+    \item $z_{ijt}$: Item-ULD-posición (binaria)
+    \item $w_{ijt}$: Peso item-ULD-posición (continua) - Variable de linealización
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textbf{Rendimiento:}
+\begin{itemize}
+    \item Tasa de éxito: 72.1\%
+    \item Tasa de infactibilidad: 27.9\%
+    \item Ranking: 4/5 modelos
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textbf{Contexto Histórico:}
+
+El modelo Puttaert representa un enfoque ambicioso de modelado integral, inspirado posiblemente en trabajos anteriores de optimización de carga aérea. Su principal contribución fue demostrar la viabilidad de integrar 1D-BPP y W\&B en un solo modelo matemático, aunque a costa de mayor complejidad computacional y variables adicionales. Este modelo sirvió como punto de partida para el modelo DelgadoVenezian, que simplificó las variables auxiliares eliminando las variables $w_{ijt}$ y logró mejor rendimiento (89.8\% vs 72.1\%).
+
+\vspace{0.3cm}
+\noindent\textbf{Implementación:} \texttt{Model\_Puttaert.ipynb}
+
+\noindent\textbf{Resultados:} \texttt{Results Puttaert/}
+\end{abstract}
+
+\newpage
+
+\section{Introducción}
+
+El modelo Puttaert implementa una optimización integral que combina el problema de empaquetado 1D (1D-BPP) con el balance de peso (Weight \& Balance) para la asignación óptima de carga en vuelos intercontinentales de KLM. Este modelo representa el enfoque original propuesto por Puttaert y sirve como base de comparación para otros modelos.
+
+\section{Conjuntos}
+
+\begin{align}
+I &= \{\text{Items de carga}\} \\
+J &= \{\text{ULDs disponibles}\} \\
+J_{reg} &= \{j \in J : j \text{ es ULD regular (no BAX/BUP/T)}\} \\
+J_{BAX} &= \{j \in J : j \text{ es ULD BAX}\} \\
+J_{BUP} &= \{j \in J : j \text{ es ULD BUP}\} \\
+J_{T} &= \{j \in J : j \text{ es ULD T}\} \\
+J_{COL} &= \{j \in J : j \text{ contiene items COL}\} \\
+J_{CRT} &= \{j \in J : j \text{ contiene items CRT}\} \\
+T &= \{\text{Posiciones de carga en la aeronave}\} \\
+T_{C1} &= \{t \in T : t \text{ en compartimento 1}\} \\
+T_{C2} &= \{t \in T : t \text{ en compartimento 2}\} \\
+T_{C3} &= \{t \in T : t \text{ en compartimento 3}\} \\
+T_{C4} &= \{t \in T : t \text{ en compartimento 4}\} \\
+T_{left} &= \{t \in T : t \text{ lado izquierdo}\} \\
+T_{right} &= \{t \in T : t \text{ lado derecho}\} \\
+P &= \{\text{Grupos de prefijos de items}\}
+\end{align}
+
+\section{Parámetros}
+
+\subsection{Parámetros de Items}
+\begin{align}
+w_i &\in \mathbb{R}^+ \quad \forall i \in I \quad \text{(Peso del item } i\text{)} \\
+v_i &\in \mathbb{R}^+ \quad \forall i \in I \quad \text{(Volumen del item } i\text{)} \\
+COL_i &\in \{0,1\} \quad \forall i \in I \quad \text{(Item } i \text{ es COL)} \\
+CRT_i &\in \{0,1\} \quad \forall i \in I \quad \text{(Item } i \text{ es CRT)}
+\end{align}
+
+\subsection{Parámetros de ULDs}
+\begin{align}
+W_j &\in \mathbb{R}^+ \quad \forall j \in J \quad \text{(Capacidad máxima de peso del ULD } j\text{)} \\
+V_j &\in \mathbb{R}^+ \quad \forall j \in J \quad \text{(Volumen del ULD } j\text{)} \\
+w_j &\in \mathbb{R}^+ \quad \forall j \in J \quad \text{(Peso del ULD } j\text{)}
+\end{align}
+
+\subsection{Parámetros de la Aeronave}
+\begin{align}
+DOI &\in \mathbb{R} \quad \text{(Dry Operating Index)} \\
+OEW &\in \mathbb{R}^+ \quad \text{(Operating Empty Weight)} \\
+TOF &\in \mathbb{R}^+ \quad \text{(Take-Off Fuel)} \\
+TripF &\in \mathbb{R}^+ \quad \text{(Trip Fuel)} \\
+C &\in \mathbb{R} \quad \text{(Constante de conversión)} \\
+K &\in \mathbb{R} \quad \text{(Constante de referencia)} \\
+ZFW &\in \mathbb{R}^+ \quad \text{(Zero Fuel Weight)} \\
+reference\_arm &\in \mathbb{R} \quad \text{(Brazo de referencia)} \\
+lemac &\in \mathbb{R} \quad \text{(Leading Edge MAC)} \\
+mac\_formula &\in \mathbb{R}^+ \quad \text{(Fórmula MAC)}
+\end{align}
+
+\subsection{Parámetros de Compartimentos}
+\begin{align}
+\Delta_{C1} &\in \mathbb{R} \quad \text{(Delta índice compartimento 1)} \\
+\Delta_{C2} &\in \mathbb{R} \quad \text{(Delta índice compartimento 2)} \\
+\Delta_{C3} &\in \mathbb{R} \quad \text{(Delta índice compartimento 3)} \\
+\Delta_{C4} &\in \mathbb{R} \quad \text{(Delta índice compartimento 4)} \\
+W_{max}^{C1} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimento 1)} \\
+W_{max}^{C2} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimento 2)} \\
+W_{max}^{C3} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimento 3)} \\
+W_{max}^{C4} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimento 4)} \\
+W_{max}^{C1C2} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimentos 1+2)} \\
+W_{max}^{C3C4} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimentos 3+4)}
+\end{align}
+
+\subsection{Parámetros de Control}
+\begin{align}
+loadfactor &= 0.8 \quad \text{(Factor de carga volumétrica)} \\
+threshold\_volume &= \text{umbral\_volumen\_AKE} \times 10^6 \quad \text{(Umbral de volumen para AKE)} \\
+min\_load\_factor &= 0.2 \quad \text{(Factor de carga mínimo)} \\
+a_{lat}^{TOW} &= 0.5 \quad \text{(Parámetro balance lateral TOW)} \\
+b_{lat}^{TOW} &= 0.5 \quad \text{(Parámetro balance lateral TOW)} \\
+a_{lat}^{LW} &= 0.5 \quad \text{(Parámetro balance lateral LW)} \\
+b_{lat}^{LW} &= 0.5 \quad \text{(Parámetro balance lateral LW)} \\
+M &= \max_{i \in I} w_i \quad \text{(Big M se establece dinámicamente como el peso máximo de los items)}
+\end{align}
+
+\section{Variables de Decisión}
+
+\begin{align}
+f_{jt} &\in \{0,1\} \quad \forall j \in J, \forall t \in T \quad \text{(Asignación del ULD } j \text{ a la posición } t\text{)} \\
+w_{ijt} &\in \mathbb{R}^+ \quad \forall i \in I, \forall j \in J, \forall t \in T \quad \text{(Peso del item } i \text{ en ULD } j \text{ posición } t\text{)} \\
+u_j &\in \{0,1\} \quad \forall j \in J \quad \text{(Activación del ULD } j\text{)} \\
+p_{ij} &\in \{0,1\} \quad \forall i \in I, \forall j \in J \quad \text{(Asignación del item } i \text{ al ULD } j\text{)} \\
+z_{ijt} &\in \{0,1\} \quad \forall i \in I, \forall j \in J, \forall t \in T \quad \text{(Asignación del item } i \text{ al ULD } j \text{ posición } t\text{)} \\
+score_{AKE,j} &\in \mathbb{R}^+ \quad \forall j \in J_{reg} \quad \text{(Puntuación AKE del ULD } j\text{)} \\
+score_{PMC\_PAG,j} &\in \mathbb{R}^+ \quad \forall j \in J_{reg} \quad \text{(Puntuación PMC/PAG del ULD } j\text{)} \\
+shortfall_j &\in \mathbb{R}^+ \quad \forall j \in J_{reg} \quad \text{(Subutilización del ULD } j\text{)} \\
+sep_{p,j} &\in \{0,1\} \quad \forall p \in P, \forall j \in J \quad \text{(Penalización de separación del grupo } p \text{ en ULD } j\text{)} \\
+ZFW\_index &\in \mathbb{R} \quad \text{(Índice Zero Fuel Weight)} \\
+MAC &\in \mathbb{R} \quad \text{(Mean Aerodynamic Chord)}
+\end{align}
+
+\section{Función Objetivo Multi-objetivo}
+
+\subsection{Objetivo 1: Optimización MAC (Prioridad 6)}
+\begin{align}
+\min \quad & MAC \\
+\text{s.t.} \quad & MAC = \frac{\left( \frac{C \cdot (ZFW\_index - K)}{ZFW} + reference\_arm - lemac \right)}{mac\_formula / 100} \\
+& ZFW\_index = DOI + INDEX\_PAX + \sum_{k=1}^{4} \left( \sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{Ck}} w_{ijt} \cdot \Delta_{Ck} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{Ck}} w_j \cdot f_{jt} \cdot \Delta_{Ck} \right)
+\end{align}
+
+\subsection{Objetivo 2: Preferencia de Volumen (Prioridad 5)}
+\begin{align}
+\min \quad & \sum_{j \in J_{reg}} (score_{AKE,j} + score_{PMC\_PAG,j}) \\
+\text{s.t.} \quad & score_{AKE,j} = \sum_{i \in I: v_i < threshold\_volume} p_{ij} \cdot (threshold\_volume - v_i) \cdot \mathbf{1}_{AKE}(j) \quad \forall j \in J_{reg} \\
+& score_{PMC\_PAG,j} = \sum_{i \in I: v_i < threshold\_volume} p_{ij} \cdot (threshold\_volume - v_i) \cdot \mathbf{1}_{PMC\_PAG}(j) \quad \forall j \in J_{reg}
+\end{align}
+
+\subsection{Objetivo 3: Minimizar ULDs (Prioridad 4)}
+\begin{equation}
+\min \quad \sum_{j \in J} u_j
+\end{equation}
+
+\subsection{Objetivo 4: Minimizar Subutilización (Prioridad 3)}
+\begin{align}
+\min \quad & \sum_{j \in J_{reg}} shortfall_j \\
+\text{s.t.} \quad & shortfall_j \geq min\_load\_factor - \frac{\sum_{i \in I} v_i \cdot p_{ij}}{V_j} \quad \forall j \in J_{reg} \\
+& shortfall_j \geq 0 \quad \forall j \in J_{reg}
+\end{align}
+
+\subsection{Objetivo 5: Minimizar Separación (Prioridad 2)}
+\begin{align}
+\min \quad & \sum_{p \in P} \sum_{j \in J} sep_{p,j} \\
+\text{s.t.} \quad & \sum_{i \in I_p} p_{ij} \leq |I_p| \cdot sep_{p,j} \quad \forall p \in P, \forall j \in J
+\end{align}
+
+\subsection{Objetivo 6: Proximidad BAX (Prioridad 1)}
+\begin{equation}
+\min \quad \sum_{j \in J_{BAX}} \sum_{t \in T} proximity\_score(t) \cdot f_{jt}
+\end{equation}
+
+\section{Restricciones}
+
+\subsection{Restricciones de Asignación de Items}
+
+\subsubsection{P1: Restricción de Apertura de ULDs}
+\begin{equation}
+\sum_{j \in J_{reg}} u_j \geq number\_of\_opened\_uld \tag{P1}
+\end{equation}
+
+\subsubsection{P2: Restricción de Uso de ULD}
+\begin{equation}
+\sum_{i \in I} p_{ij} \geq u_j \quad \forall j \in J_{reg} \tag{P2}
+\end{equation}
+
+\subsubsection{P3: Restricción de Capacidad de Peso}
+\begin{equation}
+\sum_{i \in I} w_i \cdot p_{ij} \leq W_j \cdot u_j \quad \forall j \in J \tag{P3}
+\end{equation}
+
+\subsubsection{P4: Restricción de Capacidad Volumétrica}
+\begin{equation}
+\sum_{i \in I} v_i \cdot p_{ij} \leq V_j \cdot u_j \cdot loadfactor \quad \forall j \in J \tag{P4}
+\end{equation}
+
+\subsubsection{P5: Restricción de Asignación Única}
+\begin{equation}
+\sum_{j \in J} p_{ij} = 1 \quad \forall i \in I \tag{P5}
+\end{equation}
+
+\subsubsection{P9: Restricción de Prohibición en BAX/BUP/T}
+\begin{equation}
+p_{ij} = 0 \quad \forall i \in I, \forall j \in J_{BAX} \cup J_{BUP} \cup J_T \tag{P9}
+\end{equation}
+
+\subsection{Restricciones de Asignación de ULDs}
+
+\subsubsection{P6: Restricción de Asignación de ULD}
+\begin{equation}
+\sum_{t \in T} f_{jt} = u_j \quad \forall j \in J \tag{P6}
+\end{equation}
+
+\subsubsection{P7: Restricción de Posición Única}
+\begin{equation}
+\sum_{j \in J} f_{jt} \leq 1 \quad \forall t \in T \tag{P7}
+\end{equation}
+
+\subsubsection{P8: Restricción de Asignación BAX/BUP/T}
+\begin{equation}
+\sum_{t \in T} f_{jt} = 1 \quad \forall j \in J_{BAX} \cup J_{BUP} \cup J_T \tag{P8}
+\end{equation}
+
+\subsection{Restricciones de Linealización}
+
+\subsubsection{Relación entre Variables de Peso y Asignación (L1-L7)}
+\begin{align}
+w_{ijt} &\leq M \cdot p_{ij} \quad \forall i \in I, \forall j \in J, \forall t \in T \tag{L1} \\
+w_{ijt} &\leq M \cdot f_{jt} \quad \forall i \in I, \forall j \in J, \forall t \in T \tag{L2} \\
+w_{ijt} &\geq w_i - M \cdot (1 - z_{ijt}) \quad \forall i \in I, \forall j \in J, \forall t \in T \tag{L6} \\
+w_{ijt} &\leq w_i \quad \forall i \in I, \forall j \in J, \forall t \in T \tag{L7}
+\end{align}
+
+\subsubsection{Relación entre Variables de Asignación (L3-L5)}
+\begin{align}
+z_{ijt} &\leq p_{ij} \quad \forall i \in I, \forall j \in J, \forall t \in T \tag{L3} \\
+z_{ijt} &\leq f_{jt} \quad \forall i \in I, \forall j \in J, \forall t \in T \tag{L4} \\
+z_{ijt} &\geq p_{ij} + f_{jt} - 1 \quad \forall i \in I, \forall j \in J, \forall t \in T \tag{L5}
+\end{align}
+
+\subsection{Restricciones de Posiciones}
+
+\subsubsection{P10: Restricción de Posiciones Prohibidas}
+\begin{equation}
+\sum_{t \in T_{forbidden}(j)} f_{jt} = 0 \quad \forall j \in J \tag{P10}
+\end{equation}
+
+\subsubsection{P11: Restricción de Posiciones Superpuestas}
+\begin{equation}
+f_{j_1,t_1} + f_{j_2,t_2} \leq 1 \quad \forall j_1, j_2 \in J: j_1 \neq j_2, \forall t_1 \in T, \forall t_2 \in T_{overlap}(t_1) \tag{P11}
+\end{equation}
+
+\subsection{Restricciones de Peso}
+
+\subsubsection{P12: Restricción de Peso por Posición}
+\begin{align}
+\sum_{i \in I} \sum_{j \in J} w_{ijt} &\leq W_{max}(t) \quad \forall t \in T \tag{P12a} \\
+\sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} w_j \cdot f_{jt} &\leq W_{max}(t) \tag{P12b} \quad \forall t \in T
+\end{align}
+
+\subsubsection{P13-P18: Restricciones de Peso por Compartimento}
+\begin{align}
+\sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{C1}} w_{ijt} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{C1}} w_j \cdot f_{jt} &\leq W_{max}^{C1} \tag{P13} \\
+\sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{C2}} w_{ijt} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{C2}} w_j \cdot f_{jt} &\leq W_{max}^{C2} \tag{P14} \\
+\sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{C3}} w_{ijt} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{C3}} w_j \cdot f_{jt} &\leq W_{max}^{C3} \tag{P15} \\
+\sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{C4}} w_{ijt} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{C4}} w_j \cdot f_{jt} &\leq W_{max}^{C4} \tag{P16} \\
+\sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{C1} \cup T_{C2}} w_{ijt} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{C1} \cup T_{C2}} w_j \cdot f_{jt} &\leq W_{max}^{C1C2} \tag{P17} \\
+\sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{C3} \cup T_{C4}} w_{ijt} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{C3} \cup T_{C4}} w_j \cdot f_{jt} &\leq W_{max}^{C3C4} \tag{P18}
+\end{align}
+
+\subsubsection{P19: Restricción de Peso Total}
+\begin{equation}
+\sum_{i \in I} \sum_{j \in J} \sum_{t \in T} w_{ijt} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T} w_j \cdot f_{jt} \leq MPL \tag{P19}
+\end{equation}
+
+\subsection{Restricciones de Balance}
+
+\subsubsection{P20-P21: Restricciones de Balance Lateral TOW}
+\begin{align}
+&\left( \sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{left}} w_{ijt} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{left}} w_j \cdot f_{jt} \right) - \\
+&\left( \sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{right}} w_{ijt} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{right}} w_j \cdot f_{jt} \right) \leq \\
+&a_{lat}^{TOW} \cdot (W_{total} + OEW + TOF) \cdot b_{lat}^{TOW}
+\end{align}
+
+\begin{align}
+&\left( \sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{right}} w_{ijt} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{right}} w_j \cdot f_{jt} \right) - \\
+&\left( \sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{left}} w_{ijt} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{left}} w_j \cdot f_{jt} \right) \leq \\
+&a_{lat}^{TOW} \cdot (W_{total} + OEW + TOF) \cdot b_{lat}^{TOW}
+\end{align}
+
+\subsubsection{P22-P23: Restricciones de Balance Lateral LW}
+\begin{align}
+&\left( \sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{left}} w_{ijt} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{left}} w_j \cdot f_{jt} \right) - \\
+&\left( \sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{right}} w_{ijt} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{right}} w_j \cdot f_{jt} \right) \leq \\
+&a_{lat}^{LW} \cdot (W_{total} + OEW + TOF - TripF) \cdot b_{lat}^{LW}
+\end{align}
+
+\begin{align}
+&\left( \sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{right}} w_{ijt} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{right}} w_j \cdot f_{jt} \right) - \\
+&\left( \sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{left}} w_{ijt} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{left}} w_j \cdot f_{jt} \right) \leq \\
+&a_{lat}^{LW} \cdot (W_{total} + OEW + TOF - TripF) \cdot b_{lat}^{LW}
+\end{align}
+
+\subsection{Restricciones de Envelope CG}
+
+\subsubsection{P24-P25: Restricciones de Envelope CG TOW}
+\begin{align}
+INDEX\_TOW\_fwd &\leq DOI + fuel\_index + INDEX\_PAX + \tag{P24} \\
+&\quad \sum_{k=1}^{4} \left( \sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{Ck}} w_{ijt} \cdot \Delta_{Ck} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{Ck}} w_j \cdot f_{jt} \cdot \Delta_{Ck} \right) \\
+DOI + fuel\_index + INDEX\_PAX + \\
+&\quad \sum_{k=1}^{4} \left( \sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{Ck}} w_{ijt} \cdot \Delta_{Ck} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{Ck}} w_j \cdot f_{jt} \cdot \Delta_{Ck} \right) \leq INDEX\_TOW\_aft \tag{P25}
+\end{align}
+
+\subsubsection{P26-P27: Restricciones de Envelope CG ZFW}
+\begin{align}
+INDEX\_ZFW\_fwd &\leq DOI + INDEX\_PAX + \tag{P26} \\
+&\quad \sum_{k=1}^{4} \left( \sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{Ck}} w_{ijt} \cdot \Delta_{Ck} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{Ck}} w_j \cdot f_{jt} \cdot \Delta_{Ck} \right) \\
+DOI + INDEX\_PAX + \\
+&\quad \sum_{k=1}^{4} \left( \sum_{i \in I} \sum_{j \in J} \sum_{t \in T_{Ck}} w_{ijt} \cdot \Delta_{Ck} + \sum_{j \in J_{BAX} \cup J_{BUP} \cup J_T} \sum_{t \in T_{Ck}} w_j \cdot f_{jt} \cdot \Delta_{Ck} \right) \leq INDEX\_ZFW\_aft \tag{P27}
+\end{align}
+
+\subsection{Restricciones de Manejo Especial}
+
+\subsubsection{P28: Restricción de Manejo Especial (COL/CRT) en ULDs}
+\begin{equation}
+p_{i_1,j} + p_{i_2,j} \leq 1 \quad \forall j \in J_{reg}, \forall i_1, i_2 \in I: i_1 \neq i_2, COL_{i_1} = 1, CRT_{i_2} = 1 \tag{P28}
+\end{equation}
+
+\subsubsection{P29-P30: Restricciones de Manejo Especial COL/CRT por Compartimento}
+Para aeronaves 772 y 77W:
+\begin{align}
+\sum_{j \in J_{COL}} f_{jt} + \sum_{j \in J_{CRT}} f_{jt} &\leq 1 \quad \forall t \in T_{C1} \cup T_{C2} \tag{P29a} \\
+\sum_{j \in J_{COL}} f_{jt} + \sum_{j \in J_{CRT}} f_{jt} &\leq 1 \quad \forall t \in T_{C3} \cup T_{C4}
+\end{align}
+
+Para aeronaves 789 y 781:
+\begin{equation}
+\sum_{j \in J_{COL}} f_{jt} + \sum_{j \in J_{CRT}} f_{jt} = 0 \quad \forall t \in T_{C3} \cup T_{C4} \tag{P30}
+\end{equation}
+
+\section{Configuración del Solver}
+
+\subsection{Parámetros de Optimización}
+\begin{itemize}
+    \item \textbf{Time Limit W\&B}: 60 segundos
+    \item \textbf{Time Limit Volume}: 15 segundos
+    \item \textbf{Time Limit ULD}: 15 segundos
+    \item \textbf{Time Limit Separation}: 15 segundos
+    \item \textbf{Time Limit Underutilization}: 15 segundos
+    \item \textbf{Time Limit BAX}: 15 segundos
+    \item \textbf{Model Sense}: Minimización
+    \item \textbf{Solver}: Gurobi con multi-objetivo
+\end{itemize}
+
+\subsection{Entornos Multi-Objetivo}
+\begin{itemize}
+    \item \textbf{WB\_env}: Entorno para optimización W\&B
+    \item \textbf{volume\_env}: Entorno para optimización de volumen
+    \item \textbf{uld\_env}: Entorno para optimización de ULDs
+    \item \textbf{underutilization\_env}: Entorno para optimización de subutilización
+    \item \textbf{separation\_env}: Entorno para optimización de separación
+    \item \textbf{bax\_env}: Entorno para optimización BAX
+\end{itemize}
+
+\section{Resultados del Modelo}
+
+\subsection{Estadísticas de Rendimiento}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Métrica & Valor & Descripción \\
+\midrule
+Total Vuelos Ejecutados & 248 & Vuelos procesados \\
+Vuelos Válidos & 179 & Soluciones encontradas \\
+Vuelos Infactibles & 69 & Sin solución \\
+Tasa de Éxito & 72.1\% & Porcentaje de éxito \\
+\bottomrule
+\end{tabular}
+\caption{Rendimiento del Modelo Puttaert}
+\end{table}
+
+\subsection{Análisis de Rendimiento}
+El modelo Puttaert presenta una tasa de éxito del 72.1\%, lo que indica:
+\begin{itemize}
+    \item Enfoque integral efectivo
+    \item Complejidad computacional moderada
+    \item Manejo adecuado de casos complejos
+    \item Optimización multi-objetivo balanceada
+\end{itemize}
+
+\section{Ventajas y Desventajas}
+
+\subsection{Ventajas}
+\begin{itemize}
+    \item Modelo integral 1D-BPP + Weight \& Balance
+    \item Optimización multi-objetivo completa
+    \item Manejo de restricciones complejas
+    \item Flexibilidad en asignaciones
+    \item Enfoque original bien fundamentado
+\end{itemize}
+
+\subsection{Desventajas}
+\begin{itemize}
+    \item Tasa de éxito moderada (72.1\%)
+    \item Complejidad computacional elevada
+    \item Tiempo de ejecución prolongado
+    \item Dependencia de múltiples objetivos
+    \item Limitaciones en casos extremos
+\end{itemize}
+
+\section{Análisis Comparativo}
+
+\subsection{Comparación con Otros Modelos}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Modelo & Tasa de Éxito & Infactibilidad & Ranking \\
+\midrule
+Venezian & 89.8\% & 10.2\% & 1 \\
+Optimized Actual & 84.6\% & 15.4\% & 2 \\
+Baseline & 77.0\% & 23.0\% & 3 \\
+\textbf{Puttaert} & \textbf{72.1\%} & \textbf{27.9\%} & \textbf{4} \\
+BAX Fixed & 66.8\% & 33.2\% & 5 \\
+\bottomrule
+\end{tabular}
+\caption{Comparación de Rendimiento entre Modelos}
+\end{table}
+
+\subsection{Análisis de Eficiencia}
+\begin{itemize}
+    \item \textbf{Cuarto mejor modelo} en términos de éxito
+    \item \textbf{Complejidad moderada} computacional
+    \item \textbf{Enfoque integral} bien balanceado
+    \item \textbf{Base teórica} sólida
+\end{itemize}
+
+\section{Aplicaciones Prácticas}
+
+\subsection{Casos de Uso Ideales}
+\begin{itemize}
+    \item Optimización integral de carga aérea
+    \item Análisis de balance de peso completo
+    \item Validación de configuraciones complejas
+    \item Investigación y desarrollo
+\end{itemize}
+
+\subsection{Limitaciones Operacionales}
+\begin{itemize}
+    \item Tiempo de ejecución prolongado
+    \item Complejidad de implementación
+    \item Dependencia de múltiples objetivos
+    \item Limitaciones en tiempo real
+\end{itemize}
+
+\section{Conclusiones}
+
+El modelo Puttaert representa un enfoque integral y bien fundamentado para la optimización de carga aérea. Su tasa de éxito del 72.1\% lo posiciona como un modelo de referencia, aunque presenta limitaciones en términos de eficiencia computacional.
+
+El modelo demuestra la complejidad inherente del problema de optimización de carga aérea, combinando múltiples objetivos y restricciones en un solo modelo integrado. Su enfoque multi-objetivo proporciona una base sólida para el desarrollo de modelos más eficientes.
+
+Para maximizar su efectividad, el modelo Puttaert es ideal para:
+\begin{itemize}
+    \item Investigación y desarrollo
+    \item Análisis de casos complejos
+    \item Validación de configuraciones
+    \item Desarrollo de modelos mejorados
+\end{itemize}
+
+Sin embargo, para aplicaciones operacionales que requieren mayor eficiencia, se recomienda el uso de modelos más optimizados como el modelo Venezian o Optimized Actual.
+
+\end{document}

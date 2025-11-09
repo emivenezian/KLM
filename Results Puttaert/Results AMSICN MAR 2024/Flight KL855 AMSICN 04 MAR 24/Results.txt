@@ -1,0 +1,29 @@
+ULD PAG-28 with weight 306.0 kg with a volume loadfactor of 24.105% and a weight loadfactor of 6.544% is loaded to position 11P
+ULD BAX-10 with weight 767.0 kg is loaded to position 12R
+ULD BAX-12 with weight 531.0 kg is loaded to position 13L
+ULD BAX-1 with weight 300.0 kg is loaded to position 13R
+ULD BAX-19 with weight 293.0 kg is loaded to position 14L
+ULD BAX-4 with weight 750.0 kg is loaded to position 14R
+ULD T-37 with weight 295 kg is loaded to position 21P
+ULD T-33 with weight 756 kg is loaded to position 22P
+ULD T-34 with weight 1695 kg is loaded to position 23P
+ULD T-35 with weight 1970 kg is loaded to position 31P
+ULD BAX-8 with weight 768.0 kg is loaded to position 33L
+ULD AKE-20 with weight 212.5 kg with a volume loadfactor of 54.833% and a weight loadfactor of 13.388% is loaded to position 33R
+ULD BAX-6 with weight 818.0 kg is loaded to position 41L
+ULD BAX-3 with weight 782.0 kg is loaded to position 41R
+ULD PMC-32 with weight 3452.9 kg with a volume loadfactor of 79.784% and a weight loadfactor of 67.678% is loaded to position 41P
+ULD T-36 with weight 1905 kg is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 2947.0 kg
+Weight in Compartment 2: 2746.0 kg
+Weight in Compartment 3: 2950.5 kg
+Weight in Compartment 4: 6957.9 kg
+===========================================================================
+%MAC ZFW is 31.1510250483924
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 30.2
+Resulting in a fuel deviation of -0.048% or -38.464 kg
+---------------------------------------------------------------------------
+3 ULDs are built by the model
+3 ULDs were actually built

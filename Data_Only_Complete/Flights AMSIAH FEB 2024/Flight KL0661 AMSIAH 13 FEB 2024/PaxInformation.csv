@@ -1,0 +1,6 @@
+Airline,FlightNumber,LocalDepartureDate,AircraftType,DepartureAirport,SegmentArrivalAirport,CenterOfGravityCabin,PassengerCount
+KL,661,2024-02-13,781,AMS,IAH,CABIN0D,49
+KL,661,2024-02-13,781,AMS,IAH,CABIN0A,23
+KL,661,2024-02-13,781,AMS,IAH,CABIN0C,13
+KL,661,2024-02-13,781,AMS,IAH,CABIN0B,22
+KL,661,2024-02-13,781,AMS,IAH,CABIN0E,9

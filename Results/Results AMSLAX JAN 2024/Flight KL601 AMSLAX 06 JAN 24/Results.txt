@@ -1,0 +1,21 @@
+ULD PAG-25 with weight 1175.2 kg with a volume loadfactor of 33.910% and a weight loadfactor of 25.133% is loaded to position 11P
+ULD PMC-26 with weight 221.0 kg with a volume loadfactor of 17.600% and a weight loadfactor of 4.332% is loaded to position 12P
+ULD PAG-28 with weight 2845.7 kg with a volume loadfactor of 79.902% and a weight loadfactor of 60.859% is loaded to position 13P
+ULD BAX-7 with weight 328.0 kg is loaded to position 21R
+ULD BAX-1 with weight 580.0 kg is loaded to position 22R
+ULD BAX-0 with weight 521.0 kg is loaded to position 23L
+ULD T-29 with weight 576.0 kg is loaded to position 23P
+ULD AKE-24 with weight 537.0 kg with a volume loadfactor of 79.760% and a weight loadfactor of 33.840% is loaded to position 31L
+ULD BAX-14 with weight 735.0 kg is loaded to position 31R
+ULD BAX-8 with weight 652.0 kg is loaded to position 32L
+ULD BAX-4 with weight 721.0 kg is loaded to position 32R
+ULD BAX-3 with weight 727.0 kg is loaded to position 33L
+ULD BAX-6 with weight 745.0 kg is loaded to position 33R
+ULD BAX-10 with weight 771.0 kg is loaded to position 41L
+ULD BAX-21 with weight 763.0 kg is loaded to position 41R
+ULD T-30 with weight 2230.0 kg is loaded to position 41P
+ULD T-31 with weight 2245.0 kg is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 4242.0 kg
+Weight in Compartment 2: 2005.0 kg
+Weight in Compartment 3: 4117.0 kg

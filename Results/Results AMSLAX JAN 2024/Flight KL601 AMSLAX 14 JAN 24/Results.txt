@@ -1,0 +1,35 @@
+ULD T-34 with weight 218 kg is loaded to position 11R
+ULD BAX-10 with weight 683.0 kg is loaded to position 12R
+ULD BAX-5 with weight 693.0 kg is loaded to position 13L
+ULD BAX-2 with weight 368.0 kg is loaded to position 13R
+ULD BUP-30 with weight 360.0 kg is loaded to position 21P
+ULD PMC-28 with weight 1548.0 kg with a volume loadfactor of 69.177% and a weight loadfactor of 30.341% is loaded to position 22P
+ULD T-31 with weight 584 kg is loaded to position 23P
+ULD PMC-29 with weight 623.1 kg with a volume loadfactor of 14.511% and a weight loadfactor of 12.213% is loaded to position 24P
+ULD T-33 with weight 1150 kg is loaded to position 31P
+ULD PMC-25 with weight 1921.9 kg with a volume loadfactor of 79.688% and a weight loadfactor of 37.670% is loaded to position 32P
+ULD BAX-12 with weight 791.0 kg is loaded to position 34L
+ULD BAX-0 with weight 757.0 kg is loaded to position 41L
+ULD BAX-11 with weight 772.0 kg is loaded to position 41R
+ULD BAX-15 with weight 791.0 kg is loaded to position 42L
+ULD BAX-7 with weight 109.0 kg is loaded to position 42R
+ULD BAX-14 with weight 517.0 kg is loaded to position 43L
+ULD BAX-9 with weight 736.0 kg is loaded to position 43R
+ULD T-32 with weight 4040 kg is loaded to position 43P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 1962.0 kg
+Weight in Compartment 2: 3115.1 kg
+Weight in Compartment 3: 3862.9 kg
+Weight in Compartment 4: 7722.0 kg
+===========================================================================
+%MAC ZFW is 32.65987198801235
+%Number of ULDs used is 18.0
+%Total Volume Packed is 20422057.0
+%Booking Separation Penalty is 9.0
+%BAX Proximity Score is 11.0
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 31.7
+Resulting in a fuel deviation of -0.129% or -79.844 kg
+---------------------------------------------------------------------------
+3 ULDs are built by the model
+4 ULDs were actually built

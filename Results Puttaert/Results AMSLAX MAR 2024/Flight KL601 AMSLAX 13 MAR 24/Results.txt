@@ -1,0 +1,32 @@
+ULD BAX-8 with weight 706.0 kg is loaded to position 11L
+ULD BAX-11 with weight 781.0 kg is loaded to position 11R
+ULD BAX-6 with weight 241.0 kg is loaded to position 12L
+ULD BAX-10 with weight 512.0 kg is loaded to position 12R
+ULD T-37 with weight 2380 kg is loaded to position 13P
+ULD PMC-31 with weight 3236.5 kg with a volume loadfactor of 77.976% and a weight loadfactor of 63.437% is loaded to position 21P
+ULD BUP-35 with weight 762.0 kg is loaded to position 22P
+ULD BUP-33 with weight 762.0 kg is loaded to position 23P
+ULD T-38 with weight 2345 kg is loaded to position 25P
+ULD BAX-1 with weight 675.0 kg is loaded to position 26L
+ULD AKE-18 with weight 337.3 kg with a volume loadfactor of 50.343% and a weight loadfactor of 21.254% is loaded to position 26R
+ULD BUP-34 with weight 762.0 kg is loaded to position 31P
+ULD T-39 with weight 1243 kg is loaded to position 32P
+ULD T-36 with weight 1395 kg is loaded to position 33P
+ULD BAX-12 with weight 765.0 kg is loaded to position 36L
+ULD BAX-4 with weight 770.0 kg is loaded to position 36R
+ULD BAX-0 with weight 733.0 kg is loaded to position 41R
+ULD PMC-32 with weight 3891.8 kg with a volume loadfactor of 78.244% and a weight loadfactor of 76.279% is loaded to position 41P
+ULD PAG-27 with weight 2049.5 kg with a volume loadfactor of 73.094% and a weight loadfactor of 43.829% is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 4620.0 kg
+Weight in Compartment 2: 7105.5 kg
+Weight in Compartment 3: 3400.0 kg
+Weight in Compartment 4: 6674.2 kg
+===========================================================================
+%MAC ZFW is 24.954742620422696
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 25.0
+Resulting in a fuel deviation of 0.005% or 3.790 kg
+---------------------------------------------------------------------------
+4 ULDs are built by the model
+9 ULDs were actually built

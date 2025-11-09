@@ -1,0 +1,74 @@
+The model will run the following flight:
+--------------------------------------------------------------------------------------------------------
+Flight Number: KL835 PHBVD - Aircraft Type: 77W - Departure: AMS - Arrival: SIN - Date: 08 MAR 24
+
+ZFW: 215591.2 kg - TOW: 333352.2 kg - LW: 226382.2 kg - OEW: 172617.0 kg
+
+Fuel: 117761 kg - Trip Fuel: 106970 kg
+
+Number of Cargo ULDs used: 10
+
+Number of BAX ULDs: 10 - Number of BUP ULDs: 0 - Number of T ULDs: 3
+--------------------------------------------------------------------------------------------------------
+ULD set available for loading:
+AKE-27, AKE
+AKE-29, AKE
+PAG-30, PAG
+PAG-31, PAG
+PAG-33, PAG
+PMC-50, PMC
+PMC-52, PMC
+PMC-53, PMC
+PMC-58, PMC
+PMC-59, PMC
+--------------------------------------------------------------------------------------------------------
+BAX and BUP set for loading:
+BAX-0, AKE
+BAX-2, AKE
+BAX-4, AKE
+BAX-7, AKE
+BAX-9, AKE
+BAX-11, AKE
+BAX-13, AKE
+BAX-14, AKE
+BAX-25, AKE
+BAX-60, AKE
+T-61, PMC
+T-62, PMC
+T-63, PMC
+--------------------------------------------------------------------------------------------------------
+PAX allocation:
+PAX-A: 26
+PAX-B: 18
+PAX-C: 40
+PAX-D: 46
+PAX-E: 27
+PAX-F: 33
+PAX-G: 26
+Total PAX: 216
+--------------------------------------------------------------------------------------------------------
+Check if all items fit the ULDs dimensions:
+--------------------------------------------------------------------------------------------------------
+The following items do not fit the dimensions of the ULDs:
+Serialnumber: 1322204-1
+Dimensions: (330, 19, 19)
+Serialnumber: 1322204-2
+Dimensions: (330, 13, 13)
+Serialnumber: 1322204-3
+Dimensions: (330, 13, 13)
+Serialnumber: 1322204-4
+Dimensions: (330, 12, 12)
+Serialnumber: 1322204-5
+Dimensions: (330, 17, 17)
+Serialnumber: 1322204-6
+Dimensions: (330, 18, 18)
+Serialnumber: 1331960-19
+Dimensions: (361, 106, 25)
+Serialnumber: 1334756-1
+Dimensions: (329, 58, 39)
+Serialnumber: 1334756-2
+Dimensions: (328, 58, 40)
+--------------------------------------------------------------------------------------------------------
+
+184 / 193 items fit the dimensions of the ULDs
+--------------------------------------------------------------------------------------------------------

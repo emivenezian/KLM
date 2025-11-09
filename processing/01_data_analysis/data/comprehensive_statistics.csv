@@ -1,0 +1,8 @@
+metric,count,mean,std,min,max,median,q25,q75,ci_95_lower,ci_95_upper,skewness,kurtosis
+Cargo Items per Flight,525,66.22,46.85,2,690,56.0,38.0,87.0,62.2,70.24,5.011,58.608
+Weight per Flight (kg),525,0.0,0.0,0,0,0.0,0.0,0.0,,,,
+Volume per Flight (cubic meters),525,0.0,0.0,0,0,0.0,0.0,0.0,,,,
+Passengers per Flight,525,267.27,59.48,113,399,287.0,220.0,309.0,262.17,272.37,-0.5,-0.44
+ULDs per Flight,525,39.5,14.18,18,164,36.0,31.0,44.0,38.28,40.71,3.582,20.539
+COL Items per Flight,525,4.26,4.51,0,26,3.0,0.0,7.0,3.87,4.65,1.273,1.775
+CRT Items per Flight,525,1.11,2.04,0,11,0.0,0.0,2.0,0.93,1.28,2.125,4.343

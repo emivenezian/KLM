@@ -1,0 +1,1003 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{geometry}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{float}
+\geometry{a4paper, margin=1in}
+
+
+\title{Fuel Optimization in KLM Intercontinental Flights through Cargo Palletization and Weight Balance Modeling}
+\author{María Emilia Venezian Juricic \\ Under the supervision of Dr. Felipe Delgado \\ Pontificia Universidad Católica de Chile}
+\date{July 2025}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+
+    {\Large \textbf{Pontificia Universidad Católica de Chile}}\\
+    {\large Escuela de Ingeniería}\\
+    {\large Departamento de Ingeniería de Transporte y Logística}\\[2cm]
+
+    {\LARGE \bfseries Fuel Optimization in KLM Intercontinental Flights through Cargo Palletization and Weight Balance Modeling}\\[2.5cm]
+
+    \textbf{Author:}\\
+    {\large María Emilia Venezian Juricic}\\[0.5cm]
+    \textbf{Supervisor:}\\
+    {\large Dr. Felipe Delgado}\\[3cm]
+
+    \vfill
+
+    {\large July 2025}
+\end{titlepage}
+
+\maketitle
+
+\begin{abstract}
+This thesis explores how the strategic placement of cargo can translate into measurable fuel savings for intercontinental passenger flights. Building on prior work—especially the model proposed by Puttaert (2024)\cite{Puttaert2024}—it presents a refined Mixed Integer Linear Programming (MILP) model that integrates air cargo palletization and aircraft weight distribution to reduce fuel consumption on KLM’s long-haul routes. The model tackles the One-Dimensional Bin Packing and Weight \& Balance Problem (1D-BPP-W\&B), combining two interdependent decisions: how cargo is grouped into containers, and how those containers are distributed within the aircraft belly to optimize fuel use and maintain balance. Tested on 102 real KLM flights, the model achieves an average fuel reduction of 0.47\% per flight—saving over 350 kg of fuel compared to the airline’s current optimization baseline of 215 kg. Key enhancements include aircraft-specific CG calculations, temperature-sensitive cargo handling, reassignment limits, and improved booking separation logic. These refinements not only improve solution feasibility but also reduce average runtime by 41\%—from 261 to 153 seconds. By showing that where we place the weight can reshape both operational efficiency and environmental impact, this study reframes the role of optimization as a practical lever for sustainable aviation, offering a scalable, real-time solution for airlines seeking to minimize environmental impact without sacrificing operational integrity—and paving the way for smarter, greener logistics in the air cargo industry.
+
+
+\end{abstract}
+\newpage
+
+\section{Acknowledgments}
+I am deeply grateful to my father, who stayed up late listening to my wonderings, helping me organize my thoughts, and guiding me through difficult decisions with quiet insight. His belief in me was a cornerstone of this journey. Thank you for always being there when I needed clarity, for listening without rushing to answer, and for grounding me when I was overwhelmed. Your presence grounded me more than you know.
+
+I also extend my heartfelt thanks to Dr. Felipe Delgado, my mentor at Pontificia Universidad Católica de Chile, whose constant guidance, disposition to help, and pursuit of hard-to-get constraints shaped this work. Thank you for your rigorous guidance and unrelenting support throughout this thesis. Your intellectual generosity, sharp feedback, and trust in me made this work possible. I learned how to think precisely, and how to care about the details that matter. This thesis carries your imprint as much as mine.
+
+To those who reminded me — even when I forgot — that I was capable of finishing this.
+
+Thank you.
+\newpage
+
+\section{Introduction}
+
+The aviation industry is under growing pressure to reduce fuel consumption and carbon emissions. As airlines expand their fleets and route networks, optimization opportunities in cargo loading and aircraft weight distribution have emerged as critical levers for improving efficiency and sustainability. Among these, the optimization of air cargo palletization—deciding how items are packed into standardized containers—and aircraft weight and balance—deciding where those containers are placed in the plane—are especially promising, yet still underexploited.
+
+This thesis develops and tests a Mixed Integer Linear Programming (MILP) model to address what is known as the One-Dimensional Bin Packing and Weight and Balance Problem (1D-BPP-W\&B). In essence, it is a two-part problem: first, how to assign each cargo item to a Unit Load Device (ULD), and second, how to place those ULDs inside the aircraft belly to minimize fuel consumption while satisfying safety and operational constraints.
+
+The \textbf{bin packing} component involves allocating items of different sizes and weights into containers (ULDs) with finite capacity. In practice, this includes both commercial freight and passenger baggage. Each ULD must respect volume and weight limits, and certain items—like those requiring cooling (COL) or controlled room temperature (CRT)—must be separated or placed in specific positions.
+
+The \textbf{weight and balance} component focuses on the distribution of mass within the aircraft. Here, the goal is to place ULDs in such a way that the aircraft’s center of gravity (CG) remains within safe bounds while being as far aft as regulations allow. Why? Because an aft CG reduces the aircraft’s nose-down aerodynamic moment, which in turn reduces trim drag—resulting in lower fuel consumption.
+In aviation, the center of gravity (CG) is typically expressed as a percentage of the Mean Aerodynamic Chord (\%MAC), evaluated at Zero Fuel Weight (ZFW). A higher \%MAC — meaning the CG is located further aft — generally implies better aerodynamic efficiency, up to the regulatory limits defined by the aircraft’s CG envelope.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{CG.png}
+    \caption{Example of a CG envelope chart for the Boeing 787-9}
+    \label{fig:cg}
+\end{figure}
+
+To implement and test the model, real cargo and flight data from 102 intercontinental KLM passenger flights was used. These included routes operated by Boeing 777 and 787 aircraft, each with distinct belly layouts and position mappings. The model incorporates not only structural weight limits per ULD position and compartment, but also temperature constraints (e.g., prohibiting co-storage of COL and CRT items), booking separation rules, and operational limits on reassignment of cargo.
+
+% Revised paragraph in the Introduction section
+% Revised paragraph in the Introduction section
+The model was evaluated against five benchmarks using KLM’s operational flight data: (1) KLM’s optimization model; (2) a weight and balance (W\&B) optimization approach without palletization; (3) a sequential packing heuristic; (4) Puttaert’s original MILP formulation; and (5) the proposed model, an enhanced MILP formulation. The KLM optimization model, designed to improve cargo loading, achieves an average fuel savings of 215 kg per flight (0.3\% reduction) compared to KLM’s standard operational loading practices. In contrast, the proposed model delivers a superior 0.47\% reduction in fuel consumption per flight, equivalent to approximately 360 kg saved, outperforming the KLM optimization model by 145 kg per flight while enhancing operational feasibility through refined constraints. Additionally, the proposed model achieves a remarkable 41\% reduction in average computational runtime, from 261 to 153 seconds across all tested flights, with efficient performance even on large-scale instances such as AMS--LAX with 428 items, making it a highly practical solution for real-world airline operations.
+
+This thesis positions cargo loading optimization as more than a logistics problem — it is an engineering lever for measurable environmental gains. By demonstrating that modest improvements in ULD placement and packing logic can yield real, data-backed fuel savings, this work contributes to the broader movement toward smarter, greener aviation.
+
+The structure of this thesis is as follows: Section 2 reviews related literature and prior models. Section 3 formalizes the mathematical formulation. Section 4 details the methodology and data processing. Section 5 presents and discusses the results. Section 6 concludes with insights and recommendations for future work.
+
+This study investigates whether operationally grounded modifications to previous models can yield more feasible and implementable solutions without compromising performance.
+\newpage
+\section{Problem Description: 1D-BPP and Weight \& Balance}
+
+This work extends the MILP model proposed by Puttaert (2024), which combines a one-dimensional bin packing problem (1D-BPP) with aircraft-specific weight and balance (W\&B) constraints for cargo loading. While Puttaert’s formulation captures the fundamental interaction between weight distribution and packing efficiency, it does not fully reflect the complexity of real-world airline operations. The model presented here builds upon this foundation with significant enhancements to structure, logic, and aircraft-specific realism, aiming to produce feasible and efficient cargo plans under actual airline constraints.
+
+The proposed formulation restructures the multi-objective hierarchy to prioritize center of gravity (CG) optimization using aircraft-specific \%MAC calculations. This allows for a more precise representation of longitudinal balance, which directly impacts fuel efficiency and operational safety. Additional terms in the objective function penalize booking dispersion, ULD underutilization, and proximity of BAX containers—three cost-sensitive dimensions often overlooked in academic models but critical in airline logistics.
+
+To support these objectives, the variable architecture has been expanded to improve both modeling power and numerical stability. New variables allow the model to track the dispersion of items within bookings and apply fine-grained penalties when these items are spread across multiple ULDs. Similarly, the weight distribution across compartments and positions is monitored more precisely, enabling tighter control of balance constraints.
+
+From a feasibility standpoint, the model introduces a detailed overlap logic to account for physical conflicts between ULD positions—particularly pallet positions that partially or fully obstruct adjacent containers. These overlaps are managed through binary exclusions derived from aircraft-specific positional maps. Furthermore, new constraints enforce temperature handling rules, such as the mutual exclusion of COL (cool) and CRT (controlled room temperature) cargo in certain compartments, which is especially relevant for pharmaceutical logistics.
+
+To accommodate operational diversity, the model distinguishes between two types of ULDs: pre-packed ULDs that must be assigned feasible positions without repacking, and model-built ULDs assembled dynamically to group loose items. This hybrid structure reflects real airline operations, where a typical flight includes both fixed ULDs and open cargo to be optimized. The assignment logic also integrates compartment-level weight limits, flexible volume constraints, and a dynamic feedback loop to manage deferred or excess cargo.
+
+Each aircraft type modeled—including the Boeing 787-9, 787-10, 777-200, and 777-300ER—has distinct compartment layouts, ULD compatibility rules, and CG response behavior. These differences are incorporated through data-driven templates and constraint sets. For instance, the 787 family restricts COL and CRT cargo from being placed in the aft compartment, while the 777 imposes additional separation rules within shared compartments. Figures \ref{fig:789} to \ref{fig:77W} show the belly layouts used to derive feasible position maps and overlap tables for each aircraft.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{789.png}
+    \caption{Belly layout diagram for Boeing 787-9 (789)}
+    \label{fig:789}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{781.png}
+    \caption{Belly layout diagram for Boeing 787-10 (781)}
+    \label{fig:781}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{772.png}
+    \caption{Belly layout diagram for Boeing 777-200 (772)}
+    \label{fig:772}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{77w.png}
+    \caption{Belly layout diagram for Boeing 777-300ER (77W)}
+    \label{fig:77W}
+\end{figure}
+
+The combination of refined constraints, expanded variable logic, and aircraft-specific configuration results in a MILP model that not only improves feasibility over baseline formulations, but also aligns closely with the operational practices of modern air cargo carriers.
+\newpage
+\section{Literature Review}
+
+The optimization of aircraft cargo loading has traditionally been split into two domains: the packing of items into Unit Load Devices (ULDs), and the placement of those ULDs within the aircraft belly to ensure safe weight and balance. In recent years, researchers have begun exploring integrated models that jointly address these two stages, enabling more efficient and realistic solutions.
+
+A key reference in this space is the work of Puttaert (2024) \cite{Puttaert2024}, who formulates a Mixed Integer Linear Programming (MILP) model that combines a Three-Dimensional Bin Packing Problem (3D-BPP) with a One-Dimensional Weight and Balance model (1D-BPP-W\&B). The model seeks to optimize the placement of cargo in a way that maximizes the aircraft’s center of gravity (CG) within regulatory safety limits, using constraints that represent volume, weight, and operational restrictions. The model accounts for booking separations, volumetric limits of ULDs, compartmental constraints, and ensures that the aircraft's CG at Zero Fuel Weight (ZFW) remains within bounds.
+
+Puttaert's formulation provides a strong foundation for modeling the complexities of real-world cargo loading in intercontinental flights. His approach represents a significant step toward bridging the gap between academic optimization techniques and practical airline operations.
+
+This thesis builds upon that foundation. Inspired by Puttaert's model, it develops a refined MILP formulation with extended features to support additional operational considerations. These include temperature-based handling constraints, reassignment logic for infeasible cargo, and enhanced booking separation rules. The model is tested on 102 real KLM flights and is designed to be implementable in real-time settings, with sustainability and fuel efficiency as guiding principles.
+
+By drawing on Puttaert’s work and extending it to include further operational variables, this thesis contributes to the growing literature on integrated cargo optimization — and proposes a concrete, data-driven approach that supports both environmental and logistical objectives.
+\newpage
+\section{Methodology}
+
+This section describes the data sources, aircraft configurations, modeling assumptions, and evaluation framework used to implement and test the proposed MILP formulation. The goal is to assess the effectiveness of the optimization model in improving aircraft weight distribution and reducing fuel consumption, under realistic operational conditions.
+
+% Revised paragraph in the Methodology section
+The study focuses on long-haul intercontinental routes operated by KLM from its main hub, Amsterdam Airport Schiphol (AMS), to four major destinations: Los Angeles (LAX), Singapore (SIN), Houston (IAH), and Incheon (ICN). These routes were selected to represent a diverse range of cargo profiles, operational constraints, and aircraft configurations. The first quarter of 2024 was chosen as the analysis period to ensure sufficient volume and variability in the sample. 
+
+The aircraft types considered include the Boeing 787-9, 787-10, 777-200, and 777-300ER, all of which are wide-body models used by KLM on the selected routes. Each aircraft presents a unique belly layout, ULD position mapping, and weight and balance constraints, offering a robust and heterogeneous testing environment. Figure~\ref{fig:mapa} illustrates the geographical distribution of the selected destinations.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Mapa.png}
+    \caption{Selected destinations used for the scenario analysis}
+    \label{fig:mapa}
+\end{figure}
+
+% Revised paragraph in the Methodology section
+
+A total of 185 flights, drawn from a larger dataset of approximately 500 KLM flights, were processed using the proposed model, to evaluate its performance across diverse scenarios. For direct model comparisons, a subset of 102 flights with complete data across all benchmark strategies---KLM’s optimization model, a weight and balance-only optimization, a sequential heuristic, Puttaert’s original MILP formulation, and the proposed model---was used to ensure a fair and consistent evaluation of fuel savings, \%MAC, and runtime. 
+
+The remaining 83 flights lacked complete data for all benchmarks due to varying feasibility and data availability (e.g., Puttaert’s model processed 200 flights, with 180 feasible, while KLM’s model covered a different subset). These 83 flights were analyzed to extract aggregate performance metrics, such as center of gravity (CG) distributions, which revealed a higher average \%MAC compared to the 102-flight subset. This suggests that the smaller subset may underestimate the proposed model’s potential, and analyzing the full 500-flight dataset could provide deeper insights into its scalability and robustness across diverse aircraft types and operational contexts. 
+
+The model’s output includes optimized loading plans for each flight, specifying ULD assignments, CG outcomes, and resource utilization. These are analyzed using a custom visualization module that generates heatmaps of ULD weight distribution per aircraft layout. Each heatmap uses a blue gradient to represent the actual weight in each position and visually distinguishes between built and pre-assigned ULDs. These visual tools support the interpretation of CG optimization results and allow intuitive inspection of the model’s operational feasibility.
+
+All optimization models were implemented in Python 3.11 and solved using the Gurobi Optimizer (version 9.5) via the `gurobipy` interface. Development was carried out in Jupyter Notebook environments, which allowed for modular testing and interactive debugging of model components. The optimization process employed Gurobi’s hierarchical multi-objective framework, using the `setObjectiveN` method to assign priorities and weights to each objective function, including center of gravity maximization, booking separation penalties, and ULD utilization efficiency. Computational experiments were run on a multi-core processor (Apple M3, 8 threads) with 8GB RAM, using an academic Gurobi license. Data preprocessing, results aggregation, and figure generation were performed using Python libraries such as `pandas`, `numpy`, `matplotlib`, `seaborn`, and `plotly`. All input data---including cargo manifests, aircraft configuration files, and benchmark loading plans---were ingested from CSV sources and stored in structured dictionaries within the optimization pipeline.
+
+\newpage
+\section{Mathematical Formulation of the 1D-BPP-W\&B Problem}
+This section presents the MILP formulation for the 1D-BPP-W\&B problem, adapted from Puttaert (2024)\cite{Puttaert2024} with improvements in separation logic and reassigned item handling. The model optimizes cargo palletization and aircraft weight distribution, prioritizing \%MAC at ZFW to reduce fuel consumption while satisfying safety and structural constraints.
+
+\subsection*{Sets}
+\begin{table}[H]
+\centering
+\begin{tabular}{lp{12cm}}
+\toprule
+\textbf{Set} & \textbf{Description} \\
+\midrule
+$\mathcal{I}$ & set of items, indexed by $i$ \\
+$\mathcal{I}^{\text{COL}}$ & subset of items $\mathcal{I}$ that need cooling storage \\
+$\mathcal{I}^{\text{CRT}}$ & subset of items $\mathcal{I}$ that need controlled room temperature storage \\
+$\mathcal{B}$ & set of booking numbers, indexed by $b_i$ \\
+$\mathcal{I}_{b_i}$ & subset of items in $\mathcal{I}$ with booking number $b_i$, for $b_i \in \mathcal{B}$ \\
+$\mathcal{I}_{\text{reassigned}}$ & subset of items identified as reassigned multiple times \\
+$\mathcal{U}$ & set of ULDs, indexed by $j$ \\
+$\mathcal{N}$ & subset of ULDs of type BAX, BUP, or T in $\mathcal{U}$, i.e., $\mathcal{N} = \mathcal{U}^{\text{BAX}} \cup \mathcal{U}^{\text{BUP}} \cup \mathcal{U}^{\text{T}}$ \\
+$\mathcal{U}^{\text{BAX}}$ & subset of BAX ULDs in $\mathcal{U}$ \\
+$\mathcal{U}^{\text{BUP}}$ & subset of BUP ULDs in $\mathcal{U}$ \\
+$\mathcal{U}^{\text{T}}$ & subset of T ULDs in $\mathcal{U}$ \\
+$\mathcal{U}^{\text{COL}}$ & subset of ULDs containing COL items \\
+$\mathcal{U}^{\text{CRT}}$ & subset of ULDs containing CRT items \\
+$\mathcal{P}$ & set of available positions, indexed by $t$ \\
+$\mathcal{P}_j$ & set of available positions for ULD $j$ \\
+$\mathcal{P}_{\text{left}}$ & set of available left-sided positions \\
+$\mathcal{P}_{\text{right}}$ & set of available right-sided positions \\
+$\mathcal{K}$ & set of available belly compartments, indexed by $k$, $k \in \{C1, C2, C3, C4\}$ \\
+$\mathcal{K}_{\text{front}}$ & set of forward belly compartments, $\{C1, C2\}$ \\
+$\mathcal{K}_{\text{aft}}$ & set of aft belly compartments, $\{C3, C4\}$ \\
+$\mathcal{P}_k$ & set of available positions for belly compartment $k$ \\
+$\mathcal{O}_t$ & set of overlapping positions for position $t$ \\
+$\mathcal{E}$ & set of payload weights, indexed by $e$, consisting of $TOW$, $LW$, and $ZFW$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\newpage
+\subsection*{Parameters}
+\begin{table}[H]
+\centering
+\caption{Parameters for the 1D-BPP-W\&B Problem}
+\begin{tabular}{lp{12cm}} % or adjust width to fit your layout
+\toprule
+\textbf{Parameter} & \textbf{Description} \\
+\midrule
+$m_i$ & weight of item $i$ \\
+$v_i$ & volume of item $i$ \\
+$b_i$ & booking number of item $i$ \\
+$WC_j$ & weight capacity of ULD $j$ \\
+$W_j$ & tare weight of ULD $j$ (total weight for ULDs in $\mathcal{N}$) \\
+$VC_j$ & volume capacity of ULD $j$ \\
+$Type_j$ & type of ULD $j$ \\
+$M_t$ & maximum weight for position $t$ \\
+$M_{\text{front}}$ & maximum weight for front belly compartments \\
+$M_{\text{aft}}$ & maximum weight for aft belly compartments \\
+$d_t$ & distance from position $t$ to a cargo door \\
+$M_k$ & maximum weight for belly compartment $k$ \\
+$MPL$ & maximum payload limit, defined as $\min(MTOW - OEW - TOF, MLW - OEW - (TOF - TripFuel), MZFW - OEW)$ \\
+$INDEX_{PAX}$ & index of the passengers \\
+$INDEX_{FWD,e}$ & forward index limit at payload weight $e$ \\
+$INDEX_{AFT,e}$ & aft index limit at payload weight $e$ \\
+$\Delta INDEX_k$ & delta index for belly compartment $k$ \\
+$OEW$ & operating empty weight of the aircraft \\
+$TOF$ & takeoff fuel weight \\
+$TripFuel$ & fuel consumed during the trip \\
+$a_{\text{LatTOW}}$ & slope parameter for lateral balance at takeoff weight \\
+$b_{\text{LatTOW}}$ & intercept parameter for lateral balance at takeoff weight \\
+$a_{\text{LatLW}}$ & slope parameter for lateral balance at landing weight \\
+$b_{\text{LatLW}}$ & intercept parameter for lateral balance at landing weight \\
+$DOI$ & Dry Operating Index \\
+$C$ & aircraft-specific parameter for \%MAC calculation \\
+$K$ & aircraft-specific parameter for \%MAC calculation \\
+$\text{reference arm}$ & reference arm for \%MAC calculation \\
+$\text{LEMAC}$ & Leading Edge of Mean Aerodynamic Chord \\
+$\text{MAC formula}$ & Mean Aerodynamic Chord formula for \%MAC calculation \\
+$\alpha$ & load factor for volume capacity constraint (default 0.8) \\
+$M$ & big-M value for separation constraints (e.g., maximum item weight) \\
+$\beta$ & maximum proportion of new ULDs (e.g., 0.1) \\
+$FI$ & fuel index for CG calculations \\
+\bottomrule
+\end{tabular}
+\footnotemark
+\footnotetext{Due to unavailable data, tare weights ($W_j$) are only included for BAX/BUP/T ULDs ($j \in \mathcal{N}$). Future work should incorporate tare weights (e.g., 70–1000 kg) for all ULDs.}
+\end{table}
+\newpage
+\subsection*{Decision Variables}
+\begin{itemize}
+    \item $f_{jt} = \begin{cases}
+        1 & \text{if ULD $j$ is assigned to position $t$ in the aircraft belly}, \\
+        0 & \text{otherwise}
+    \end{cases}$
+    \item $u_j = \begin{cases}
+        1 & \text{if ULD $j$ is active (used) for packing items}, \\
+        0 & \text{otherwise}
+    \end{cases}$
+    \item $p_{ij} = \begin{cases}
+        1 & \text{if item $i$ is assigned to ULD $j$}, \\
+        0 & \text{otherwise}
+    \end{cases}$ \\
+    Defined for $i \in \mathcal{I}$, $j \in \mathcal{U}$, with $p_{ij} = 0$ for $j \in \mathcal{N}$.
+    \item $Y_{b_i} \in \mathbb{Z}_{\geq 0}$: Number of ULDs used for booking group $b_i$, $\forall b_i \in \mathcal{B}$.
+    \item $Z_{b_i,j} = \begin{cases}
+        1 & \text{if at least one item of booking group $b_i$ is in ULD $j$}, \\
+        0 & \text{otherwise}
+    \end{cases}$ \\
+    Defined for $b_i \in \mathcal{B}$, $j \in \mathcal{U} \setminus \mathcal{N}$.
+    \item $z_{ijt} = \begin{cases}
+        1 & \text{if item $i$ is assigned to ULD $j$ at position $t$}, \\
+        0 & \text{otherwise}
+    \end{cases}$ \\
+    Defined for $i \in \mathcal{I}$, $j \in \mathcal{U}$, $t \in \mathcal{P}$.
+    \item $N_j \in \{0,1\}$: 1 if ULD $j$ is a new ULD reserved for reassigned items, 0 otherwise, $\forall j \in \mathcal{U} \setminus \mathcal{N}$.
+\end{itemize}
+
+\subsection*{Additional Variables for Constraints}
+\begin{itemize}
+    \item $COL_k \in \{0,1\}$: 1 if compartment $k$ contains COL items/ULDs, 0 otherwise, $\forall k \in \mathcal{K}_{\text{front}} \cup \mathcal{K}_{\text{aft}}$, aircraft $\in \{772, 77W\}$.
+    \item $CRT_k \in \{0,1\}$: 1 if compartment $k$ contains CRT items/ULDs, 0 otherwise, $\forall k \in \mathcal{K}_{\text{front}} \cup \mathcal{K}_{\text{aft}}$, aircraft $\in \{772, 77W\}$.
+    \item $COL_{\text{front}} \in \{0,1\}$: 1 if front compartments contain COL items/ULDs, 0 otherwise, aircraft $\in \{789, 781\}$.
+    \item $CRT_{\text{front}} \in \{0,1\}$: 1 if front compartments contain CRT items/ULDs, 0 otherwise, aircraft $\in \{789, 781\}$.
+\end{itemize}
+\newpage
+\subsection*{MILP Formulation}
+The MILP model uses lexicographic optimization to prioritize objectives, ensuring fuel efficiency while meeting operational constraints.
+\subsubsection*{Objective Functions}
+
+\begin{enumerate}
+ \item \textbf{Maximize the percentage of the Mean Aerodynamic Chord at Zero Fuel Weight:}
+ \begin{equation}
+ \max \quad \%MAC
+ \end{equation}
+ 
+ \item \textbf{Minimize the number of active ULDs:}
+ \begin{equation}
+ \min \quad \sum_{j \in \mathcal{U}} u_j
+ \end{equation}
+ 
+ \item \textbf{Maximize the total volume utilized in ULDs:}
+ \begin{equation}
+ \max \quad \sum_{j \in \mathcal{U} \setminus \mathcal{N}} \sum_{i \in \mathcal{I}} v_i \cdot p_{ij}
+ \end{equation}
+ 
+ \item \textbf{Minimize the separation of items with the same booking number:}
+ \begin{equation}
+ \min \quad \sum_{b_i \in \mathcal{B}} Y_{b_i}
+ \end{equation}
+ 
+ \item \textbf{Minimize the total distance of BAX-type ULDs carrying baggage from cargo doors:}
+ \begin{equation}
+ \min \quad \sum_{j \in \mathcal{U}^{\text{BAX}}} \sum_{t \in \mathcal{P}} d_t \cdot f_{jt}
+ \end{equation}
+\end{enumerate}
+
+Notes: 
+
+\begin{equation}
+ ZFW_{\text{index}} = DOI + INDEX_{PAX} + \sum_{k \in \mathcal{K}} \left( \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{U}} \sum_{t \in \mathcal{P}_k} m_i z_{ijt} + \sum_{j \in \mathcal{N}} \sum_{t \in \mathcal{P}_k} W_j f_{jt} \right) \cdot \Delta INDEX_k
+\end{equation}
+
+\begin{equation}
+ \%MAC = \frac{\left( C \cdot (ZFW_{\text{index}} - K) / ZFW \right) + \text{reference arm} - \text{LEMAC}}{\text{MAC formula} / 100}
+\end{equation}
+
+\newpage
+\subsubsection*{Constraints}
+\begin{enumerate}
+ \item \textbf{ULD weight capacity}: Ensure that the total weight of items assigned to a ULD does not exceed its weight capacity if the ULD is active.
+ \begin{equation}
+ \sum_{i \in \mathcal{I}} m_i p_{ij} \leq WC_j \cdot u_j \quad \forall j \in \mathcal{U}
+ \tag{DV1}
+\end{equation}
+ 
+ \item \textbf{ULD volume capacity}: Ensure that the total volume of items assigned to a ULD does not exceed its volume capacity if the ULD is active.
+ \begin{equation}
+ \sum_{i \in \mathcal{I}} v_i p_{ij} \leq \alpha \cdot VC_j \cdot u_j \quad \forall j \in \mathcal{U}
+ \tag{DV2}
+\end{equation}
+ 
+ \item \textbf{Item assignment}: Ensure that each item is assigned to exactly one ULD.
+ \begin{equation}
+ \sum_{j \in \mathcal{U} \setminus \mathcal{N}} p_{ij} = 1 \quad \forall i \in \mathcal{I}
+ \tag{DV3}
+\end{equation}
+ 
+ \item \textbf{ULD position assignment}: Ensure that each active ULD is assigned to exactly one position in the aircraft belly.
+ \begin{equation}
+ \sum_{t \in \mathcal{P}} f_{jt} = u_j \quad \forall j \in \mathcal{U}
+ \tag{DV4}
+\end{equation}
+
+ \item \textbf{Position occupancy}: Ensure that each position in the aircraft belly contains at most one ULD.
+ \begin{equation}
+ \sum_{j \in \mathcal{U}} f_{jt} \leq 1 \quad \forall t \in \mathcal{P}
+ \tag{DV5}
+\end{equation}
+ 
+ \item \textbf{Compatible positions}: Ensure that ULDs are assigned only to positions compatible with their type.
+ \begin{equation}
+ \sum_{t \notin \mathcal{P}_j} f_{jt} = 0 \quad \forall j \in \mathcal{U}
+ \tag{DV6}
+\end{equation}
+
+ \item \textbf{Special ULD assignment}: Ensure that each BAX, BUP, or T-type ULD is assigned to exactly one position.
+ \begin{equation}
+ \sum_{t \in \mathcal{P}} f_{jt} = 1 \quad \forall j \in \mathcal{N}
+ \tag{DV7}
+\end{equation}
+ 
+ \item \textbf{Linking constraint 1}: Ensure that $z_{ijt}$ is zero if item $i$ is not assigned to ULD $j$.
+ \begin{equation}
+ z_{ijt} \leq p_{ij} \quad \forall i \in \mathcal{I}, j \in \mathcal{U}, t \in \mathcal{P}
+ \tag{DV8}
+\end{equation}
+ 
+ \item \textbf{Linking constraint 2}: Ensure that $z_{ijt}$ is zero if ULD $j$ is not assigned to position $t$.
+ \begin{equation}
+ z_{ijt} \leq f_{jt} \quad \forall i \in \mathcal{I}, j \in \mathcal{U}, t \in \mathcal{P}
+ \tag{DV9}
+\end{equation}
+ 
+ \item \textbf{Linking constraint 3}: Ensure that $z_{ijt}$ is 1 if $p_{ij} = 1$ and $f_{jt} = 1$.
+ \begin{equation}
+ z_{ijt} \geq p_{ij} + f_{jt} - 1 \quad \forall i \in \mathcal{I}, j \in \mathcal{U}, t \in \mathcal{P}
+ \tag{DV10}
+\end{equation}
+ 
+ \item \textbf{Position weight limit}: Ensure that the total weight in each position does not exceed the maximum allowed for that position.
+ \begin{equation}
+ \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{U}} m_i z_{ijt} + \sum_{j \in \mathcal{N}} W_j f_{jt} \leq M_t \quad \forall t \in \mathcal{P}
+ \tag{DV11}
+\end{equation}
+ 
+ \item \textbf{Compartment weight limit}: Ensure that the total weight in each compartment does not exceed the maximum allowed for that compartment.
+ \begin{equation}
+ \sum_{t \in \mathcal{P}_k} \left( \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{U}} m_i z_{ijt} + \sum_{j \in \mathcal{N}} W_j f_{jt} \right) \leq M_k \quad \forall k \in \mathcal{K}
+ \tag{DV12}
+\end{equation}
+ 
+ \item \textbf{Forward compartment weight limit}: Ensure that the total weight in forward compartments does not exceed the maximum allowed.
+ \begin{equation}
+ \sum_{k \in \mathcal{K}_{\text{front}}} \sum_{t \in \mathcal{P}_k} \left( \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{U}} m_i z_{ijt} + \sum_{j \in \mathcal{N}} W_j f_{jt} \right) \leq M_{\text{front}}
+ \tag{DV13}
+\end{equation}
+ 
+ \item \textbf{Aft compartment weight limit}: Ensure that the total weight in aft compartments does not exceed the maximum allowed.
+ \begin{equation}
+ \sum_{k \in \mathcal{K}_{\text{aft}}} \sum_{t \in \mathcal{P}_k} \left( \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{U}} m_i z_{ijt} + \sum_{j \in \mathcal{N}} W_j f_{jt} \right) \leq M_{\text{aft}}
+ \tag{DV14}
+\end{equation}
+ 
+ \item \textbf{Lateral balance at takeoff}: Ensure the lateral balance of the aircraft at takeoff weight.
+ \begin{equation}
+ \begin{aligned}
+ &\sum_{t \in \mathcal{P}_{\text{left}}} \sum_{j \in \mathcal{U}} \sum_{i \in \mathcal{I}} m_i z_{ijt} 
+ + \sum_{t \in \mathcal{P}_{\text{left}}} \sum_{j \in \mathcal{N}} W_j f_{jt} \\
+ &\quad - \sum_{t \in \mathcal{P}_{\text{right}}} \sum_{j \in \mathcal{U}} \sum_{i \in \mathcal{I}} m_i z_{ijt} 
+ - \sum_{t \in \mathcal{P}_{\text{right}}} \sum_{j \in \mathcal{N}} W_j f_{jt} \\
+ &\leq b_{\text{LatTOW}} 
+ + a_{\text{LatTOW}} \cdot \Bigg( OEW + TOF 
+ + \sum_{t \in \mathcal{P}} \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{U}} m_i z_{ijt} 
+ + \sum_{t \in \mathcal{P}} \sum_{j \in \mathcal{N}} W_j f_{jt} \Bigg)
+ \end{aligned}
+ \tag{DV15a}
+\tag{DV15}
+\end{equation}
+
+ \begin{equation}
+ \begin{aligned}
+ &\sum_{t \in \mathcal{P}_{\text{right}}} \sum_{j \in \mathcal{U}} \sum_{i \in \mathcal{I}} m_i z_{ijt} 
+ + \sum_{t \in \mathcal{P}_{\text{right}}} \sum_{j \in \mathcal{N}} W_j f_{jt} \\
+ &\quad - \sum_{t \in \mathcal{P}_{\text{left}}} \sum_{j \in \mathcal{U}} \sum_{i \in \mathcal{I}} m_i z_{ijt} 
+ - \sum_{t \in \mathcal{P}_{\text{left}}} \sum_{j \in \mathcal{N}} W_j f_{jt} \\
+ &\leq a_{\text{LatTOW}} \cdot \Bigg( OEW + TOF 
+ + \sum_{t \in \mathcal{P}} \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{U}} m_i z_{ijt} 
+ + \sum_{t \in \mathcal{P}} \sum_{j \in \mathcal{N}} W_j f_{jt} \Bigg) 
+ + b_{\text{LatTOW}}
+ \end{aligned}
+ \tag{DV15b}
+\tag{DV15}
+\end{equation}
+ 
+ \item \textbf{Lateral balance at landing}: Ensure the lateral balance of the aircraft at landing weight.
+ \begin{equation}
+ \begin{aligned}
+ &\sum_{t \in \mathcal{P}_{\text{left}}} \sum_{j \in \mathcal{U}} \sum_{i \in \mathcal{I}} m_i z_{ijt}
+ + \sum_{t \in \mathcal{P}_{\text{left}}} \sum_{j \in \mathcal{N}} W_j f_{jt} \\
+ &\quad - \sum_{t \in \mathcal{P}_{\text{right}}} \sum_{j \in \mathcal{U}} \sum_{i \in \mathcal{I}} m_i z_{ijt}
+ - \sum_{t \in \mathcal{P}_{\text{right}}} \sum_{j \in \mathcal{N}} W_j f_{jt} \\
+ &\leq a_{\text{LatLW}} \cdot \Bigg( OEW + TOF - TripFuel
+ + \sum_{t \in \mathcal{P}} \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{U}} m_i z_{ijt}
+ + \sum_{t \in \mathcal{P}} \sum_{j \in \mathcal{N}} W_j f_{jt} \Bigg)
+ + b_{\text{LatLW}}
+ \end{aligned}
+ \tag{DV16a}
+\tag{DV16}
+\end{equation}
+
+ \begin{equation}
+ \begin{aligned}
+ &\sum_{t \in \mathcal{P}_{\text{right}}} \sum_{j \in \mathcal{U}} \sum_{i \in \mathcal{I}} m_i z_{ijt}
+ + \sum_{t \in \mathcal{P}_{\text{right}}} \sum_{j \in \mathcal{N}} W_j f_{jt} \\
+ &\quad - \sum_{t \in \mathcal{P}_{\text{left}}} \sum_{j \in \mathcal{U}} \sum_{i \in \mathcal{I}} m_i z_{ijt}
+ - \sum_{t \in \mathcal{P}_{\text{left}}} \sum_{j \in \mathcal{N}} W_j f_{jt} \\
+ &\leq a_{\text{LatLW}} \cdot \Bigg( OEW + TOF - TripFuel
+ + \sum_{t \in \mathcal{P}} \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{U}} m_i z_{ijt}
+ + \sum_{t \in \mathcal{P}} \sum_{j \in \mathcal{N}} W_j f_{jt} \Bigg)
+ + b_{\text{LatLW}}
+ \end{aligned}
+ \tag{DV16b}
+\tag{DV16}
+\end{equation}
+ 
+ \item \textbf{Forward CG envelope limit}: Ensure that the center of gravity for each payload weight remains within the forward limit.
+ \begin{flalign}
+ &&
+ INDEX_{FWD,e} &\leq DOI + FI_e + INDEX_{PAX} \notag \\
+ &&
+ &\quad + \sum_{k \in \mathcal{K}} \left( 
+ \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{U}} \sum_{t \in \mathcal{P}_k} m_i z_{ijt} 
+ + \sum_{j \in \mathcal{N}} \sum_{t \in \mathcal{P}_k} W_j f_{jt} 
+ \right) \cdot \Delta INDEX_k 
+ \quad \forall e \in \mathcal{E}
+ \tag{DV17}
+\tag{DV17}
+\end{flalign}
+
+ \item \textbf{Aft CG envelope limit}: Ensure that the center of gravity for each payload weight remains within the aft limit.
+ \begin{flalign}
+ &&
+ DOI + FI_e + INDEX_{PAX} & \notag \\
+ &&
+ + \sum_{k \in \mathcal{K}} \left( 
+ \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{U}} \sum_{t \in \mathcal{P}_k} m_i z_{ijt} 
+ + \sum_{j \in \mathcal{N}} \sum_{t \in \mathcal{P}_k} W_j f_{jt} 
+ \right) \cdot \Delta INDEX_k 
+ &\leq INDEX_{AFT,e} 
+ \quad \forall e \in \mathcal{E}
+ \tag{DV18}
+\tag{DV18}
+\end{flalign}
+
+ \item \textbf{Prohibition of mixing COL and CRT items in the same ULD}: Ensure that a ULD does not contain both COL and CRT items simultaneously.
+ \begin{equation}
+ p_{i_1 j} + p_{i_2 j} \leq 1 \quad \forall i_1 \in \mathcal{I}^{\text{COL}}, i_2 \in \mathcal{I}^{\text{CRT}}, j \in \mathcal{U} \setminus \mathcal{N}, \, i_1 \neq i_2
+ \tag{DV19}
+\end{equation}
+
+ \item \textbf{Item separation (linking $p_{ij}$ to $Z_{b_i,j}$)}: Ensure that $p_{ij}$ implies $Z_{b_i,j}$ for items in a booking group.
+ \begin{equation}
+ p_{ij} \leq Z_{b_i,j} \quad \forall b_i \in \mathcal{B}, j \in \mathcal{U} \setminus \mathcal{N}, i \in \mathcal{I}_{b_i}
+ \tag{DV20}
+\end{equation}
+
+ \item \textbf{Item separation (linking $Y_{b_i}$ to $Z_{b_i,j}$)}: Ensure that $Y_{b_i}$ equals the number of ULDs used by booking group $b_i$, to minimize separation of items in the same group.
+ \begin{equation}
+ Y_{b_i} = \sum_{j \in \mathcal{U} \setminus \mathcal{N}} Z_{b_i,j} \quad \forall b_i \in \mathcal{B}
+ \tag{DV21}
+\end{equation}
+
+ \item \textbf{Overlapping positions}: Ensure that if a position is occupied by a ULD, no other position overlapping with it can be occupied by another ULD.
+ \begin{equation}
+ f_{j_1 t_1} + f_{j_2 t_2} \leq 1 \quad \forall j_1, j_2 \in \mathcal{U}, j_1 \neq j_2, t_1 \in \mathcal{P}, t_2 \in \mathcal{O}_{t_1}
+ \tag{DV22}
+\end{equation}
+
+ \item \textbf{Maximum payload limit}: Ensure that the total weight of items and ULDs does not exceed the maximum payload limit (MPL).
+ \begin{equation}
+ \sum_{t \in \mathcal{P}} \left( \sum_{i \in \mathcal{I}} \sum_{j \in \mathcal{U}} m_i z_{ijt} + \sum_{j \in \mathcal{N}} W_j f_{jt} \right) \leq MPL
+ \tag{DV23}
+\end{equation}
+
+ \item \textbf{Separation of COL and CRT ULDs by compartment (Boeing 777)}: For Boeing 777 aircraft, ensure that ULDs with COL items and ULDs with CRT items are not assigned to positions in the same compartment (forward or aft).
+ \begin{align}
+ &\sum_{t \in \mathcal{P}_k} \sum_{j \in \mathcal{U}^{\text{COL}}} f_{jt} 
+ \leq |\mathcal{U}^{\text{COL}} \times \mathcal{P}_k| \cdot COL_k, 
+ \quad \forall k \in \mathcal{K}_{\text{front}} \cup \mathcal{K}_{\text{aft}},\, \text{aircraft} \in \{772, 77W\} \\
+ %
+ &\sum_{t \in \mathcal{P}_k} \sum_{j \in \mathcal{U}^{\text{CRT}}} f_{jt} 
+ \leq |\mathcal{U}^{\text{CRT}} \times \mathcal{P}_k| \cdot CRT_k, 
+ \quad \forall k \in \mathcal{K}_{\text{front}} \cup \mathcal{K}_{\text{aft}},\, \text{aircraft} \in \{772, 77W\} \\
+ %
+ &COL_k + CRT_k \leq 1, 
+ \quad \forall k \in \mathcal{K}_{\text{front}} \cup \mathcal{K}_{\text{aft}},\, \text{aircraft} \in \{772, 77W\} \\
+ %
+ &\sum_{t \in \mathcal{P}_k} z_{i,j,t} 
+ \leq |\mathcal{U}^{\text{COL}} \times \mathcal{P}_k| \cdot COL_k, \notag \\
+ &\quad \forall i \in \mathcal{I}^{\text{COL}},\, 
+ j \in \mathcal{U} \setminus \mathcal{N},\, 
+ k \in \mathcal{K}_{\text{front}} \cup \mathcal{K}_{\text{aft}},\, 
+ \text{aircraft} \in \{772, 77 W\} \tag{DV24d} \\
+ %
+ &\sum_{t \in \mathcal{P}_k} z_{i,j,t} 
+ \leq |\mathcal{U}^{\text{CRT}} \times \mathcal{P}_k| \cdot CRT_k, \notag \\
+ &\quad \forall i \in \mathcal{I}^{\text{CRT}},\, 
+ j \in \mathcal{U} \setminus \mathcal{N},\, 
+ k \in \mathcal{K}_{\text{front}} \cup \mathcal{K}_{\text{aft}},\, 
+ \text{aircraft} \in \{772, 77W\}
+ \end{align}
+
+ \item \textbf{COL and CRT restrictions (Boeing 787)}: For Boeing 787 aircraft, prohibit COL and CRT items in the aft compartment and ensure mutual exclusion in the forward compartment.
+ \begin{align}
+ &z_{i,j,t} = 0, 
+ \quad \forall i \in \mathcal{I}^{\text{COL}} \cup \mathcal{I}^{\text{CRT}},\ 
+ j \in \mathcal{U} \setminus \mathcal{N},\ 
+ t \in \mathcal{P}_{\text{aft}},\ 
+ \text{aircraft} \in \{789, 781\} \\
+ %
+ &\sum_{j \in \mathcal{U}^{\text{COL}} \cup \mathcal{U}^{\text{CRT}}} f_{jt} = 0, 
+ \quad \forall t \in \mathcal{P}_{\text{aft}},\ 
+ \text{aircraft} \in \{789, 781\} \\
+ %
+ &\sum_{t \in \mathcal{P}_{\text{front}}} \sum_{j \in \mathcal{U}^{\text{COL}}} f_{jt} 
+ \leq |\mathcal{U}^{\text{COL}} \times \mathcal{P}_{\text{front}}| \cdot COL_{\text{front}}, 
+ \quad \text{aircraft} \in \{789, 781\} \\
+ %
+ &\sum_{t \in \mathcal{P}_{\text{front}}} \sum_{j \in \mathcal{U}^{\text{CRT}}} f_{jt} 
+ \leq |\mathcal{U}^{\text{CRT}} \times \mathcal{P}_{\text{front}}| \cdot CRT_{\text{front}}, 
+ \quad \text{aircraft} \in \{789, 781\} \\
+ %
+ &COL_{\text{front}} + CRT_{\text{front}} \leq 1, 
+ \quad \text{aircraft} \in \{789, 781\} \\
+ %
+ &\sum_{t \in \mathcal{P}_{\text{front}}} z_{i,j,t} 
+ \leq |\mathcal{U}^{\text{COL}} \times \mathcal{P}_{\text{front}}| \cdot COL_{\text{front}}, \notag \\
+ &\quad \forall i \in \mathcal{I}^{\text{COL}},\ 
+ j \in \mathcal{U} \setminus \mathcal{N},\ 
+ \text{aircraft} \in \{789, 781\} \\
+ %
+ &\sum_{t \in \mathcal{P}_{\text{front}}} z_{i,j,t} 
+ \leq |\mathcal{U}^{\text{CRT}} \times \mathcal{P}_{\text{front}}| \cdot CRT_{\text{front}}, \notag \\
+ &\quad \forall i \in \mathcal{I}^{\text{CRT}},\ 
+ j \in \mathcal{U} \setminus \mathcal{N},\ 
+ \text{aircraft} \in \{789, 781\}
+ \end{align}
+\end{enumerate}
+
+\subsubsection*{Nature of the Variables}
+\begin{center}
+ $f_{jt} \in \{0,1\} \quad \forall j \in \mathcal{U}, t \in \mathcal{P}$ \\
+ $u_j \in \{0,1\} \quad \forall j \in \mathcal{U}$ \\
+ $p_{ij} \in \{0,1\} \quad \forall i \in \mathcal{I}, j \in \mathcal{U}$ \\
+ $Y_{b_i} \in \mathbb{Z}_{\geq 0} \quad \forall b_i \in \mathcal{B}$ \\
+ $Z_{b_i,j} \in \{0,1\} \quad \forall b_i \in \mathcal{B}, j \in \mathcal{U} \setminus \mathcal{N}$ \\
+ $z_{ijt} \in \{0, 1\} \quad \forall i \in \mathcal{I}, \, j \in \mathcal{U}, \, t \in \mathcal{P}$ \\
+ $N_j \in \{0,1\} \quad \forall j \in \mathcal{U} \setminus \mathcal{N}$ \\
+ $COL_k, CRT_k \in \{0,1\} \quad \forall k \in \mathcal{K}_{\text{front}} \cup \mathcal{K}_{\text{aft}}, \text{aircraft} \in \{772, 77W\}$ \\
+ $COL_{\text{front}}, CRT_{\text{front}} \in \{0,1\} \quad \text{aircraft} \in \{789, 781\}$
+\end{center}
+\newpage
+\section{Results and Discussion}
+
+This section presents a comprehensive evaluation of the proposed Mixed Integer Linear Programming (MILP) model for the One-Dimensional Bin Packing and Weight and Balance Problem (1D-BPP-W\&B), tested on a dataset of 102 KLM intercontinental passenger flights. The analysis compares the Proposed Model against baseline models (Puttaert, Sequential, W\&B, and KLM) across key performance metrics, including \%MAC at Zero Fuel Weight, fuel savings, Unit Load Device utilization, runtime, and weight/volume load factors. 
+
+Statistical measures—means, standard deviations, maxima, minima, and 95\% confidence intervals—are derived from the dataset, providing a robust basis for assessing model efficacy. The results demonstrate a 0.47\% fuel reduction per flight, equivalent to approximately 360 kg of jet fuel, which saves 1.131 metric tonnes of CO$_2$ emissions, and a runtime reduction to 154 seconds, surpassing previous benchmarks. Subsections detail the performance across aircraft types, destinations, and operational constraints, highlighting the model's contributions to fuel efficiency and sustainability.
+
+To better understand the distributional characteristics of the test dataset, Figure~\ref{fig:items} illustrates a pie chart categorizing the number of cargo items per flight into four groups: 0–40, 40–80, 80–120, and 120+. The dataset exhibits a wide range in item count, with 36 flights (35.3\%) carrying over 120 items, and 29 flights (28.4\%) in the 40–80 item range. The lower two categories, 0–40 and 80–120 items, account for 22.5\% and 13.7\% of flights, respectively. This heterogeneity reflects the operational diversity across routes and aircraft types. On average, each flight handled 96.8 items, with a standard deviation of 70.4, indicating substantial variation in cargo volume and complexity. This variation was critical for testing the model’s scalability and robustness across different loading scenarios.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{items.png}
+    \caption{Distribution of cargo item counts per flight}
+    \label{fig:items}
+\end{figure}
+\newpage
+\subsection{Summary of Optimization Performance}
+% Revised paragraph in the Results and Discussion section, subsection 7.1
+% Revised paragraph in the Results and Discussion section, subsection 7.1
+Table~\ref{tab:summary_results} compares the performance of five optimization models---KLM’s optimization model, a weight and balance-only optimization (W\&B), a sequential heuristic, Puttaert’s original MILP formulation, and the Proposed Model---against KLM’s standard operational loading practices. The Proposed Model achieves a \%MAC at Zero Fuel Weight (ZFW) of 32.7\%, close to the highest result (32.8\% from Puttaert) and above all other benchmarks. In terms of fuel savings, the Proposed Model yields an average of 358 kg per flight (0.47\%), significantly outperforming KLM’s optimization model (215 kg, or 0.3\%) and surpassing the Sequential (298 kg, 0.392\%) and W\&B (256 kg, 0.349\%) strategies, all measured relative to KLM’s standard operational loading practices. 
+
+Although Puttaert’s model achieves slightly higher fuel savings (380 kg, 0.498\%) due to a marginally higher \%MAC, it omits critical weight limits per compartment and per position, which are essential for ensuring structural safety and operational feasibility in real-world airline logistics. In contrast, the Proposed Model incorporates these constraints, along with enhanced temperature restrictions and booking separation logic, delivering robust and practical loading plans while maintaining competitive fuel savings and achieving a 41\% reduction in computational runtime (153 seconds vs. 261 seconds). This makes the Proposed Model a superior and more implementable solution for sustainable aviation operations.
+\begin{table}[H]
+    \centering
+    \caption{Summary of Optimization Results Across Models (mean per flight)}
+    \label{tab:summary_results}
+    \begin{tabular}{lccccc}
+        \toprule
+        \textbf{Metric} & \textbf{Model} & \textbf{Puttaert} & \textbf{Sequential} & \textbf{W\&B} & \textbf{KLM} \\
+        \midrule
+        \%MAC at ZFW            & 32.7\%   & 32.8   & 31.8   & 31.1  & 30.7   \\
+        Fuel Saving (kg)        & 358      & 380   & 298   & 256   & 215  \\
+        Fuel Saving (\%)        & 0.470   & 0.498   & 0.392   & 0.349   & 0.300   \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+% Revised paragraph and table in the Results and Discussion section
+Table~\ref{tab:objective_comparison} zooms in on three objective function components: center of gravity (CG), ULD efficiency, and booking separation. The Proposed Model opens an average of 17.05 ULDs per flight compared to Puttaert’s 17.90, highlighting a modest but consistent improvement in container usage. The separation penalty for the Proposed Model is higher (32.46 vs. 17.83), reflecting the average total number of ULDs used across all booking groups per flight, compared to Puttaert’s total number of ULD-prefix pairs across all flights. 
+
+\begin{table}[H]
+    \centering
+    \caption{Comparison of Key Objective Function Metrics: Proposed Model vs. Puttaert}
+    \label{tab:objective_comparison}
+    \begin{tabular}{lcc}
+        \toprule
+        \textbf{Metric} & \textbf{Proposed Model} & \textbf{Puttaert} \\
+        \midrule
+        \%MAC at ZFW           & 32.65  & 32.84   \\
+        ULDs Opened            & 17.05  & 17.90   \\
+        Separation Penalty     & 32.46  & 17.83   \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The penalties are not directly comparable, as the Proposed Model uses \( Y_{b_i} \) to minimize the total ULDs across all bookings, while Puttaert’s model uses binary variables without an equivalent to \( Y_{b_i} \), summing ULD-prefix pairs. Standard deviation comparisons support this interpretation: the Proposed Model shows slightly higher variability in ULDs opened (3.09 vs. 2.56) and a notably higher spread in separation penalties (23.20 vs. 13.01), indicating flexibility in handling realistic constraints. Despite the higher separation penalty, the Proposed Model’s near-identical \%MAC performance (32.65\% vs. 32.84\%) and lower ULD usage demonstrate its ability to balance efficiency and feasibility, validating the methodological adjustments for real-world aviation operations.
+\newpage
+\subsection{Aircraft \%MAC at Zero Fuel Weight Analysis}
+
+The optimization of \%MAC at ZFW is central to reducing aerodynamic drag and enhancing fuel efficiency. Figure \ref{fig:mac_comparison} illustrates the mean \%MAC across models, with Table \ref{tab:mac_comparison} providing detailed statistics. The Proposed Model achieves a mean \%MAC of 32.65\% (95\% CI: [32.0, 33.3]), slightly below Puttaert's 32.8\% (95\% CI: [32.3, 33.4]), which records the highest mean at 32.84\%. This marginal difference is attributed to the Proposed Model's incorporation of enhanced constraints: temperature restrictions (prohibiting co-storage of COL and CRT items), weight limits per position and compartment, and a separation penalty for items intended to be packed together. These additions, absent in Puttaert's formulation, ensure compliance with real-world aviation standards, potentially sacrificing slight \%MAC gains for operational feasibility.
+
+Comparative analysis reveals that the Proposed Model outperforms KLM Actual (30.7\%, 95\% CI: [30.0, 31.3]), W\&B (31.1\%, 95\% CI: [30.6, 31.7]), and Sequential (31.8\%, 95\% CI: [31.2, 32.4]) models, with non-overlapping confidence intervals indicating statistical significance. The highest \%MAC (40.8\%) and lowest (21.4\%) are observed in the Proposed Model and KLM Actual, respectively, reflecting greater variability (SD = 3.14 vs. 3.29). This variability suggests the Proposed Model's adaptability across diverse flight conditions, a critical advantage for real-world deployment.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{mac_means_simple.png}
+    \caption{Mean \%MAC at Zero Fuel Weight Across Models}
+    \label{fig:mac_comparison}
+\end{figure}
+
+\begin{table}[H]
+    \centering
+    \caption{Mean \%MAC at Zero Fuel Weight (ZFW) and Statistics Across Models}
+    \label{tab:mac_comparison}
+    \begin{tabular}{lcccccc}
+        \toprule
+        \textbf{Model} & \textbf{Mean} & \textbf{SD} & \textbf{Highest} & \textbf{Lowest} & \textbf{95\% CI Interval} \\
+        \midrule
+        KLM  & 30.7 & 3.29 & 38.8 & 21.4 & [30.0, 31.3] \\
+        W\&B     & 31.1 & 2.85 & 39.2 & 24.3 & [30.6, 31.7] \\
+        Sequential      & 31.8 & 2.93 & 39.7 & 24.8 & [31.2, 32.4] \\
+        Puttaert       & 32.8 & 2.83 & 40.1 & 25.0 & [32.3, 33.4] \\
+        Model       & 32.7 & 3.14 & 40.8 & 25.7 & [32.0, 33.3] \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\newpage\subsection{Aircraft \%MAC by Aircraft Type}
+
+Figure~\ref{fig:mac_means_by_type} extends the \%MAC analysis by aircraft type, revealing model performance across the Boeing 777-200 (772), 777-300ER (77W), 787-9 (789), and 787-10 (781) fleets. The Proposed Model achieves the highest \%MAC for the 772, confirming its effectiveness in maximizing aft CG in this configuration. For the 77W, it ranks second behind Puttaert but still surpasses all other models, reflecting strong consistency under more complex loading conditions and larger cargo volumes.
+
+In the 781, the Proposed Model ranks third, following Puttaert and the KLM Actual configuration. This could be due to the 781’s compartment limitations or a stricter enforcement of separation and temperature constraints. Finally, in the 789, the Sequential model unexpectedly outperforms all others in \%MAC. The Proposed Model still performs well but does not top the ranking—likely due to the model's prioritization of operational rules and grouping logic that limit its CG flexibility in certain layouts.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{mac_means_by_type.png}
+    \caption{Mean \%MAC at Zero Fuel Weight by Aircraft Type Across Models}
+    \label{fig:mac_means_by_type}
+\end{figure}
+
+Across the 185 flights processed by the Proposed Model, the average fuel reduction was 371.36 kg per flight, relative to KLM’s standard operational loading practices, with a lower average \%MAC (approximately 32.5\%) compared to the 32.65\% achieved in the 102-flight subset used for direct model comparisons (Table~\ref{tab:objective_comparison}). The 102-flight subset, selected for complete data across all benchmark models (KLM Optimized, W\&B, Sequential, Puttaert’s MILP, and the Proposed Model), yielded 358 kg per flight (Table~\ref{tab:summary_results}). 
+
+The higher fuel savings despite a lower \%MAC for the 185 flights indicate a non-linear relationship between CG placement and fuel efficiency, suggesting that prioritizing fuel reduction is more critical than maximizing \%MAC, as fuel savings directly drive cost and environmental benefits. This underscores the Proposed Model’s ability to achieve significant fuel reductions while maintaining operational feasibility through strict constraint adherence, with analyzing more flights (e.g., the full ~500-flight dataset) necessary to further validate its performance across diverse scenarios.
+
+
+\subsection{Aircraft \%MAC by Destination}
+
+Figure~\ref{fig:mac_means_by_destination} compares the mean \%MAC at Zero Fuel Weight (ZFW) by destination across all models (KLM Optimized, BAX Fixed, Baseline, Puttaert, and the Proposed Model). The Proposed Model achieves the highest \%MAC values for AMS--IAH (32.06\%) and AMS--ICN (33.95\%), outperforming all benchmarks, including Puttaert (31.97\% and 33.89\%, respectively). In AMS--LAX and AMS--SIN, Puttaert slightly surpasses the Proposed Model by 0.60\% (31.82\% vs. 31.22\%) and 0.28\% (33.41\% vs. 33.13\%), respectively, with KLM Optimized also marginally exceeding the Proposed Model in AMS--LAX. These small differences can be attributed to route-specific characteristics, such as variability in cargo volume and belly configuration, or the Proposed Model’s stricter enforcement of constraints like weight limits per compartment and position and temperature restrictions. 
+
+Destinations with larger numbers of cargo items or shorter computational time windows may limit the model’s flexibility in achieving aft-centered CG placements. This suggests that while the Proposed Model excels in many cases, its performance can be constrained in high-density or time-limited scenarios. Nevertheless, the overall trend confirms that, with the exception of AMS–LAX and AMS–SIN, the Proposed Model consistently delivers superior CG placements, validating the effectiveness of its structural improvements and constraint integration.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{mac_means_by_destination.png}
+    \caption{Mean \%MAC at Zero Fuel Weight by Destination Across Models}
+    \label{fig:mac_means_by_destination}
+\end{figure}
+
+\subsection{Fuel Savings and Deviation Analysis}
+
+The Proposed Model's impact on fuel efficiency is quantified through fuel savings in kilograms and percentage reductions. Figure \ref{fig:fuel_savings_kg} and Table \ref{tab:fuel_saving_kg} present the mean fuel savings per flight, with the Proposed Model achieving 358 kg (95\% CI: [295, 422]), the second-highest after Puttaert's 380 kg (95\% CI: [318, 441]). This translates to a CO$_2$ reduction of approximately 1.131 metric tonnes per flight, aligning with the targeted 0.47\% fuel saving. The model exhibits a slightly higher standard deviation (325 kg) compared to Puttaert (313 kg), indicating marginally greater variability in fuel savings across flights (305--1294 kg vs. 215--1245 kg). However, this difference is minimal and does not compromise the Models’s stability, as it maintains competitive performance with a mean fuel saving close to Puttaert’s 380 kg. The variability reflects sensitivity to flight-specific factors, such as cargo distribution or aircraft type (Boeing 777-200 vs. 777-300ER), while consistently delivering significant CO$_2$ reductions. Figure \ref{fig:fuel_savings_kg} visualizes the distribution of fuel savings across models.
+
+% Content for this subsection
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{fuel_savings_kg.png}
+    \caption{Kg Fuel Savings per Flight by Model}
+    \label{fig:fuel_savings_kg}
+\end{figure}
+
+\begin{table}[H]
+    \centering
+    \caption{Fuel Saving in kg per Flight Across Models}
+    \label{tab:fuel_saving_kg}
+    \begin{tabular}{lccccc}
+        \toprule
+        \textbf{Model} & \textbf{Mean} & \textbf{SD} & \textbf{Lowest} & \textbf{Highest} & \textbf{95\% CI Interval} \\
+        \midrule
+        KLM & 215 & 252 & 503 & 1071 & [166, 265] \\
+        W\&B     & 256 & 267 & 293 & 1277 & [204, 309] \\
+        Sequential       & 298 & 288 & 257 & 1221 & [242, 355] \\
+        Puttaert       & 380 & 313 & 215 & 1245 & [318, 441] \\
+        Model & 358 & 325 & 305 & 1294 & [295, 422] \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Figure~\ref{fig:fuel_deviation_boxplot} and Table~\ref{tab:fuel_saving_percent} elucidate percentage fuel savings, with all models compared against KLM Actual, defined as KLM’s standard operational loading practices in real-world operations without optimization. The Proposed Model yields a mean fuel savings of 0.470\% (95\% CI: [0.39, 0.55]), slightly below Puttaert’s 0.498\% (95\% CI: [0.42, 0.58]). The negative deviations in the boxplot (e.g., -0.47\% for the Proposed Model) represent fuel reductions relative to KLM Actual. The Proposed Model outperforms most benchmark models, including KLM Optimized (0.3\%, 215 kg), a distinct optimization strategy, as well as Sequential (0.392\%, 298 kg) and W\&B (0.349\%, 256 kg), due to its inclusion of temperature, separation, and weight limit constraints per compartment and position. Puttaert’s higher savings result from omitting critical constraints, such as weight limits per compartment and position, which compromise operational feasibility. The Proposed Model’s higher minimum savings (e.g., 2.07\%) suggest potential for significant gains under optimal conditions. 
+
+\begin{figure}[H]
+    \centering
+\includegraphics[width=0.5\linewidth]{fuel_deviation_boxplot.png}
+    \caption{Percentage Fuel Deviation Boxplot by Model}
+    \label{fig:fuel_deviation_boxplot}
+\end{figure}
+
+\begin{table}[h!]
+    \centering
+    \caption{Fuel Saving Percentage Across Models}
+    \label{tab:fuel_saving_percent}
+    \begin{tabular}{lccccc}
+        \toprule
+        \textbf{Model} & \textbf{Mean} & \textbf{SD} & \textbf{Min} & \textbf{Max} & \textbf{CI Interval} \\
+        \midrule
+        KLM  & 0.300 & 0.334 & 0.561 & 1.34 & [0.23, 0.37] \\
+        W\&B      & 0.349 & 0.373 & 0.484 & 2.12 & [0.28, 0.42] \\
+        Sequential      & 0.392 & 0.381 & 0.415 & 1.42 & [0.32, 0.47] \\
+        
+        Puttaert       & 0.498 & 0.409 & 0.356 & 1.82 & [0.42, 0.58] \\
+        Model      & 0.470 & 0.414 & 0.295 & 2.07 & [0.39, 0.55] \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+
+\subsection{ULD Type Distribution Across Models}
+Figure \ref{fig:uld_type_distribution} examines the distribution of ULD types (BAX, T, PAG, PMC) across models. The BAX proportion, fixed at 49–53\% due to passenger baggage constraints, remains consistent, with the Proposed Model at 51\% compared to KLM Actual's 48.8\%. T ULDs also show stability (approximately 20–22\%). However, PAG and PMC ULDs vary, with the Proposed Model utilizing 6\% PAG and 16.5\% PMC, compared to KLM Actual's 6.8\% and 17.2\%, respectively. This reduction in PMC usage (a 4.1\% decrease) and slight increase in BAX proportion suggest the Proposed Model optimizes flexible ULD allocations, reallocating cargo to maximize aft weight distribution.
+
+The higher BAX proportion in the Proposed Model results from maintaining fixed BAX counts while reducing PAG and PMC ULDs, a trade-off that enhances \%MAC without violating safety constraints. This adaptability underscores the model's ability to prioritize aerodynamic efficiency over uniform ULD type distribution, a strategic choice validated by its fuel savings performance.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{image.png}
+    \caption{ULD Type Distribution Across Models}
+    \label{fig:uld_type_distribution}
+\end{figure}
+
+The model output for each flight includes visualizations of the 3D-BPP for the constructed ULDs and the CG envelopes, showcasing the envelopes for the optimal aircraft weight and balance (W\&B). The 3D-BPP visualization offers a detailed view of how cargo items are packed within the ULDs, confirming their feasibility with respect to space and compliance with special handling constraints. An example of the 3D-BPP output is shown in Figure~\ref{fig:3dbpp-model}.
+
+In this example—Flight KL661 from AMS to IAH on March 1, 2024—we observe that all grouped cargo items are packed together as intended. This is evident from the serial labels (e.g., 3/3, 7/7, 14/14), confirming no unintended separation occurred during packing.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{no separated.png}
+    \caption{Visualization of the 3D-BPP Model Results for the Built ULDs}
+    \label{fig:3dbpp-model}
+\end{figure}
+
+In contrast, the same flight under the Puttaert model shows multiple instances where cargo items from the same booking were separated across different ULDs, as shown in Figure~\ref{fig:3dbpp-puttaert}. Labels such as 3/7, 1/3, and 2/4 indicate partial packing of booking groups. While the separation penalties in Table~\ref{tab:objective_comparison} (32.46 for the Proposed Model vs. 17.83 for Puttaert’s) are not directly comparable due to different formulations—the Proposed Model minimizes the average number of ULDs per flight, while Puttaert’s sums total ULD-prefix pairs without an equivalent to \( Y_{b_i} \)—the 3D-BPP visualizations provide critical insight into the cargo distribution logic.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{separated.png}
+    \caption{Visualization of the 3D-BPP Puttaert Results for the Built ULDs}
+    \label{fig:3dbpp-puttaert}
+\end{figure}
+
+\subsection{Average ULDs Opened per Model}
+
+Figure \ref{fig:uld_utilization} quantifies the average number of ULDs opened by each model, excluding fixed ULDs (BAX, T, BUP) that remain constant across scenarios. The Proposed Model opens 5.07 ULDs on average, a reduction from Puttaert's 5.19, reflecting efficient cargo consolidation. The Sequential model, with the lowest average of 4.23 ULDs, achieves this by ignoring temperature constraints, allowing co-storage of COL and CRT items, which is infeasible in real-world aviation.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{uld_utilization.png}
+    \caption{Average ULDs Opened per Model}
+    \label{fig:uld_utilization}
+\end{figure}
+
+\subsection{Compartment Weight Distribution}
+
+Figure \ref{fig:pct_weight_compartment} reveals a consistent trend across models, with 36–44\% of total weight concentrated in the fourth compartment (C4), followed by C3 (25–32\%), C2 (20–25\%), and C1 (6–11\%). This aft-weighted distribution aligns with the primary objective of maximizing \%MAC, as shifting weight toward the rear reduces aerodynamic drag during takeoff and cruise, as supported by \cite{FAA2016}. The Proposed Model achieves a 42\% weight share in C4, slightly lower than Puttaert's 40\%, reflecting optimized CG positioning.
+
+
+% Content for this subsection
+\begin{figure}[H]
+    \centering
+\includegraphics[width=0.5\linewidth]{pct_total_weight_per_compartment.png}
+    \caption{Percentage of Total Weight per Compartment Across Models}
+    \label{fig:pct_weight_compartment}
+\end{figure}
+
+\newpage
+\subsection{Example Plane Visualization}
+To illustrate the weight distribution achieved by the Proposed Model, we first present the cargo compartment layout of a Boeing 777-300ER (77W), the aircraft type used for flight KL835 (AMS-SIN, 16 Jan 2024), shown in Figure \ref{fig:boeing_777_layout} from side and top perspectives. The gray areas represent non-cargo spaces (e.g., structural or equipment areas), not a corridor filled with positions, as might be assumed. The available cargo positions vary by aircraft type, with the 777-300ER offering 40 positions (20 left, 20 right) compared to 32 for the 777-200 (16 left, 16 right).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{B777-300_001.png}
+    \caption{Cargo Compartment Layout of Boeing 777-300ER (Side and Top Views)}
+    \label{fig:boeing_777_layout}
+\end{figure}
+
+As an example, Figure \ref{fig:weight_distribution_venezian} illustrates the weight distribution for flight KL835 (AMS-SIN, 16 Jan 2024) under the Proposed Model on a Boeing 777-300ER. Darker blue shades indicate heavier loads in the aft compartments (C3 and C4), while lighter shades represent lower weights in the forward compartments (C1 and C2). This aft-heavy configuration aligns with Objective 1 (maximizing \%MAC at ZFW) to optimize fuel efficiency, achieving a 0.47\% fuel saving and approximately 1.131 metric tonnes of CO$_2$ reduction per flight. Comprehensive visualizations for all aircraft types (Boeing 777-200, 777-300ER, and others) across the Proposed Model, Puttaert, and KLM Actual models will be presented later to compare weight distributions systematically.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Example plane.png}
+    \caption{Weight Distribution for Flight KL835 (AMS-SIN, 16 Jan 2024) in Proposed Model}
+    \label{fig:weight_distribution_venezian}
+\end{figure}
+
+\newpage
+\subsection{Average Weight and Volume Load Factor}
+
+Figures \ref{fig:weight_loadfactor} and \ref{fig:volume_loadfactor} assess load factor performance for AKE and PMC ULD types across models. The Proposed Model achieves a weight load factor of 0.2 for AKE and 0.370 for PMC, slightly lower than Puttaert’s 0.245 and 0.375, respectively. While the previous model maximizes weight load factors, the proposed model prioritizes fuel efficiency (Objective 1: maximizing \%MAC) and volume utilization (Objective 3). This trade-off reflects efficient cargo packing within weight constraints, balancing operational efficiency and sustainability.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{avg_weight_loadfactor.png}
+    \caption{Average Weight Load Factor by ULD Type Across Models}
+    \label{fig:weight_loadfactor}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{avg_volume_loadfactor.png}
+    \caption{Average Volume Load Factor by ULD Type Across Models}
+    \label{fig:volume_loadfactor}
+\end{figure}
+
+Figure \ref{fig:uld_loadfactor_bar} compares the volume load factors for AKE, PMC, and PAG ULD types across models, with the Proposed Model achieving 43.25\% for AKE, 55\% for PMC, and 44\% for PAG, surpassing Puttaert’s 23.07\%, 54\%, and 40\%, respectively. This 5–20\% higher volume utilization reflects the model’s optimization of Objective 3 (maximizing volume utilization, $\max \sum_{j \in \mathcal{U} \setminus \mathcal{N}} \sum_{i \in \mathcal{I}} v_i \cdot p_{ij}$), which reduces the number of ULDs needed while maintaining safety and operational constraints. Both models adhere to a maximum volume load factor of 0.8 (indicated by a red dotted line in the figure) to account for real-world packing inefficiencies, such as item fragility and temperature restrictions (e.g., COL and CRT items). In contrast, Puttaert’s model achieves higher weight load factors (0.245 for AKE, 0.375 for PMC vs. Model’s 0.2 and 0.370), indicating a preference for denser, heavier items that occupy less volume. The model’s focus on volume utilization allows for more efficient cargo packing, leaving room for additional items while ensuring structural integrity and fuel efficiency.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{venezian_vs_puttaert_uld_loadfactor_bar.png}
+    \caption{Mean Volume Load Factor for AKE, PMC, and PAG ULDs Across Models}
+    \label{fig:uld_loadfactor_bar}
+\end{figure}
+
+\subsection{Average Runtime and Iterations}
+Figure \ref{fig:avg_runtime} demonstrates the Proposed Model's computational efficiency, with a mean runtime of 153 seconds, nearly half of Puttaert's 362 seconds, across over  a 100 tested flights. This 57.7\% reduction is attributed to optimized constraint handling. The sequential model exhibits lower runtimes due to their lack of iterative 3D heuristics, limiting their \%MAC and fuel savings potential.
+
+% Content for this subsection
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{avg_total_time.png}
+    \caption{Average Runtime per Model}
+    \label{fig:avg_runtime}
+\end{figure}
+
+The Proposed Model's runtime advantage, combined with comparable \%MAC and fuel savings to Puttaert, positions it as the current best time-cost solution. The reduced iteration count enhances scalability, making it viable for real-time KLM operations.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{avg_iterations.png}
+    \caption{Average Iterations per Model}
+    \label{fig:avg_iterations}
+\end{figure}
+% Content for this subsection
+
+\subsection{Average Plane Visualization (Weight Distribution)}
+
+Figures \ref{fig:avg_weight_77W} to \ref{fig:avg_weight_789} present average weight heatmaps for Boeing 77W, 772, 781, and 789 aircraft, respectively. These visualizations confirm the aft-weighted distribution observed in individual flights (e.g., KL835), with C3 and C4 compartments consistently darker, indicating 40–45\% of total weight. The Proposed Model exhibits a more uniform aft distribution (e.g., 43\% in C4 for 789) compared to KLM Actual (38\%), reflecting optimized CG placement. Grey areas represent non-positioned spaces, clarifying that available positions vary by aircraft type, a factor the model effectively leverages.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{average_plane_comparison_77W.png}
+    \caption{Average Weight Distribution for Boeing 777-300ER (77W)}
+    \label{fig:avg_weight_77W}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{average_plane_comparison_772.png}
+    \caption{Average Weight Distribution for Boeing 777-200 (772)}
+    \label{fig:avg_weight_772}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{average_plane_comparison_781.png}
+    \caption{Average Weight Distribution for Boeing 787-10 (781)}
+    \label{fig:avg_weight_781}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{average_plane_comparison_789.png}
+    \caption{Average Weight Distribution for Boeing 787-9 (789)}
+    \label{fig:avg_weight_789}
+\end{figure}
+
+
+Figure \ref{fig:position_utilization} illustrates the position utilization rates across models, with the Proposed Model achieving a rate of 87.7\%, the second-lowest among the models, surpassing only Sequential (85.4\%) and falling below Puttaert (88.4\%), Baseline (90.2\%), and KLM Actual (91.9\%). A lower position utilization rate is advantageous, as it indicates fewer cargo positions are occupied, leaving more space available for additional ULDs if needed. This efficiency stems from the model’s prioritization of minimizing the number of ULDs used (Objective 2: $\min \sum_{j \in \mathcal{U}} u_j$), which reduces operational complexity and enhances flexibility compared to previous models' focus on optimizing item size assignment. Sequential’s lowest utilization rate (85.4\%) results from its omission of critical real-world constraints, such as temperature requirements for COL and CRT items (Constraints R20–R25) and booking separation (Constraints R18–R19), leading to inefficient packing with more ULDs.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{position_utilization.png}
+    \caption{Position Utilization Rate Across Models}
+    \label{fig:position_utilization}
+\end{figure}
+% Content for this subsectis
+
+\newpage
+
+\section{Conclusion}
+This thesis presents a refined Mixed Integer Linear Programming (MILP) model for the One-Dimensional Bin Packing and Weight and Balance Problem (1D-BPP-W\&B), achieving a measurable 0.470\% reduction in fuel consumption per flight—equivalent to approximately 371.36 kg of jet fuel saved and 1.174 tonnes of CO$_2$ emissions avoided across 185 flights. At an estimated \$0.50 per kilogram, this translates to \$185.68 in cost savings per flight. While Puttaert's 2024 model reports a marginally higher reduction (0.498\%, 380 kg), the Proposed Model introduces key operational enhancements that elevate feasibility and real-world applicability.
+
+Building on Puttaert’s foundational formulation, this model incorporates corrected booking separation logic, dynamic handling of reassigned items, and aircraft-specific constraints for temperature-sensitive cargo and compartment weight limits. These additions reflect the realities of cargo logistics at an operational level—where safety, regulation, and practicality are paramount.
+
+Empirically, the model demonstrates strong performance: a mean \%MAC at Zero Fuel Weight (ZFW) of 32.7\%, an average runtime of 153 seconds, and improved ULD efficiency (17.05 opened ULDs vs. Puttaert’s 17.90). These outcomes are based on a core evaluation of 102 KLM intercontinental flights with complete data across all benchmark models—KLM Optimized (0.3\%, 215 kg), a weight and balance-only optimization (0.349\%, 256 kg), a sequential heuristic (0.392\%, 298 kg), Puttaert’s MILP (0.498\%, 380 kg), and the Proposed Model (0.47\%, 358 kg)—all compared against KLM Actual, defined as KLM’s standard operational loading practices without optimization. 
+
+A total of 185 flights, drawn from a larger dataset of approximately 500 KLM flights, were processed by the Proposed Model, achieving an average fuel reduction of 371.36 kg per flight, higher than the 358 kg for the 102-flight subset, despite a lower average \%MAC (approximately 32.3\% vs. 32.7\%. This non-linear relationship between fuel savings and \%MAC highlights that prioritizing fuel reduction over maximizing \%MAC is more critical, as fuel savings directly drive cost and environmental benefits, while \%MAC serves as an intermediate metric for CG optimization. The remaining 83 flights, lacking complete benchmark data due to varying feasibility, suggest that analyzing the full 500-flight dataset could further validate the model’s scalability and robustness across diverse aircraft types and routes, such as AMS--LAX (where Puttaert’s \%MAC is 0.60\% higher) and AMS--SIN (0.28\% higher).
+
+Beyond numbers, this work positions cargo loading as a tangible lever for sustainable aviation. By optimizing both palletization and CG placement under real airline constraints, this model moves beyond theoretical idealism and into implementable impact. The results suggest that minor changes in logic and layout can yield disproportionate environmental and operational gains.
+
+However, limitations remain. Approximately 10\% of test flights were infeasible due to geometric packing constraints—highlighting the need for improved 3D-BPP logic. Additionally, the absence of tare weights for most ULD types (excluding BAX/BUP/T) introduces a small but relevant accuracy gap.
+
+Future research should focus on four areas: integrating heuristic 3D-BPP modules to reduce infeasibility rates; incorporating tare weights across all ULD types (typically ranging from 70 to 1000 kg) to enhance model accuracy; exploring regulatory flexibility in COL/CRT co-storage to improve packing density; and scaling the model into a real-time decision-support system for airline operations, leveraging its relatively short runtime and structural modularity.
+
+In sum, this model is more than an algorithm—it is a blueprint for smarter cargo logic. Its success lies not only in fuel saved or runtime reduced, but in how it reframes air cargo as a source of sustainable advantage. Optimization, done right, is not just a mathematical exercise—it is a new way of flying. These results invite further collaboration between airlines and optimization researchers to translate model-level gains into operational impact.
+
+\newpage
+\begin{thebibliography}{9}
+\bibitem{Puttaert2024}
+Puttaert, G.A.M. (2024). \textit{Optimizing Air Cargo Palletization and Weight and Balance}. TU Delft.
+
+\bibitem{FAA2016}
+Federal Aviation Administration. (2016). \textit{Aircraft Weight and Balance Handbook}.
+
+\bibitem{ANACargo}
+ANA Cargo. (2025). Boeing 787-9 Specifications. \url{https://www.anacargo.jp/en/int/specification/b787_9.html}
+\end{thebibliography}
+
+\end{document}

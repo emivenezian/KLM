@@ -1,0 +1,29 @@
+ULD PMC-23 with weight 1364.5 kg with a volume loadfactor of 19.116% and a weight loadfactor of 26.744% is loaded to position 11P
+ULD T-27 with weight 921.0 kg is loaded to position 12P
+ULD PMC-24 with weight 706.9 kg with a volume loadfactor of 18.213% and a weight loadfactor of 13.855% is loaded to position 13P
+ULD T-28 with weight 3030.0 kg is loaded to position 21P
+ULD PMC-21 with weight 1030.8 kg with a volume loadfactor of 19.829% and a weight loadfactor of 20.204% is loaded to position 22P
+ULD PMC-22 with weight 1364.1 kg with a volume loadfactor of 76.349% and a weight loadfactor of 26.736% is loaded to position 23P
+ULD AKE-20 with weight 1017.2 kg with a volume loadfactor of 59.264% and a weight loadfactor of 64.095% is loaded to position 31L
+ULD BAX-7 with weight 871.0 kg is loaded to position 31R
+ULD BAX-11 with weight 800.0 kg is loaded to position 32L
+ULD BAX-9 with weight 875.0 kg is loaded to position 32R
+ULD BAX-10 with weight 689.0 kg is loaded to position 33L
+ULD BAX-4 with weight 763.0 kg is loaded to position 33R
+ULD BAX-5 with weight 458.0 kg is loaded to position 41L
+ULD BAX-0 with weight 842.0 kg is loaded to position 41R
+ULD PMC-25 with weight 3733.7 kg with a volume loadfactor of 60.867% and a weight loadfactor of 73.182% is loaded to position 41P
+ULD PMC-26 with weight 3801.1 kg with a volume loadfactor of 53.357% and a weight loadfactor of 74.502% is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 2992.4 kg
+Weight in Compartment 2: 5424.9 kg
+Weight in Compartment 3: 5015.2 kg
+Weight in Compartment 4: 8834.8 kg
+===========================================================================
+%MAC ZFW is 30.038418972606976
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 25.1
+Resulting in a fuel deviation of -0.392% or -303.445 kg
+---------------------------------------------------------------------------
+7 ULDs are built by the model
+7 ULDs were actually built

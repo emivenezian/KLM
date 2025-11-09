@@ -1,0 +1,37 @@
+ULD PAG-33 with weight 348.0 kg is loaded to position 11P
+ULD T-53 with weight 625.0 kg is loaded to position 12P
+ULD PMC-35 with weight 515.0 kg is loaded to position 13P
+ULD PMC-36 with weight 1390.0 kg is loaded to position 21P
+ULD PAG-42 with weight 1030.0 kg is loaded to position 22P
+ULD T-52 with weight 2035.0 kg is loaded to position 23P
+ULD T-51 with weight 700.0 kg is loaded to position 24P
+ULD T-54 with weight 760.0 kg is loaded to position 25P
+ULD BAX-1 with weight 757.0 kg is loaded to position 31L
+ULD BAX-16 with weight 685.0 kg is loaded to position 31R
+ULD BAX-14 with weight 704.0 kg is loaded to position 32L
+ULD BAX-30 with weight 723.0 kg is loaded to position 32R
+ULD BAX-3 with weight 742.0 kg is loaded to position 33L
+ULD BAX-7 with weight 697.0 kg is loaded to position 33R
+ULD BAX-6 with weight 722.0 kg is loaded to position 34L
+ULD BAX-29 with weight 669.0 kg is loaded to position 34R
+ULD BAX-12 with weight 650.0 kg is loaded to position 35L
+ULD T-55 with weight 63.0 kg is loaded to position 35R
+ULD BAX-0 with weight 589.0 kg is loaded to position 36L
+ULD BAX-9 with weight 449.0 kg is loaded to position 36R
+ULD AKE-31 with weight 1195.0 kg is loaded to position 41L
+ULD BAX-50 with weight 798.0 kg is loaded to position 41R
+ULD PMC-48 with weight 4240.0 kg is loaded to position 41P
+ULD PMC-37 with weight 2300.0 kg is loaded to position 42P
+---------------------------------------------------------------------------
+Weight in Compartment 1: 1488.0 kg
+Weight in Compartment 2: 5915.0 kg
+Weight in Compartment 3: 5699.0 kg
+Weight in Compartment 4: 8533.0 kg
+===========================================================================
+%MAC ZFW is 32.47199094463173
+---------------------------------------------------------------------------
+The actual %MAC ZFW for this flight was 35.6
+Resulting in a fuel deviation of 0.386% or 357.738 kg
+---------------------------------------------------------------------------
+7 ULDs are built by the model
+7 ULDs were actually built
