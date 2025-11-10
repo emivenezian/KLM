@@ -11,12 +11,12 @@ Number of Cargo ULDs used: 6
 Number of BAX ULDs: 9 - Number of BUP ULDs: 0 - Number of T ULDs: 2
 --------------------------------------------------------------------------------------------------------
 ULD set available for loading:
-PAG-23, PAG
+PMC-21, PMC
+PMC-22, PMC
+PMC-23, PMC
 PMC-24, PMC
 PMC-25, PMC
-PMC-26, PMC
-PMC-28, PMC
-PMC-29, PMC
+PMC-27, PMC
 --------------------------------------------------------------------------------------------------------
 BAX and BUP set for loading:
 BAX-0, AKE
@@ -27,9 +27,9 @@ BAX-8, AKE
 BAX-9, AKE
 BAX-16, AKE
 BAX-18, AKE
-BAX-30, AKE
-T-31, PMC
-T-32, PMC
+BAX-28, AKE
+T-29, PAG
+T-30, PMC
 --------------------------------------------------------------------------------------------------------
 PAX allocation:
 PAX-A: 30

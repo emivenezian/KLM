@@ -153,6 +153,15 @@ W_{max}^{C1C2} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimentos 1+2)} 
 W_{max}^{C3C4} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimentos 3+4)}
 \end{align}
 
+\subsection{Parámetros Globales Compartidos}
+\begin{align}
+INDEX\_PAX &\in \mathbb{R} \quad \text{(Índice aportado por pasajeros)} \\
+fuel\_index &\in \mathbb{R} \quad \text{(Índice aportado por combustible)} \\
+MPL &\in \mathbb{R}^+ \quad \text{(Maximum Payload)} \\
+W_{total} &\in \mathbb{R}^+ \quad \text{(Peso total de carga asignada)} \\
+number\_of\_opened\_uld &\in \mathbb{Z}^+ \quad \text{(Número mínimo de ULDs a abrir en etapa 1)}
+\end{align}
+
 \subsection{Parámetros de Control}
 \begin{align}
 loadfactor &= 0.8 \quad \text{(Factor de carga volumétrica)} \\
@@ -164,6 +173,13 @@ a_{lat}^{LW} &= 0.5 \quad \text{(Parámetro balance lateral LW)} \\
 b_{lat}^{LW} &= 0.5 \quad \text{(Parámetro balance lateral LW)} \\
 M &= \max_{i \in I} w_i \quad \text{(Big M se establece dinámicamente como el peso máximo de los items)}
 \end{align}
+
+\noindent\textbf{Funciones auxiliares:}
+\begin{itemize}
+    \item $\mathbf{1}_{AKE}(j)$, $\mathbf{1}_{PMC\_PAG}(j)$ indican si el ULD $j$ es de tipo AKE o PMC/PAG.
+    \item $proximity\_score(t)$ cuantifica la penalidad por ubicar BAX en la posición $t$.
+    \item $T_{forbidden}(j)$ contiene posiciones prohibidas para el ULD $j$ y $T_{overlap}(t)$ identifica posiciones que se solapan con $t$.
+\end{itemize}
 
 \section{Variables de Decisión}
 

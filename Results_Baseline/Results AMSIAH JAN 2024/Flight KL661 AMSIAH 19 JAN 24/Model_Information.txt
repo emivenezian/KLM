@@ -1,7 +1,7 @@
-Total time: 39.403 seconds
+Total time: 12.311 seconds
 ---------------------------------------------------------------------------
-Total time 1D BPP: 1.851 seconds
+Total time 1D BPP: 0.833 seconds
 ---------------------------------------------------------------------------
-Total time 3D BPP: 23.392 seconds
+Total time 3D BPP: 6.881 seconds
 ---------------------------------------------------------------------------
-Total time WB: 14.160 seconds
+Total time WB: 4.597 seconds

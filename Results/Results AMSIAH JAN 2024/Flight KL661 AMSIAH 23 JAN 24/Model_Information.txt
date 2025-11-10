@@ -1,7 +1,7 @@
 Number of Iteration: 1
 ---------------------------------------------------------------------------
-Total time: 338.151 seconds
+Total time: 519.032 seconds
 ---------------------------------------------------------------------------
-Total time 1D BPP WB: 20.689 seconds
+Total time 1D BPP WB: 36.131 seconds
 ---------------------------------------------------------------------------
-Total time 3D BPP: 313.887 seconds
+Total time 3D BPP: 476.911 seconds

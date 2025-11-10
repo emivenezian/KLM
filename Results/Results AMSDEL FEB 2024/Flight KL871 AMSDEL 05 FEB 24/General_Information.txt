@@ -1,0 +1,59 @@
+The model will run the following flight:
+--------------------------------------------------------------------------------------------------------
+Flight Number: KL871 PHBVR - Aircraft Type: 77W - Departure: AMS - Arrival: DEL - Date: 05 FEB 24
+
+ZFW: 217615.0 kg - TOW: 289942.0 kg - LW: 232365.0 kg - OEW: 171214.0 kg
+
+Fuel: 72327 kg - Trip Fuel: 57577 kg
+
+Number of Cargo ULDs used: 10
+
+Number of BAX ULDs: 16 - Number of BUP ULDs: 0 - Number of T ULDs: 3
+--------------------------------------------------------------------------------------------------------
+ULD set available for loading:
+AKE-26, AKE
+AKE-29, AKE
+AKE-30, AKE
+AKE-31, AKE
+AKE-32, AKE
+PMC-33, PMC
+PMC-38, PMC
+PMC-39, PMC
+PMC-40, PMC
+PMC-41, PMC
+--------------------------------------------------------------------------------------------------------
+BAX and BUP set for loading:
+BAX-0, AKE
+BAX-3, AKE
+BAX-4, AKE
+BAX-5, AKE
+BAX-7, AKE
+BAX-8, AKE
+BAX-10, AKE
+BAX-11, AKE
+BAX-12, AKE
+BAX-14, AKE
+BAX-15, AKE
+BAX-16, AKE
+BAX-17, AKE
+BAX-23, AKE
+BAX-24, AKE
+BAX-25, AKE
+T-42, PMC
+T-43, PMC
+T-44, AKE
+--------------------------------------------------------------------------------------------------------
+PAX allocation:
+PAX-A: 34
+PAX-B: 22
+PAX-C: 39
+PAX-D: 48
+PAX-E: 57
+PAX-F: 59
+PAX-G: 60
+Total PAX: 319
+--------------------------------------------------------------------------------------------------------
+Check if all items fit the ULDs dimensions:
+
+93 / 93 items fit the dimensions of the ULDs
+--------------------------------------------------------------------------------------------------------

@@ -6,14 +6,15 @@ ZFW: 172547.6 kg - TOW: 242390.6 kg - LW: 179842.6 kg - OEW: 127707.0 kg
 
 Fuel: 69843 kg - Trip Fuel: 62548 kg
 
-Number of Cargo ULDs used: 3
+Number of Cargo ULDs used: 4
 
 Number of BAX ULDs: 8 - Number of BUP ULDs: 0 - Number of T ULDs: 6
 --------------------------------------------------------------------------------------------------------
 ULD set available for loading:
-PMC-27, PMC
-PMC-28, PMC
-PMC-29, PMC
+PMC-17, PMC
+PMC-20, PMC
+PMC-21, PMC
+PMC-22, PMC
 --------------------------------------------------------------------------------------------------------
 BAX and BUP set for loading:
 BAX-0, AKE
@@ -23,13 +24,13 @@ BAX-5, AKE
 BAX-7, AKE
 BAX-10, AKE
 BAX-16, AKE
-BAX-30, AKE
-T-31, AKE
-T-32, AKE
-T-33, PMC
-T-34, PMC
-T-35, PMC
-T-36, PMC
+BAX-24, AKE
+T-25, AKE
+T-26, AKE
+T-27, PMC
+T-28, PMC
+T-29, PMC
+T-30, PMC
 --------------------------------------------------------------------------------------------------------
 PAX allocation:
 PAX-A: 29

@@ -1,9 +1,8 @@
-ULD PMC-27 with weight 602.1 kg with a volume loadfactor of 32.638% and a weight loadfactor of 11.801% is loaded to position 11P
-ULD AKE-20 with weight 839.3 kg with a volume loadfactor of 42.937% and a weight loadfactor of 52.884% is loaded to position 15R
-ULD T-28 with weight 651 kg is loaded to position 21R
-ULD PMC-25 with weight 1343.4 kg with a volume loadfactor of 76.925% and a weight loadfactor of 26.331% is loaded to position 22P
-ULD AKE-23 with weight 277.0 kg with a volume loadfactor of 31.886% and a weight loadfactor of 17.454% is loaded to position 25L
-ULD PMC-24 with weight 531.1 kg with a volume loadfactor of 25.315% and a weight loadfactor of 10.410% is loaded to position 31P
+ULD PMC-24 with weight 2250.3 kg with a volume loadfactor of 78.979% and a weight loadfactor of 44.106% is loaded to position 11P
+ULD AKE-20 with weight 180.1 kg with a volume loadfactor of 47.136% and a weight loadfactor of 11.348% is loaded to position 21R
+ULD AKE-22 with weight 361.0 kg with a volume loadfactor of 68.618% and a weight loadfactor of 22.747% is loaded to position 23L
+ULD AKE-23 with weight 74.6 kg with a volume loadfactor of 42.686% and a weight loadfactor of 4.701% is loaded to position 23R
+ULD PMC-25 with weight 726.9 kg with a volume loadfactor of 37.168% and a weight loadfactor of 14.247% is loaded to position 23P
 ULD BAX-4 with weight 874.0 kg is loaded to position 33L
 ULD BAX-11 with weight 753.0 kg is loaded to position 33R
 ULD BAX-9 with weight 741.0 kg is loaded to position 34L
@@ -12,16 +11,17 @@ ULD BAX-6 with weight 771.0 kg is loaded to position 41L
 ULD BAX-12 with weight 756.0 kg is loaded to position 41R
 ULD BAX-0 with weight 867.0 kg is loaded to position 43L
 ULD BAX-7 with weight 932.0 kg is loaded to position 44L
+ULD T-28 with weight 651 kg is loaded to position 44R
 ---------------------------------------------------------------------------
-Weight in Compartment 1: 1441.4 kg
-Weight in Compartment 2: 2271.4 kg
-Weight in Compartment 3: 3330.1 kg
-Weight in Compartment 4: 3326.0 kg
+Weight in Compartment 1: 2250.3 kg
+Weight in Compartment 2: 1342.6 kg
+Weight in Compartment 3: 2799.0 kg
+Weight in Compartment 4: 3977.0 kg
 ===========================================================================
-%MAC ZFW is 31.59636818258838
+%MAC ZFW is 31.596708216690292
 ---------------------------------------------------------------------------
 The actual %MAC ZFW for this flight was 31.4
-Resulting in a fuel deviation of -0.015% or -7.715 kg
+Resulting in a fuel deviation of -0.015% or -7.728 kg
 ---------------------------------------------------------------------------
 5 ULDs are built by the model
 6 ULDs were actually built

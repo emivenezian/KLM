@@ -127,6 +127,15 @@ W_{max}^{C1C2} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimentos 1+2)} 
 W_{max}^{C3C4} &\in \mathbb{R}^+ \quad \text{(Peso máximo compartimentos 3+4)}
 \end{align}
 
+\subsection{Parámetros Globales Compartidos}
+\begin{align}
+INDEX\_PAX &\in \mathbb{R} \quad \text{(Índice aportado por pasajeros)} \\
+fuel\_index &\in \mathbb{R} \quad \text{(Índice aportado por combustible)} \\
+MPL &\in \mathbb{R}^+ \quad \text{(Maximum Payload)} \\
+W_{total} &\in \mathbb{R}^+ \quad \text{(Peso total de carga asignada)} \\
+number\_of\_opened\_uld &\in \mathbb{Z}^+ \quad \text{(Número mínimo de ULDs abiertos cuando aplica)}
+\end{align}
+
 \subsection{Parámetros de Control}
 \begin{align}
 a_{lat}^{TOW} &= 0.5 \quad \text{(Parámetro balance lateral TOW)} \\
@@ -134,6 +143,12 @@ b_{lat}^{TOW} &= 0.5 \quad \text{(Parámetro balance lateral TOW)} \\
 a_{lat}^{LW} &= 0.5 \quad \text{(Parámetro balance lateral LW)} \\
 b_{lat}^{LW} &= 0.5 \quad \text{(Parámetro balance lateral LW)}
 \end{align}
+
+\noindent\textbf{Funciones auxiliares:}
+\begin{itemize}
+    \item $proximity\_score(t)$ cuantifica la penalidad por ubicar BAX en la posición $t$.
+    \item $T_{forbidden}(j)$ contiene posiciones prohibidas para el ULD $j$ y $T_{overlap}(t)$ identifica posiciones que se solapan con $t$.
+\end{itemize}
 
 \section{Variables de Decisión}
 
