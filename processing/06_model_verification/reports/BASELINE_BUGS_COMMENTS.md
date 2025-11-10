@@ -48,6 +48,7 @@ for t in aircraft.loadlocations_C4:  # BUG 1: Loop por posicion, no por comparti
 ---
 
 ## BUG 2: Asignacion Incluye BAX/BUP/T (CRITICO)
+Este no es tan critico porque igual despues prohibe la asignacion, no lo cambiaria.  
 
 **Ubicacion:** Celda `solve_1D_BPP_WB`, antes de linea `# R5: Asignación Única`
 
@@ -72,6 +73,7 @@ for i in cargo.items:
 ---
 
 ## BUG 5: Sistema de Penalizacion Suboptimal (HIGH)
+Conversar con profesor si lo cambiamos
 
 **Ubicacion:** Celda `solve_1D_BPP_WB`, antes de linea `'''Objective function 4'''`
 
@@ -164,11 +166,11 @@ m.setObjectiveN(obj4, index = 5, priority = 1, weight = 1)  # BUG 11: Deberia se
 
 Total de bugs en Baseline: **4 bugs**
 
-- **Bug #1:** CRITICO - Compartment weights per-position (W6a-W6d)
-- **Bug #2:** CRITICO - Item assignment includes BAX/BUP/T (R5)
-- **Bug #5:** HIGH - Separation penalty suboptimal (Objective 4)
-- **Bug #10:** CRITICO - COL/CRT per-position logic (W12)
-- **Bug #11:** HIGH - Multi-objective indices no secuenciales (todos los setObjectiveN)
+- **Bug #1:** CRITICO - Compartment weights per-position (W6a-W6d). este cambiar si o si. 
+- **Bug #2:** CRITICO - Item assignment includes BAX/BUP/T (R5) este no
+- **Bug #5:** HIGH - Separation penalty suboptimal (Objective 4) este conversarlo 
+- **Bug #10:** CRITICO - COL/CRT per-position logic (W12) este si 
+- **Bug #11:** HIGH - Multi-objective indices no secuenciales (todos los setObjectiveN) este no 
 
 **Bugs NO presentes en Baseline:**
 - Bug #3 (COL/CRT complex nested) - Baseline usa logica mas simple
