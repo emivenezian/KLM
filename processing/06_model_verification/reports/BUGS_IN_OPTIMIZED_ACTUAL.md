@@ -151,9 +151,9 @@ MAC_obj = (((aircraft.C * (ZFW_index_obj - aircraft.K)) / aircraft.ZFW) +
 
 ## 📋 **SUMMARY FOR OPTIMIZED_ACTUAL**
 
-### **🔥 CRITICAL (2 bugs):**
-1. ✅ **Bug #1:** Compartment weights (per-position → per-compartment) - **SAME AS BASELINE & PUTTAERT**
-2. ✅ **Bug #10:** COL/CRT logic (per-position → compartment-level) - **SAME AS BASELINE**
+### ✅ **Fixed (April 2025)**
+1. **Bug #1** — Compartment weight limits now aggregate across all positions (`Optimized_Actual.ipynb`).
+2. **Bug #10** — COL/CRT constraints rewritten with compartment-level binaries for 772/77W and 789/781.
 
 ### **⚠️ HIGH PRIORITY (1 bug):**
 3. ⚠️ **Bug #11:** Multi-objective indexing (index 5 → index 1) - **SAME AS BASELINE**
