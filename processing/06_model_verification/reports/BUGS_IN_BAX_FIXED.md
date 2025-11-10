@@ -60,16 +60,15 @@ for i in cargo.items:
 
 ---
 
-### **BUG #3: CRT/COL COMPARTMENT LOGIC** - CRITICAL! 🔥
+### **BUG #3: CRT/COL COMPARTMENT LOGIC** — ✅ FIXED
 
-**Lines:** ~236-328 (P29-P30)
+*Lines corregidas:* `BAX_Fixed.ipynb` (~236-345)
 
-Same overly complex logic as Puttaert:
-- Creates O(n_COL × n_CRT × n_ULD × n_positions) variables
-- `quicksum(COL_C1_C2 + CRT_C1_C2 for t in ...) == 0` logic
-- Unclear and inefficient
+- Se reemplazó la lógica explosiva por un esquema Big-M compacto por compartimento.
+- Nuevas binarias `COL_k` y `CRT_k` controlan presencia de carga especial por sección (front/aft).
+- Se consideran tanto items reasignados (`z`) como ULDs pre-etiquetados (`f`), replicando el enfoque de `Model.ipynb`.
 
-**Should be:** Clean compartment-level big-M like DelgadoVenezian
+> **Estado:** corregido (abril 2025)
 
 **Impact:** CRITICAL - Same as Puttaert
 
@@ -126,19 +125,15 @@ Same as Puttaert - splits into 2 constraints instead of combining
 
 ---
 
-### **BUG #10: COL/CRT PER-POSITION** - CRITICAL! 🔥
+### **BUG #10: COL/CRT PER-POSITION** — ✅ FIXED
 
-**Lines:** ~236-240 (P29-P30)
+*Lines corregidas:* `BAX_Fixed.ipynb` (~236-420)
 
-```python
-# ❌ Per-position constraints
-if str(aircraft.aircraft_type) in ['772', '77W']:
-    for t in aircraft.loadlocations_C1_C2:
-        m.addConstr(quicksum(f[j, t.index] for j in T_with_COL) + 
-                   quicksum(f[k, t.index] for k in T_with_CRT) <= 1)
-```
+- Las restricciones ahora agregan por compartimento (no por posición individual).
+- Para 772/77W se impone exclusión mutua COL/CRT por sección (`front`, `aft`).
+- Para 789/781 se bloquea cualquier COL/CRT en compartimentos traseros y se mantiene exclusión en el frente.
 
-**Impact:** CRITICAL - Allows COL and CRT in same compartment at different positions
+> **Estado:** corregido junto con BUG #3 (abril 2025)
 
 ---
 
@@ -171,10 +166,10 @@ for j in cargo.uld:
 ## 📋 **SUMMARY FOR BAX_FIXED**
 
 ### **🔥 CRITICAL (4 bugs):**
-1. ✅ **Bug #1:** Compartment weights (per-position → per-compartment)
-2. ✅ **Bug #2:** Item assignment (includes BAX/BUP/T)
-3. ✅ **Bug #3:** CRT/COL complex logic (needs big-M simplification)
-4. ✅ **Bug #10:** COL/CRT per-position (needs compartment-level)
+1. ✅ **Bug #1:** Compartment weights (per-position → per-compartment) lo cambie 
+2. ✅ **Bug #2:** Item assignment (includes BAX/BUP/T) no por ahora
+3. ✅ **Bug #3:** CRT/COL complex logic (needs big-M simplification) 
+4. ✅ **Bug #10:** COL/CRT per-position (needs compartment-level) lo cambie. 
 
 ### **⚠️ HIGH PRIORITY (4 bugs):**
 5. ⚠️ **Bug #4:** w variable linearization
