@@ -16,9 +16,6 @@ plotly>=5.0.0
 openpyxl>=3.0.0
 statsmodels>=0.12.0
 
-# For 3D plotting and advanced matplotlib features
-mpl_toolkits
-
 # For compatibility with scripts using argparse, pathlib, etc. (standard library, no need to specify)
 # argparse
 # pathlib
